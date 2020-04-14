@@ -1,0 +1,25 @@
+{
+    "xthree": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-sqa-admin-app-xthree-90406-authRole",
+            "UnauthRoleArn": "arn:aws:iam::865118636886:role/amplify-sqa-admin-app-xthree-90406-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::865118636886:role/amplify-sqa-admin-app-xthree-90406-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "amplify-sqa-admin-app-xthree-90406-deployment",
+            "UnauthRoleName": "amplify-sqa-admin-app-xthree-90406-unauthRole",
+            "StackName": "amplify-sqa-admin-app-xthree-90406",
+            "StackId": "arn:aws:cloudformation:us-west-2:865118636886:stack/amplify-sqa-admin-app-xthree-90406/92f02920-7e69-11ea-abfc-020cb06e9788",
+            "AmplifyAppId": "d1imyzlz23z53h"
+        },
+        "categories": {
+            "function": {
+                "sqaAdminPostConfirmation": {
+                    "GROUP": "users"
+                }
+            },
+            "auth": {
+                "sqaAdmin": {}
+            }
+        }
+    }
+}

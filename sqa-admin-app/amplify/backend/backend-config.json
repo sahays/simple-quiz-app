@@ -1,0 +1,42 @@
+{
+	"function": {
+		"sqaAdminPostConfirmation": {
+			"build": true,
+			"providerPlugin": "awscloudformation",
+			"service": "Lambda"
+		}
+	},
+	"auth": {
+		"userPoolGroups": {
+			"service": "Cognito-UserPool-Groups",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [
+				{
+					"category": "auth",
+					"resourceName": "sqaAdmin",
+					"attributes": [
+						"UserPoolId",
+						"AppClientIDWeb",
+						"AppClientID",
+						"IdentityPoolId"
+					]
+				}
+			]
+		},
+		"sqaAdmin": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [
+				{
+					"category": "function",
+					"resourceName": "sqaAdminPostConfirmation",
+					"triggerProvider": "Cognito",
+					"attributes": [
+						"Arn",
+						"Name"
+					]
+				}
+			]
+		}
+	}
+}
