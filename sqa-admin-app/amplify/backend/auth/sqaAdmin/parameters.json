@@ -4,7 +4,7 @@
     "resourceNameTruncated": "sqaAdm0672b6bf",
     "userPoolName": "sqa_admin_app0672b6bf_userpool_0672b6bf",
     "autoVerifiedAttributes": [
-        "phone_number"
+        "email"
     ],
     "mfaConfiguration": "OPTIONAL",
     "mfaTypes": [
@@ -12,7 +12,7 @@
     ],
     "smsAuthenticationMessage": "Your authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
-    "emailVerificationSubject": "Your verification code",
+    "emailVerificationSubject": "Your Simple Quiz App verification",
     "emailVerificationMessage": "Your verification code is {####}",
     "defaultPasswordPolicy": true,
     "passwordPolicyMinLength": "6",
@@ -34,7 +34,7 @@
     "thirdPartyAuth": false,
     "userPoolGroups": true,
     "adminQueries": false,
-    "triggers": "{\"PostConfirmation\":[\"add-to-group\"]}",
+    "triggers": "{\"PostConfirmation\":[\"add-to-group\"],\"PreSignup\":[\"email-filter-whitelist\"]}",
     "hostedUI": false,
     "userPoolGroupList": [
         "admins",
@@ -62,6 +62,15 @@
         {
             "category": "function",
             "resourceName": "sqaAdminPostConfirmation",
+            "triggerProvider": "Cognito",
+            "attributes": [
+                "Arn",
+                "Name"
+            ]
+        },
+        {
+            "category": "function",
+            "resourceName": "sqaAdminPreSignup",
             "triggerProvider": "Cognito",
             "attributes": [
                 "Arn",
