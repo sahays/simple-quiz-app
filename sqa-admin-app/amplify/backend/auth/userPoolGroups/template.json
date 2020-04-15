@@ -1,23 +1,23 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
     "Parameters": {
-        "authsqaAdminUserPoolId": {
+        "authsqaAuthUserPoolId": {
             "Type": "String",
-            "Default": "authsqaAdminUserPoolId"
+            "Default": "authsqaAuthUserPoolId"
         },
         
-        "authsqaAdminIdentityPoolId": {
+        "authsqaAuthIdentityPoolId": {
             "Type": "String",
-            "Default": "authsqaAdminIdentityPoolId"
+            "Default": "authsqaAuthIdentityPoolId"
         },
         
-        "authsqaAdminAppClientID": {
+        "authsqaAuthAppClientID": {
             "Type": "String",
-            "Default": "authsqaAdminAppClientID"
+            "Default": "authsqaAuthAppClientID"
         },
-        "authsqaAdminAppClientIDWeb": {
+        "authsqaAuthAppClientIDWeb": {
             "Type": "String",
-            "Default": "authsqaAdminAppClientIDWeb"
+            "Default": "authsqaAuthAppClientIDWeb"
         },
         "AuthRoleArn": {
             "Type": "String"
@@ -55,7 +55,7 @@
               },
               
               "UserPoolId" : {
-                "Ref": "authsqaAdminUserPoolId"
+                "Ref": "authsqaAuthUserPoolId"
               } 
             }
         },
@@ -68,7 +68,7 @@
                         "",
                         [
                           {
-                            "Ref": "authsqaAdminUserPoolId"
+                            "Ref": "authsqaAuthUserPoolId"
                           },
                           "-adminsGroupRole"
                         ]
@@ -85,7 +85,7 @@
                             },
                             "Action": "sts:AssumeRoleWithWebIdentity",
                             "Condition": {
-                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authsqaAdminIdentityPoolId"}},
+                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authsqaAuthIdentityPoolId"}},
                               "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authenticated"}
                             }
                         }
@@ -109,7 +109,7 @@
               },
               
               "UserPoolId" : {
-                "Ref": "authsqaAdminUserPoolId"
+                "Ref": "authsqaAuthUserPoolId"
               } 
             }
         },
@@ -122,7 +122,7 @@
                         "",
                         [
                           {
-                            "Ref": "authsqaAdminUserPoolId"
+                            "Ref": "authsqaAuthUserPoolId"
                           },
                           "-usersGroupRole"
                         ]
@@ -139,7 +139,7 @@
                             },
                             "Action": "sts:AssumeRoleWithWebIdentity",
                             "Condition": {
-                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authsqaAdminIdentityPoolId"}},
+                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authsqaAuthIdentityPoolId"}},
                               "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authenticated"}
                             }
                         }
@@ -165,7 +165,7 @@
                                 "",
                                 [
                                   
-                                  "sqaAdmin",
+                                  "sqaAuth",
                                   "-ExecutionRole-",
                                   {
                                     "Ref": "env"
@@ -324,16 +324,16 @@
                     "Ref": "UnauthRoleArn"
                 },
                 "identityPoolId": {
-                    "Ref": "authsqaAdminIdentityPoolId"
+                    "Ref": "authsqaAuthIdentityPoolId"
                 },
                 "userPoolId": {
-                    "Ref": "authsqaAdminUserPoolId"
+                    "Ref": "authsqaAuthUserPoolId"
                 },
                 "appClientIDWeb": {
-                    "Ref": "authsqaAdminAppClientIDWeb"
+                    "Ref": "authsqaAuthAppClientIDWeb"
                 },
                 "appClientID": {
-                    "Ref": "authsqaAdminAppClientID"
+                    "Ref": "authsqaAuthAppClientID"
                 },
                 "region": {
                     "Ref": "AWS::Region"

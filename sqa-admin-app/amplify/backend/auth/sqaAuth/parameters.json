@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "sqa_admin_app0672b6bf_identitypool_0672b6bf",
+    "identityPoolName": "sqa_admin_appee652e50_identitypool_ee652e50",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "sqaAdm0672b6bf",
-    "userPoolName": "sqa_admin_app0672b6bf_userpool_0672b6bf",
+    "resourceNameTruncated": "sqaAutee652e50",
+    "userPoolName": "sqa_admin_appee652e50_userpool_ee652e50",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -10,9 +10,9 @@
     "mfaTypes": [
         "SMS Text Message"
     ],
-    "smsAuthenticationMessage": "Your authentication code is {####}",
+    "smsAuthenticationMessage": "Your Simple Quiz Service authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
-    "emailVerificationSubject": "Your Simple Quiz App verification",
+    "emailVerificationSubject": "Your Simple Quiz Service verification code",
     "emailVerificationMessage": "Your verification code is {####}",
     "defaultPasswordPolicy": true,
     "passwordPolicyMinLength": "6",
@@ -26,15 +26,15 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "sqaAdm0672b6bf_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "sqaAutee652e50_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
     "useDefault": "manual",
     "authSelections": "identityPoolAndUserPool",
-    "resourceName": "sqaAdmin",
+    "resourceName": "sqaAuth",
     "thirdPartyAuth": false,
     "userPoolGroups": true,
     "adminQueries": false,
-    "triggers": "{\"PostConfirmation\":[\"add-to-group\"],\"PreSignup\":[\"email-filter-whitelist\"]}",
+    "triggers": "{\"PostConfirmation\":[\"add-to-group\"],\"PreSignup\":[\"custom\"]}",
     "hostedUI": false,
     "userPoolGroupList": [
         "admins",
@@ -61,7 +61,7 @@
     "dependsOn": [
         {
             "category": "function",
-            "resourceName": "sqaAdminPostConfirmation",
+            "resourceName": "sqaAuthPostConfirmation",
             "triggerProvider": "Cognito",
             "attributes": [
                 "Arn",
@@ -70,7 +70,7 @@
         },
         {
             "category": "function",
-            "resourceName": "sqaAdminPreSignup",
+            "resourceName": "sqaAuthPreSignup",
             "triggerProvider": "Cognito",
             "attributes": [
                 "Arn",

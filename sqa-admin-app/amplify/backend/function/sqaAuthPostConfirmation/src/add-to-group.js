@@ -5,17 +5,16 @@ exports.handler = async (event, context, callback) => {
     { apiVersion: "2016-04-18" }
   );
 
-  const {
-    userAttributes: { email },
-  } = event.request;
+  const { clientMetadata } = event.request;
+  const { email } = event.request.userAttributes;
 
   let targetGroup = "users";
 
-  if (email.indexOf("@amazon.com") > -1) {
-    targetGroup = "admins";
+  if (clientMetadata && clientMetadata.app.indexOf("sqa-admin") > -1) {
+    if (email && email.indexOf("@amazon.com") > -1) {
+      targetGroup = "admins";
+    }
   }
-
-  console.log(email, targetGroup);
 
   const groupParams = {
     GroupName: targetGroup,

@@ -2,7 +2,11 @@
 	"AWSTemplateFormatVersion": "2010-09-09",
 	"Description": "Lambda resource stack creation using Amplify CLI",
 	"Parameters": {
-		"GROUP": {
+		"DOMAINBLACKLIST": {
+			"Type": "String",
+			"Default": ""
+		},
+		"DOMAINWHITELIST": {
 			"Type": "String",
 			"Default": ""
 		},
@@ -61,12 +65,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"sqaAdminPostConfirmation",
+						"sqaAuthPreSignup",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"sqaAdminPostConfirmation",
+									"sqaAuthPreSignup",
 									"-",
 									{
 										"Ref": "env"
@@ -87,8 +91,11 @@
 						"REGION": {
 							"Ref": "AWS::Region"
 						},
-						"GROUP": {
-							"Ref": "GROUP"
+						"DOMAINWHITELIST": {
+							"Ref": "DOMAINWHITELIST"
+						},
+						"DOMAINBLACKLIST": {
+							"Ref": "DOMAINBLACKLIST"
 						}
 					}
 				},
@@ -101,8 +108,8 @@
 				"Runtime": "nodejs10.x",
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-sqa-admin-app-xthree-90406-deployment",
-					"S3Key": "amplify-builds/sqaAdminPostConfirmation-326d4353426478563336-build.zip"
+					"S3Bucket": "amplify-sqa-admin-app-xone-212302-deployment",
+					"S3Key": "amplify-builds/sqaAuthPreSignup-64757a51504976473172-build.zip"
 				}
 			}
 		},
@@ -112,12 +119,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"sqaAdminPostConfirmation",
+						"sqaAuthPreSignup",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"sqaAdminPostConfirmation",
+									"sqaAuthPreSignup",
 									"-",
 									{
 										"Ref": "env"

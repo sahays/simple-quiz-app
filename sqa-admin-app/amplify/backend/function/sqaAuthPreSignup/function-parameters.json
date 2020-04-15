@@ -1,16 +1,15 @@
 {
     "trigger": true,
     "modules": [
-        "email-filter-whitelist"
+        "custom"
     ],
-    "parentResource": "sqaAdmin",
-    "functionName": "sqaAdminPreSignup",
-    "resourceName": "sqaAdminPreSignup",
+    "parentResource": "sqaAuth",
+    "functionName": "sqaAuthPreSignup",
+    "resourceName": "sqaAuthPreSignup",
     "parentStack": "auth",
     "triggerEnvs": [],
     "triggerDir": "/usr/local/lib/node_modules/@aws-amplify/cli/node_modules/amplify-category-auth/provider-utils/awscloudformation/utils/../triggers/PreSignup",
     "triggerTemplate": "PreSignup.json.ejs",
-    "roleName": "sqaAdminPreSignup",
-    "skipEdit": true,
-    "DOMAINWHITELIST": ""
+    "roleName": "sqaAuthPreSignup",
+    "skipEdit": true
 }

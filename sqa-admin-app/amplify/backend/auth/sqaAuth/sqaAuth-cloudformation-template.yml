@@ -11,23 +11,23 @@ Parameters:
   
   
   
-  functionsqaAdminPostConfirmationArn: 
+  functionsqaAuthPostConfirmationArn: 
     Type: String
-    Default: functionsqaAdminPostConfirmationArn
+    Default: functionsqaAuthPostConfirmationArn
   
-  functionsqaAdminPostConfirmationName: 
+  functionsqaAuthPostConfirmationName: 
     Type: String
-    Default: functionsqaAdminPostConfirmationName
+    Default: functionsqaAuthPostConfirmationName
   
   
   
-  functionsqaAdminPreSignupArn: 
+  functionsqaAuthPreSignupArn: 
     Type: String
-    Default: functionsqaAdminPreSignupArn
+    Default: functionsqaAuthPreSignupArn
   
-  functionsqaAdminPreSignupName: 
+  functionsqaAuthPreSignupName: 
     Type: String
-    Default: functionsqaAdminPreSignupName
+    Default: functionsqaAuthPreSignupName
   
   
   
@@ -122,7 +122,7 @@ Parameters:
                     
   userPoolGroupList:
     Type: CommaDelimitedList
-                                    
+                                                
   parentStack:
     Type: String
                 
@@ -131,7 +131,7 @@ Parameters:
               
   dependsOn:
     Type: CommaDelimitedList
-                
+    
 Conditions:
   ShouldNotCreateEnvResources: !Equals [ !Ref env, NONE ]
 
@@ -143,7 +143,7 @@ Resources:
   # Created to allow the UserPool SMS Config to publish via the Simple Notification Service during MFA Process
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !If [ShouldNotCreateEnvResources, 'sqaAdm0672b6bf_sns-role', !Join ['',[ 'sns', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
+      RoleName: !If [ShouldNotCreateEnvResources, 'sqaAutee652e50_sns-role', !Join ['',[ 'sns', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
       AssumeRolePolicyDocument: 
         Version: "2012-10-17"
         Statement: 
@@ -155,10 +155,10 @@ Resources:
               - "sts:AssumeRole"
             Condition: 
               StringEquals:
-                sts:ExternalId: sqaAdm0672b6bf_role_external_id
+                sts:ExternalId: sqaAutee652e50_role_external_id
       Policies: 
         - 
-          PolicyName: sqaAdm0672b6bf-sns-policy
+          PolicyName: sqaAutee652e50-sns-policy
           PolicyDocument: 
             Version: "2012-10-17"
             Statement: 
@@ -183,11 +183,11 @@ Resources:
         
         
         
-          PostConfirmation: !Ref functionsqaAdminPostConfirmationArn
+          PostConfirmation: !Ref functionsqaAuthPostConfirmationArn
         
         
         
-          PreSignUp: !Ref functionsqaAdminPreSignupArn
+          PreSignUp: !Ref functionsqaAuthPreSignupArn
         
         
         
@@ -211,7 +211,7 @@ Resources:
       SmsVerificationMessage: !Ref smsVerificationMessage
       SmsConfiguration: 
         SnsCallerArn: !GetAtt SNSRole.Arn
-        ExternalId: sqaAdm0672b6bf_role_external_id
+        ExternalId: sqaAutee652e50_role_external_id
           
     DependsOn: SNSRole
     
@@ -227,7 +227,7 @@ Resources:
     Properties: 
       Action: "lambda:invokeFunction"
       Principal: "cognito-idp.amazonaws.com"
-      FunctionName: !Ref functionsqaAdminPostConfirmationName
+      FunctionName: !Ref functionsqaAuthPostConfirmationName
       SourceArn: !GetAtt UserPool.Arn
     
   
@@ -238,7 +238,7 @@ Resources:
     Properties: 
       Action: "lambda:invokeFunction"
       Principal: "cognito-idp.amazonaws.com"
-      FunctionName: !Ref functionsqaAdminPreSignupName
+      FunctionName: !Ref functionsqaAuthPreSignupName
       SourceArn: !GetAtt UserPool.Arn
   
    
@@ -246,10 +246,10 @@ Resources:
   # Updating lambda role with permissions to Cognito
   
   
-  sqaAdminPostConfirmationAddToGroupCognito:
+  sqaAuthPostConfirmationAddToGroupCognito:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: sqaAdminPostConfirmationAddToGroupCognito
+      PolicyName: sqaAuthPostConfirmationAddToGroupCognito
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -274,7 +274,7 @@ Resources:
             
 
       Roles:
-        - !Join ['',["sqaAdminPostConfirmation", '-', !Ref env]]
+        - !Join ['',["sqaAuthPostConfirmation", '-', !Ref env]]
   
   
   
@@ -283,7 +283,7 @@ Resources:
   # Depends on UserPool for ID reference
     Type: "AWS::Cognito::UserPoolClient"
     Properties:
-      ClientName: sqaAdm0672b6bf_app_clientWeb
+      ClientName: sqaAutee652e50_app_clientWeb
       
       RefreshTokenValidity: !Ref userpoolClientRefreshTokenValidity
       UserPoolId: !Ref UserPool
@@ -293,7 +293,7 @@ Resources:
   # Depends on UserPool for ID reference
     Type: "AWS::Cognito::UserPoolClient"
     Properties:
-      ClientName: sqaAdm0672b6bf_app_client
+      ClientName: sqaAutee652e50_app_client
       
       GenerateSecret: !Ref userpoolClientGenerateSecret
       RefreshTokenValidity: !Ref userpoolClientRefreshTokenValidity
@@ -358,7 +358,7 @@ Resources:
   # Marked as depending on UserPoolClientRole for easier to understand CFN sequencing
     Type: 'AWS::IAM::Policy'
     Properties:
-      PolicyName: sqaAdm0672b6bf_userpoolclient_lambda_iam_policy
+      PolicyName: sqaAutee652e50_userpoolclient_lambda_iam_policy
       Roles: 
         - !Ref UserPoolClientRole
       PolicyDocument:
@@ -375,7 +375,7 @@ Resources:
   # Marked as depending on UserPoolClientLambdaPolicy for easier to understand CFN sequencing
     Type: 'AWS::IAM::Policy'
     Properties:
-      PolicyName: sqaAdm0672b6bf_userpoolclient_lambda_log_policy
+      PolicyName: sqaAutee652e50_userpoolclient_lambda_log_policy
       Roles: 
         - !Ref UserPoolClientRole
       PolicyDocument:
@@ -412,7 +412,7 @@ Resources:
   # Created to execute Lambda which sets MFA config values
     Type: 'AWS::IAM::Role'
     Properties:
-      RoleName: !If [ShouldNotCreateEnvResources, 'sqaAdm0672b6bf_totp_lambda_role', !Join ['',['sqaAdm0672b6bf_totp_lambda_role', '-', !Ref env]]]
+      RoleName: !If [ShouldNotCreateEnvResources, 'sqaAutee652e50_totp_lambda_role', !Join ['',['sqaAutee652e50_totp_lambda_role', '-', !Ref env]]]
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -423,14 +423,14 @@ Resources:
             Action:
               - 'sts:AssumeRole'
       Policies:
-      - PolicyName: sqaAdm0672b6bf_totp_pass_role_policy
+      - PolicyName: sqaAutee652e50_totp_pass_role_policy
         PolicyDocument:
           Version: 2012-10-17
           Statement:
             - Effect: Allow
               Action:
                 - 'iam:PassRole'
-              Resource: !If [ShouldNotCreateEnvResources, 'arn:aws:iam:::role/sqaAdm0672b6bf_totp_lambda_role', !Join ['',['arn:aws:iam:::role/sqaAdm0672b6bf_totp_lambda_role', '-', !Ref env]]]
+              Resource: !If [ShouldNotCreateEnvResources, 'arn:aws:iam:::role/sqaAutee652e50_totp_lambda_role', !Join ['',['arn:aws:iam:::role/sqaAutee652e50_totp_lambda_role', '-', !Ref env]]]
   MFALambda:
   # Lambda which sets MFA config values
   # Depends on MFALambdaRole for role ARN
@@ -486,9 +486,9 @@ Resources:
   # Marked as depending on MFALambda for easier to understand CFN sequencing
     Type: 'AWS::IAM::Policy'
     Properties:
-      PolicyName: sqaAdm0672b6bf_totp_lambda_iam_policy
+      PolicyName: sqaAutee652e50_totp_lambda_iam_policy
       Roles: 
-        - !If [ShouldNotCreateEnvResources, 'sqaAdm0672b6bf_totp_lambda_role', !Join ['',['sqaAdm0672b6bf_totp_lambda_role', '-', !Ref env]]]
+        - !If [ShouldNotCreateEnvResources, 'sqaAutee652e50_totp_lambda_role', !Join ['',['sqaAutee652e50_totp_lambda_role', '-', !Ref env]]]
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -502,9 +502,9 @@ Resources:
   # Marked as depending on MFALambdaPolicy for easier to understand CFN sequencing
     Type: 'AWS::IAM::Policy'
     Properties:
-      PolicyName: sqaAdm0672b6bf_totp_lambda_log_policy
+      PolicyName: sqaAutee652e50_totp_lambda_log_policy
       Roles: 
-        - !If [ShouldNotCreateEnvResources, 'sqaAdm0672b6bf_totp_lambda_role', !Join ['',['sqaAdm0672b6bf_totp_lambda_role', '-', !Ref env]]]
+        - !If [ShouldNotCreateEnvResources, 'sqaAutee652e50_totp_lambda_role', !Join ['',['sqaAutee652e50_totp_lambda_role', '-', !Ref env]]]
       PolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -530,7 +530,7 @@ Resources:
       totpEnabled: false
       smsConfigCaller: !GetAtt SNSRole.Arn
       smsAuthenticationMessage: !Ref smsAuthenticationMessage
-      smsConfigExternalId: sqaAdm0672b6bf_role_external_id
+      smsConfigExternalId: sqaAutee652e50_role_external_id
     DependsOn: MFALogPolicy
   
     
@@ -541,7 +541,7 @@ Resources:
   # Always created
     Type: AWS::Cognito::IdentityPool
     Properties: 
-      IdentityPoolName: !If [ShouldNotCreateEnvResources, 'sqa_admin_app0672b6bf_identitypool_0672b6bf', !Join ['',['sqa_admin_app0672b6bf_identitypool_0672b6bf', '__', !Ref env]]]
+      IdentityPoolName: !If [ShouldNotCreateEnvResources, 'sqa_admin_appee652e50_identitypool_ee652e50', !Join ['',['sqa_admin_appee652e50_identitypool_ee652e50', '__', !Ref env]]]
       
       CognitoIdentityProviders:
         - ClientId:  !Ref UserPoolClient

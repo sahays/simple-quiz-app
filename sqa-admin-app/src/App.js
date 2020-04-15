@@ -4,17 +4,14 @@ import "./App.css";
 import "@aws-amplify/ui/dist/style.css";
 
 import Amplify from "aws-amplify";
-import awsconfig from "./aws-exports";
+import awsmobile from "./aws-exports";
 import { withAuthenticator } from "aws-amplify-react";
 
-Amplify.Logger.LOG_LEVEL = "DEBUG";
-// awsconfig.clientMetadata = {
-//   source: "web",
-//   app: "sqa-admin",
-//   addToGroup: "admins",
-// };
+awsmobile.clientMetadata = {
+  app: "sqa-admin",
+};
 
-Amplify.configure(awsconfig);
+Amplify.configure(awsmobile);
 
 function App() {
   return <h1>Hello, world</h1>;
@@ -23,7 +20,6 @@ function App() {
 const signUpConfig = {
   header: "Sign Up",
   hideAllDefaults: true,
-  hiddenDefaults: ["username"],
   signUpFields: [
     {
       label: "Username",
