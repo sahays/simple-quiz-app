@@ -29,10 +29,11 @@ const signUpConfig = {
       type: "string",
     },
     {
-      label: "Email address",
+      label:
+        "Email address (we'll send a code to this address for verification)",
       key: "email",
       required: true,
-      displayOrder: 1,
+      displayOrder: 2,
       type: "email",
     },
     {
@@ -46,14 +47,14 @@ const signUpConfig = {
       label: "First Name",
       key: "given_name",
       required: true,
-      displayOrder: 4,
+      displayOrder: 3,
       type: "string",
     },
     {
       label: "Last Name",
       key: "family_name",
       required: true,
-      displayOrder: 5,
+      displayOrder: 4,
       type: "string",
     },
   ],
