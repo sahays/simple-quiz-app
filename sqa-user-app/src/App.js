@@ -29,7 +29,7 @@ const signUpConfig = {
       type: "string",
     },
     {
-      label: "Email address",
+      label: "Email address (will be verified)",
       key: "email",
       required: true,
       displayOrder: 2,
