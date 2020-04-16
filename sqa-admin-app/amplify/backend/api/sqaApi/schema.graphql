@@ -1,0 +1,42 @@
+enum QuestionType {
+  radio
+  checkbox
+}
+
+type Question @model @auth(rules: [{ allow: groups, groups: ["admins"] }]) {
+  id: ID!
+  question: String!
+  type: QuestionType!
+  choices: AWSJSON!
+  answers: [String!]!
+  tags: [String]
+}
+
+type Quiz @model @auth(rules: [{ allow: groups, groups: ["admins"] }]) {
+  id: ID!
+  name: String!
+  questions: [String]!
+  tags: [String]
+}
+
+type Event @model @auth(rules: [{ allow: groups, groups: ["admins"] }]) {
+  id: ID!
+  name: String!
+  quizzes: [String]!
+  tags: [String]
+}
+
+type User @model @auth(rules: [{ allow: groups, groups: ["admins"] }]) {
+  id: ID!
+  sub: String!
+  username: String!
+}
+
+type Response
+  @model
+  @auth(rules: [{ allow: groups, groups: ["admins"] }, { allow: owner }]) {
+  id: ID!
+  questionId: String
+  userId: String
+  responses: AWSJSON!
+}
