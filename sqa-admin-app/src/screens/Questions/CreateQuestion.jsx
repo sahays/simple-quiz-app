@@ -5,6 +5,7 @@ import ButtonBar from "../../controls/ButtonBar";
 import * as yup from "yup";
 import random from "../../utils/random";
 import Checkbox from "../../controls/Checkbox";
+import * as _ from "underscore";
 
 const CreateQuestion = () => {
   const { defaultRandomAlpha } = random();
@@ -13,13 +14,26 @@ const CreateQuestion = () => {
     type: "",
     choices: [{ id: defaultRandomAlpha(), text: "" }],
   };
-  const [question, setQuestion] = useState(initValue);
+  const [answers, setAnswers] = useState([]);
   const [initialValue, setInitialValue] = useState(initValue);
   const [busy, setBusy] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [infoMsg, setInfoMsg] = useState(null);
 
-  const onSubmit = () => {};
+  const onSubmit = (values) => {
+    console.log(values, answers);
+  };
+
+  const onChange = ({ target }) => {
+    let ids = [...answers];
+    if (target.checked) {
+      ids.push(target.value);
+    } else {
+      ids = _.reject(ids, (x) => x === target.value);
+    }
+    ids.sort();
+    setAnswers(ids);
+  };
 
   return (
     <Container>
@@ -44,7 +58,7 @@ const CreateQuestion = () => {
                       className="form form-control"
                       as="textarea"
                       rows="8"
-                      placeholder="question markdown"
+                      placeholder="enter question markdown"
                     />
                     <FieldArray
                       name="choices"
@@ -57,7 +71,8 @@ const CreateQuestion = () => {
                                   <Checkbox
                                     name={`choices[${index}].id`}
                                     value={choice.id}
-                                    onChange={() => {}}
+                                    checked={answers.indexOf(choice.id) > -1}
+                                    onChange={onChange}
                                   />
                                 </Col>
                                 <Col>
@@ -65,7 +80,7 @@ const CreateQuestion = () => {
                                     as="textarea"
                                     rows="4"
                                     type="text"
-                                    placeholder="choice markdown"
+                                    placeholder="enter choice markdown; use checkbox to mark as answer; use +/- to add/remove choices"
                                     className="form form-control"
                                     name={`choices.${index}.text`}
                                   />
@@ -73,7 +88,7 @@ const CreateQuestion = () => {
                                 <Col sm={2}>
                                   <Button
                                     type="button"
-                                    variant="light"
+                                    variant="dark"
                                     className="float-right ml-1"
                                     size="sm"
                                     onClick={() =>
@@ -86,7 +101,7 @@ const CreateQuestion = () => {
                                   </Button>
                                   <Button
                                     type="button"
-                                    variant="light"
+                                    variant="dark"
                                     className="float-right"
                                     size="sm"
                                     onClick={() => {

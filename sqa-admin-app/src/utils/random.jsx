@@ -5,7 +5,10 @@ const defaultRandomNumbers = () => {
 };
 
 const defaultRandomAlpha = () => {
-  return cryptoRandomString({ length: 5 });
+  return cryptoRandomString({
+    length: 5,
+    characters: "abcdefghijklmnopqrstuvwxyz",
+  });
 };
 
 const random = () => {
