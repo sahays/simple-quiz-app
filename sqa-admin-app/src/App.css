@@ -31,3 +31,7 @@ a:hover {
 .cell-width-sm {
   width: 30%;
 }
+
+small {
+  font-size: 0.5em;
+}

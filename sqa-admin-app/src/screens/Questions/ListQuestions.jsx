@@ -11,7 +11,7 @@ const ListQuestions = () => {
             <Card.Header>
               <span style={{ textTransform: "uppercase" }}>All Questions</span>
               <div className="float-right">
-                <Link to="/question/create">Create a new question</Link>
+                <Link to="/question/create">Add a new question</Link>
               </div>
             </Card.Header>
             <Card.Body></Card.Body>

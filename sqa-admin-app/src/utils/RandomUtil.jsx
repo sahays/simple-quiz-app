@@ -1,18 +1,18 @@
 import cryptoRandomString from "crypto-random-string";
 
-const defaultRandomNumbers = () => {
+const getRandomNumbers = () => {
   return cryptoRandomString({ length: 7, type: "numeric" });
 };
 
-const defaultRandomAlpha = () => {
+const getRandomAlphabets = () => {
   return cryptoRandomString({
     length: 5,
     characters: "abcdefghijklmnopqrstuvwxyz",
   });
 };
 
-const random = () => {
-  return { defaultRandomNumbers, defaultRandomAlpha };
+const RandomUtil = () => {
+  return { getRandomNumbers, getRandomAlphabets };
 };
 
-export default random;
+export default RandomUtil;
