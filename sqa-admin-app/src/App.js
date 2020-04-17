@@ -7,15 +7,45 @@ import Amplify from "aws-amplify";
 import awsmobile from "./aws-exports";
 import { withAuthenticator } from "aws-amplify-react";
 
+import { Route, Switch, BrowserRouter } from "react-router-dom";
+import { Container, Row, Col } from "react-bootstrap";
+import Home from "./screens/Home";
+import MainNavbar from "./controls/MainNavbar";
+import ListQuestions from "./screens/Questions/ListQuestions";
+import ListQuizzes from "./screens/Quizzes/ListQuizzes";
+import CreateQuiz from "./screens/Quizzes/CreateQuiz";
+import CreateQuestion from "./screens/Questions/CreateQuestion";
+
 awsmobile.clientMetadata = {
   app: "sqa-admin",
 };
 
 Amplify.configure(awsmobile);
 
-function App() {
-  return <h1>Hello, world</h1>;
-}
+const App = () => {
+  return (
+    <BrowserRouter>
+      <MainNavbar />
+      <Container>
+        <Row>
+          <Col sm={1}></Col>
+          <Col>
+            <Switch>
+              <Route path="/questions" component={ListQuestions}></Route>
+              <Route path="/question/create" component={CreateQuestion}></Route>
+
+              <Route path="/quizzes" component={ListQuizzes}></Route>
+              <Route path="/quiz/create" component={CreateQuiz}></Route>
+
+              <Route path="/" component={Home}></Route>
+            </Switch>
+          </Col>
+          <Col sm={1}></Col>
+        </Row>
+      </Container>
+    </BrowserRouter>
+  );
+};
 
 const signUpConfig = {
   header: "Sign Up",

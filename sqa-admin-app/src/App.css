@@ -1,0 +1,33 @@
+html,
+body {
+  font-family: "Amazon Ember", "Roboto", Arial, Helvetica, sans-serif;
+}
+
+.navbar-brand > a:hover {
+  text-decoration: none;
+}
+
+a.nav-links {
+  color: "#ffffff" !important;
+}
+
+a:hover {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.top-spacer {
+  margin-top: 1em;
+}
+
+.left-spacer {
+  margin-left: 1em;
+}
+
+.cell-width-sm {
+  width: 30%;
+}
