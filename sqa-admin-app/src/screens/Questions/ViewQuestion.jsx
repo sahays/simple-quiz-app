@@ -11,7 +11,7 @@ import {
   Button,
   Table,
 } from "react-bootstrap";
-import * as _ from "underscore";
+import { find as _find } from "underscore";
 import ConfirmModal from "../../controls/ConfirmModal";
 
 const ViewQuestion = ({ match, history }) => {
@@ -30,7 +30,7 @@ const ViewQuestion = ({ match, history }) => {
   }, [query, questionId]);
 
   const getAnswerText = (a) => {
-    return _.find(question.choices, (c) => {
+    return _find(question.choices, (c) => {
       return c.id === a;
     }).text;
   };
@@ -74,6 +74,25 @@ const ViewQuestion = ({ match, history }) => {
     );
   };
 
+  const renderAnswers = () => {
+    return (
+      <React.Fragment>
+        <small>Answers</small>
+        <Table responsive="sm" size="sm" borderless>
+          <tbody>
+            {question.answers.map((a, index) => {
+              return (
+                <tr key={index}>
+                  <td style={{ padding: 0, margin: 0 }}>{getAnswerText(a)}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      </React.Fragment>
+    );
+  };
+
   const renderQuestion = () => {
     if (!question) {
       return <p>Loading...</p>;
@@ -93,10 +112,7 @@ const ViewQuestion = ({ match, history }) => {
           <small>Question</small>
           <Card.Text>{question.question}</Card.Text>
           {renderChoices()}
-          <small>Answers</small>
-          {question.answers.map((a, index) => {
-            return <Card.Text key={index}>{getAnswerText(a)}</Card.Text>;
-          })}
+          {renderAnswers()}
         </Card.Body>
         <Card.Footer>
           <Button variant="light" size="sm" onClick={onBack}>
