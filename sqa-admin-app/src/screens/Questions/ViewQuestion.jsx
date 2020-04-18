@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from "react";
 import GraphQlUtil from "../../utils/GraphQlUtil";
-import * as queries from "../../graphql/queries";
-import * as mutations from "../../graphql/mutations";
-import { Container, Row, Col, Card, Badge, Button } from "react-bootstrap";
+import { getQuestion } from "../../graphql/queries";
+import { deleteQuestion } from "../../graphql/mutations";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Badge,
+  Button,
+  Table,
+} from "react-bootstrap";
 import * as _ from "underscore";
 import ConfirmModal from "../../controls/ConfirmModal";
 
@@ -13,12 +21,10 @@ const ViewQuestion = ({ match, history }) => {
 
   useEffect(() => {
     const load = async () => {
-      const {
-        data: { getQuestion },
-      } = await query(queries.getQuestion, {
+      const { data } = await query(getQuestion, {
         id: questionId,
       });
-      setQuestion(getQuestion);
+      setQuestion(data.getQuestion);
     };
     load();
   }, [query, questionId]);
@@ -33,12 +39,11 @@ const ViewQuestion = ({ match, history }) => {
     ConfirmModal({
       onYes: async () => {
         try {
-          const result = await mutation(
-            mutations.deleteQuestion({
-              id: questionId,
-            })
-          );
+          const result = await mutation(deleteQuestion, {
+            id: questionId,
+          });
           console.log(result);
+          onBack();
         } catch (e) {
           console.log(e);
         }
@@ -48,6 +53,25 @@ const ViewQuestion = ({ match, history }) => {
 
   const onBack = () => {
     history.push("/questions");
+  };
+
+  const renderChoices = () => {
+    return (
+      <React.Fragment>
+        <small>Choices</small>
+        <Table responsive="sm" size="sm" borderless>
+          <tbody>
+            {question.choices.map((c, index) => {
+              return (
+                <tr key={index}>
+                  <td style={{ padding: 0, margin: 0 }}>{c.text}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      </React.Fragment>
+    );
   };
 
   const renderQuestion = () => {
@@ -68,10 +92,7 @@ const ViewQuestion = ({ match, history }) => {
           </p>
           <small>Question</small>
           <Card.Text>{question.question}</Card.Text>
-          <small>Choices</small>
-          {question.choices.map((c, index) => {
-            return <Card.Text key={index}>{c.text}</Card.Text>;
-          })}
+          {renderChoices()}
           <small>Answers</small>
           {question.answers.map((a, index) => {
             return <Card.Text key={index}>{getAnswerText(a)}</Card.Text>;
