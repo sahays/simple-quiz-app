@@ -64,6 +64,7 @@ export const createQuiz = /* GraphQL */ `
       id
       name
       tags
+      questions
     }
   }
 `;
@@ -76,6 +77,7 @@ export const updateQuiz = /* GraphQL */ `
       id
       name
       tags
+      questions
     }
   }
 `;
@@ -88,6 +90,7 @@ export const deleteQuiz = /* GraphQL */ `
       id
       name
       tags
+      questions
     }
   }
 `;
@@ -205,69 +208,6 @@ export const deleteResponse = /* GraphQL */ `
       quizId
       responses
       owner
-    }
-  }
-`;
-export const createQuizQuestions = /* GraphQL */ `
-  mutation CreateQuizQuestions(
-    $input: CreateQuizQuestionsInput!
-    $condition: ModelQuizQuestionsConditionInput
-  ) {
-    createQuizQuestions(input: $input, condition: $condition) {
-      id
-      quizId
-      questions {
-        id
-        question
-        type
-        choices {
-          id
-          text
-        }
-        tags
-      }
-    }
-  }
-`;
-export const updateQuizQuestions = /* GraphQL */ `
-  mutation UpdateQuizQuestions(
-    $input: UpdateQuizQuestionsInput!
-    $condition: ModelQuizQuestionsConditionInput
-  ) {
-    updateQuizQuestions(input: $input, condition: $condition) {
-      id
-      quizId
-      questions {
-        id
-        question
-        type
-        choices {
-          id
-          text
-        }
-        tags
-      }
-    }
-  }
-`;
-export const deleteQuizQuestions = /* GraphQL */ `
-  mutation DeleteQuizQuestions(
-    $input: DeleteQuizQuestionsInput!
-    $condition: ModelQuizQuestionsConditionInput
-  ) {
-    deleteQuizQuestions(input: $input, condition: $condition) {
-      id
-      quizId
-      questions {
-        id
-        question
-        type
-        choices {
-          id
-          text
-        }
-        tags
-      }
     }
   }
 `;

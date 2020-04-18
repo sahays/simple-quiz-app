@@ -29,6 +29,7 @@ type Quiz @model @auth(rules: [{ allow: groups, groups: ["admins"] }]) {
   id: ID!
   name: String!
   tags: [String]
+  questions: [QuestionType]!
 }
 
 type Event @model @auth(rules: [{ allow: groups, groups: ["admins"] }]) {
@@ -51,10 +52,4 @@ type Response
   userId: String!
   quizId: String!
   responses: [String]!
-}
-
-type QuizQuestions @model @auth(rules: [{ allow: private }]) {
-  id: ID!
-  quizId: String!
-  questions: [QuestionView]
 }

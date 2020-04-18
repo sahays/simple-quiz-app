@@ -44,6 +44,7 @@ export const getQuiz = /* GraphQL */ `
       id
       name
       tags
+      questions
     }
   }
 `;
@@ -58,6 +59,7 @@ export const listQuizs = /* GraphQL */ `
         id
         name
         tags
+        questions
       }
       nextToken
     }
@@ -139,45 +141,6 @@ export const listResponses = /* GraphQL */ `
         quizId
         responses
         owner
-      }
-      nextToken
-    }
-  }
-`;
-export const getQuizQuestions = /* GraphQL */ `
-  query GetQuizQuestions($id: ID!) {
-    getQuizQuestions(id: $id) {
-      id
-      quizId
-      questions {
-        id
-        question
-        type
-        choices {
-          id
-          text
-        }
-        tags
-      }
-    }
-  }
-`;
-export const listQuizQuestionss = /* GraphQL */ `
-  query ListQuizQuestionss(
-    $filter: ModelQuizQuestionsFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listQuizQuestionss(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        quizId
-        questions {
-          id
-          question
-          type
-          tags
-        }
       }
       nextToken
     }

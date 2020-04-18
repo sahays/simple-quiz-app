@@ -52,6 +52,7 @@ export const onCreateQuiz = /* GraphQL */ `
       id
       name
       tags
+      questions
     }
   }
 `;
@@ -61,6 +62,7 @@ export const onUpdateQuiz = /* GraphQL */ `
       id
       name
       tags
+      questions
     }
   }
 `;
@@ -70,6 +72,7 @@ export const onDeleteQuiz = /* GraphQL */ `
       id
       name
       tags
+      questions
     }
   }
 `;
@@ -160,60 +163,6 @@ export const onDeleteResponse = /* GraphQL */ `
       quizId
       responses
       owner
-    }
-  }
-`;
-export const onCreateQuizQuestions = /* GraphQL */ `
-  subscription OnCreateQuizQuestions {
-    onCreateQuizQuestions {
-      id
-      quizId
-      questions {
-        id
-        question
-        type
-        choices {
-          id
-          text
-        }
-        tags
-      }
-    }
-  }
-`;
-export const onUpdateQuizQuestions = /* GraphQL */ `
-  subscription OnUpdateQuizQuestions {
-    onUpdateQuizQuestions {
-      id
-      quizId
-      questions {
-        id
-        question
-        type
-        choices {
-          id
-          text
-        }
-        tags
-      }
-    }
-  }
-`;
-export const onDeleteQuizQuestions = /* GraphQL */ `
-  subscription OnDeleteQuizQuestions {
-    onDeleteQuizQuestions {
-      id
-      quizId
-      questions {
-        id
-        question
-        type
-        choices {
-          id
-          text
-        }
-        tags
-      }
     }
   }
 `;

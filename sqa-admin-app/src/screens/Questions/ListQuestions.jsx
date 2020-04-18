@@ -34,6 +34,16 @@ const ListQuestions = ({ history }) => {
       : `${q.substr(0, charLimit)}`;
   };
 
+  const renderTags = (q) => {
+    return q.tags.map((t, index) => {
+      return (
+        <Badge key={index} variant="info" className="mr-1">
+          {t}
+        </Badge>
+      );
+    });
+  };
+
   const onQuestionClick = (id) => {
     history.push("/question/view/" + id);
   };
@@ -50,13 +60,7 @@ const ListQuestions = ({ history }) => {
               return (
                 <tr key={index}>
                   <td style={{ cursor: "pointer" }}>
-                    {q.tags.map((t, index) => {
-                      return (
-                        <Badge key={index} variant="info" className="mr-1">
-                          {t}
-                        </Badge>
-                      );
-                    })}
+                    {renderTags(q)}
                     <p>{renderQuestion(q.question)}</p>
                     <div>
                       <Button
