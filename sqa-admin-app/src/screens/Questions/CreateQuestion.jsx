@@ -116,6 +116,7 @@ const CreateQuestion = () => {
                       Use either{" "}
                       <a
                         href="https://www.markdownguide.org/cheat-sheet/"
+                        rel="noopener noreferrer"
                         target="_blank">
                         markdown
                       </a>{" "}

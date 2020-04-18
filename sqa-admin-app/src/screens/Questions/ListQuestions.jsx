@@ -1,8 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import GraphQlUtil from "../../utils/GraphQlUtil";
+import * as queries from "../../graphql/queries";
 
 const ListQuestions = () => {
+  const { query } = GraphQlUtil();
+  useEffect(() => {
+    const load = async () => {
+      const {
+        data: { listQuestions },
+      } = await query(queries.listQuestions);
+      console.log(listQuestions);
+    };
+
+    load();
+  }, []);
   return (
     <Container>
       <Row>
