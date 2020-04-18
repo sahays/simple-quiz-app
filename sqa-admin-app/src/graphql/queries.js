@@ -7,7 +7,10 @@ export const getQuestion = /* GraphQL */ `
       id
       question
       type
-      choices
+      choices {
+        id
+        text
+      }
       answers
       tags
     }
@@ -24,7 +27,10 @@ export const listQuestions = /* GraphQL */ `
         id
         question
         type
-        choices
+        choices {
+          id
+          text
+        }
         answers
         tags
       }
@@ -117,6 +123,7 @@ export const getResponse = /* GraphQL */ `
       id
       questionId
       userId
+      quizId
       responses
       owner
     }
@@ -133,6 +140,7 @@ export const listResponses = /* GraphQL */ `
         id
         questionId
         userId
+        quizId
         responses
         owner
       }

@@ -3,12 +3,17 @@ enum QuestionType {
 	checkbox
 }
 
+type ChoiceType {
+	id: String!
+	text: String!
+}
+
 type Question @model @auth(rules: [{ allow: groups, groups: ["admins"] }]) {
 	id: ID!
 	question: String!
 	type: QuestionType!
-	choices: AWSJSON!
-	answers: [String!]!
+	choices: [ChoiceType]!
+	answers: [String]!
 	tags: [String]
 }
 
@@ -36,7 +41,8 @@ type Response
 	@model
 	@auth(rules: [{ allow: groups, groups: ["admins"] }, { allow: owner }]) {
 	id: ID!
-	questionId: String
-	userId: String
-	responses: AWSJSON!
+	questionId: String!
+	userId: String!
+	quizId: String!
+	responses: [String]!
 }

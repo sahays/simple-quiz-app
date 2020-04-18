@@ -7,7 +7,10 @@ export const onCreateQuestion = /* GraphQL */ `
       id
       question
       type
-      choices
+      choices {
+        id
+        text
+      }
       answers
       tags
     }
@@ -19,7 +22,10 @@ export const onUpdateQuestion = /* GraphQL */ `
       id
       question
       type
-      choices
+      choices {
+        id
+        text
+      }
       answers
       tags
     }
@@ -31,7 +37,10 @@ export const onDeleteQuestion = /* GraphQL */ `
       id
       question
       type
-      choices
+      choices {
+        id
+        text
+      }
       answers
       tags
     }
@@ -130,6 +139,7 @@ export const onCreateResponse = /* GraphQL */ `
       id
       questionId
       userId
+      quizId
       responses
       owner
     }
@@ -141,6 +151,7 @@ export const onUpdateResponse = /* GraphQL */ `
       id
       questionId
       userId
+      quizId
       responses
       owner
     }
@@ -152,6 +163,7 @@ export const onDeleteResponse = /* GraphQL */ `
       id
       questionId
       userId
+      quizId
       responses
       owner
     }

@@ -5,6 +5,7 @@ import GraphQlUtil from "../../utils/GraphQlUtil";
 import * as queries from "../../graphql/queries";
 
 const ListQuestions = ({ history }) => {
+	const charLimit = 200;
 	const [questions, setQuestions] = useState([]);
 	const { query } = GraphQlUtil();
 
@@ -17,10 +18,12 @@ const ListQuestions = ({ history }) => {
 		};
 
 		load();
-	}, []);
+	}, [query]);
 
 	const renderQuestion = (q) => {
-		return q.length > 200 ? `${q.substr(0, 200)}...` : `${q.substr(0, 200)}`;
+		return q.length > charLimit
+			? `${q.substr(0, charLimit)}...`
+			: `${q.substr(0, charLimit)}`;
 	};
 
 	const onQuestionClick = (id) => {
@@ -29,7 +32,7 @@ const ListQuestions = ({ history }) => {
 
 	const renderQuestions = () => {
 		return (
-			<Table striped bordered hover>
+			<Table className="table-responsive-sm" bordered hover>
 				<thead>
 					<tr>
 						<th>Question</th>
@@ -69,7 +72,7 @@ const ListQuestions = ({ history }) => {
 						<Card.Body>
 							{renderQuestions()}
 							<small className="text-muted">
-								Showing first 200 characters only
+								`Showing first ${charLimit} characters only`
 							</small>
 						</Card.Body>
 					</Card>
