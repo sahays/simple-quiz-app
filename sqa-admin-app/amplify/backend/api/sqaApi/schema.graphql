@@ -1,48 +1,60 @@
 enum QuestionType {
-	radio
-	checkbox
+  radio
+  checkbox
 }
 
 type ChoiceType {
-	id: String!
-	text: String!
+  id: String!
+  text: String!
+}
+
+type QuestionView {
+  id: ID!
+  question: String!
+  type: QuestionType!
+  choices: [ChoiceType]!
+  tags: [String]
 }
 
 type Question @model @auth(rules: [{ allow: groups, groups: ["admins"] }]) {
-	id: ID!
-	question: String!
-	type: QuestionType!
-	choices: [ChoiceType]!
-	answers: [String]!
-	tags: [String]
+  id: ID!
+  question: String!
+  type: QuestionType!
+  choices: [ChoiceType]!
+  answers: [String]!
+  tags: [String]
 }
 
 type Quiz @model @auth(rules: [{ allow: groups, groups: ["admins"] }]) {
-	id: ID!
-	name: String!
-	questions: [String]!
-	tags: [String]
+  id: ID!
+  name: String!
+  tags: [String]
 }
 
 type Event @model @auth(rules: [{ allow: groups, groups: ["admins"] }]) {
-	id: ID!
-	name: String!
-	quizzes: [String]!
-	tags: [String]
+  id: ID!
+  name: String!
+  tags: [String]
 }
 
 type User @model @auth(rules: [{ allow: groups, groups: ["admins"] }]) {
-	id: ID!
-	sub: String!
-	username: String!
+  id: ID!
+  sub: String!
+  username: String!
 }
 
 type Response
-	@model
-	@auth(rules: [{ allow: groups, groups: ["admins"] }, { allow: owner }]) {
-	id: ID!
-	questionId: String!
-	userId: String!
-	quizId: String!
-	responses: [String]!
+  @model
+  @auth(rules: [{ allow: groups, groups: ["admins"] }, { allow: owner }]) {
+  id: ID!
+  questionId: String!
+  userId: String!
+  quizId: String!
+  responses: [String]!
+}
+
+type QuizQuestions @model @auth(rules: [{ allow: private }]) {
+  id: ID!
+  quizId: String!
+  questions: [QuestionView]
 }

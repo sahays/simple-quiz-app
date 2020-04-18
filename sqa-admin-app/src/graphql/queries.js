@@ -43,7 +43,6 @@ export const getQuiz = /* GraphQL */ `
     getQuiz(id: $id) {
       id
       name
-      questions
       tags
     }
   }
@@ -58,7 +57,6 @@ export const listQuizs = /* GraphQL */ `
       items {
         id
         name
-        questions
         tags
       }
       nextToken
@@ -70,7 +68,6 @@ export const getEvent = /* GraphQL */ `
     getEvent(id: $id) {
       id
       name
-      quizzes
       tags
     }
   }
@@ -85,7 +82,6 @@ export const listEvents = /* GraphQL */ `
       items {
         id
         name
-        quizzes
         tags
       }
       nextToken
@@ -143,6 +139,45 @@ export const listResponses = /* GraphQL */ `
         quizId
         responses
         owner
+      }
+      nextToken
+    }
+  }
+`;
+export const getQuizQuestions = /* GraphQL */ `
+  query GetQuizQuestions($id: ID!) {
+    getQuizQuestions(id: $id) {
+      id
+      quizId
+      questions {
+        id
+        question
+        type
+        choices {
+          id
+          text
+        }
+        tags
+      }
+    }
+  }
+`;
+export const listQuizQuestionss = /* GraphQL */ `
+  query ListQuizQuestionss(
+    $filter: ModelQuizQuestionsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listQuizQuestionss(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        quizId
+        questions {
+          id
+          question
+          type
+          tags
+        }
       }
       nextToken
     }

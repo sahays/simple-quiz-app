@@ -63,7 +63,6 @@ export const createQuiz = /* GraphQL */ `
     createQuiz(input: $input, condition: $condition) {
       id
       name
-      questions
       tags
     }
   }
@@ -76,7 +75,6 @@ export const updateQuiz = /* GraphQL */ `
     updateQuiz(input: $input, condition: $condition) {
       id
       name
-      questions
       tags
     }
   }
@@ -89,7 +87,6 @@ export const deleteQuiz = /* GraphQL */ `
     deleteQuiz(input: $input, condition: $condition) {
       id
       name
-      questions
       tags
     }
   }
@@ -102,7 +99,6 @@ export const createEvent = /* GraphQL */ `
     createEvent(input: $input, condition: $condition) {
       id
       name
-      quizzes
       tags
     }
   }
@@ -115,7 +111,6 @@ export const updateEvent = /* GraphQL */ `
     updateEvent(input: $input, condition: $condition) {
       id
       name
-      quizzes
       tags
     }
   }
@@ -128,7 +123,6 @@ export const deleteEvent = /* GraphQL */ `
     deleteEvent(input: $input, condition: $condition) {
       id
       name
-      quizzes
       tags
     }
   }
@@ -211,6 +205,69 @@ export const deleteResponse = /* GraphQL */ `
       quizId
       responses
       owner
+    }
+  }
+`;
+export const createQuizQuestions = /* GraphQL */ `
+  mutation CreateQuizQuestions(
+    $input: CreateQuizQuestionsInput!
+    $condition: ModelQuizQuestionsConditionInput
+  ) {
+    createQuizQuestions(input: $input, condition: $condition) {
+      id
+      quizId
+      questions {
+        id
+        question
+        type
+        choices {
+          id
+          text
+        }
+        tags
+      }
+    }
+  }
+`;
+export const updateQuizQuestions = /* GraphQL */ `
+  mutation UpdateQuizQuestions(
+    $input: UpdateQuizQuestionsInput!
+    $condition: ModelQuizQuestionsConditionInput
+  ) {
+    updateQuizQuestions(input: $input, condition: $condition) {
+      id
+      quizId
+      questions {
+        id
+        question
+        type
+        choices {
+          id
+          text
+        }
+        tags
+      }
+    }
+  }
+`;
+export const deleteQuizQuestions = /* GraphQL */ `
+  mutation DeleteQuizQuestions(
+    $input: DeleteQuizQuestionsInput!
+    $condition: ModelQuizQuestionsConditionInput
+  ) {
+    deleteQuizQuestions(input: $input, condition: $condition) {
+      id
+      quizId
+      questions {
+        id
+        question
+        type
+        choices {
+          id
+          text
+        }
+        tags
+      }
     }
   }
 `;

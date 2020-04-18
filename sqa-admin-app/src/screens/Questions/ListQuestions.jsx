@@ -1,84 +1,100 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Card, Table } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Table,
+  Badge,
+  Button,
+} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import GraphQlUtil from "../../utils/GraphQlUtil";
 import * as queries from "../../graphql/queries";
 
 const ListQuestions = ({ history }) => {
-	const charLimit = 200;
-	const [questions, setQuestions] = useState([]);
-	const { query } = GraphQlUtil();
+  const charLimit = 200;
+  const [questions, setQuestions] = useState(null);
+  const { query } = GraphQlUtil();
 
-	useEffect(() => {
-		const load = async () => {
-			const {
-				data: { listQuestions },
-			} = await query(queries.listQuestions);
-			setQuestions(listQuestions.items);
-		};
+  useEffect(() => {
+    const load = async () => {
+      const {
+        data: { listQuestions },
+      } = await query(queries.listQuestions);
+      setQuestions(listQuestions.items);
+    };
 
-		load();
-	}, [query]);
+    load();
+  }, [query]);
 
-	const renderQuestion = (q) => {
-		return q.length > charLimit
-			? `${q.substr(0, charLimit)}...`
-			: `${q.substr(0, charLimit)}`;
-	};
+  const renderQuestion = (q) => {
+    return q.length > charLimit
+      ? `${q.substr(0, charLimit)}...`
+      : `${q.substr(0, charLimit)}`;
+  };
 
-	const onQuestionClick = (id) => {
-		history.push("/question/view/" + id);
-	};
+  const onQuestionClick = (id) => {
+    history.push("/question/view/" + id);
+  };
 
-	const renderQuestions = () => {
-		return (
-			<Table className="table-responsive-sm" bordered hover>
-				<thead>
-					<tr>
-						<th>Question</th>
-						<th>Tags</th>
-					</tr>
-				</thead>
-				<tbody>
-					{questions.map((q, index) => {
-						return (
-							<tr key={index}>
-								<td
-									style={{ cursor: "pointer" }}
-									onClick={() => onQuestionClick(q.id)}
-								>
-									{renderQuestion(q.question)}
-								</td>
-								<td>{q.tags}</td>
-							</tr>
-						);
-					})}
-				</tbody>
-			</Table>
-		);
-	};
+  const renderQuestions = () => {
+    if (!questions) {
+      return <p>Loading...</p>;
+    }
+    return (
+      <React.Fragment>
+        <Table className="table-responsive-sm" bordered hover>
+          <tbody>
+            {questions.map((q, index) => {
+              return (
+                <tr key={index}>
+                  <td style={{ cursor: "pointer" }}>
+                    {q.tags.map((t, index) => {
+                      return (
+                        <Badge key={index} variant="info" className="mr-1">
+                          {t}
+                        </Badge>
+                      );
+                    })}
+                    <p>{renderQuestion(q.question)}</p>
+                    <div>
+                      <Button
+                        variant="light"
+                        size="sm"
+                        onClick={() => onQuestionClick(q.id)}>
+                        More...
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+        <small className="text-muted">
+          {`Showing first ${charLimit} characters only`}
+        </small>
+      </React.Fragment>
+    );
+  };
 
-	return (
-		<Container>
-			<Row>
-				<Col>
-					<Card>
-						<Card.Header>
-							<span style={{ textTransform: "uppercase" }}>All Questions</span>
-							<div className="float-right">
-								<Link to="/question/create">Add a new question</Link>
-							</div>
-						</Card.Header>
-						<Card.Body>
-							{renderQuestions()}
-							<small className="text-muted">
-								`Showing first ${charLimit} characters only`
-							</small>
-						</Card.Body>
-					</Card>
-				</Col>
-			</Row>
-		</Container>
-	);
+  return (
+    <Container>
+      <Row>
+        <Col>
+          <Card>
+            <Card.Header>
+              <span style={{ textTransform: "uppercase" }}>All Questions</span>
+              <div className="float-right">
+                <Link to="/question/create">+ Question</Link>
+              </div>
+            </Card.Header>
+            <Card.Body>{renderQuestions()}</Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
+  );
 };
 export default ListQuestions;

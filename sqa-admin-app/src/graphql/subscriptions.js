@@ -51,7 +51,6 @@ export const onCreateQuiz = /* GraphQL */ `
     onCreateQuiz {
       id
       name
-      questions
       tags
     }
   }
@@ -61,7 +60,6 @@ export const onUpdateQuiz = /* GraphQL */ `
     onUpdateQuiz {
       id
       name
-      questions
       tags
     }
   }
@@ -71,7 +69,6 @@ export const onDeleteQuiz = /* GraphQL */ `
     onDeleteQuiz {
       id
       name
-      questions
       tags
     }
   }
@@ -81,7 +78,6 @@ export const onCreateEvent = /* GraphQL */ `
     onCreateEvent {
       id
       name
-      quizzes
       tags
     }
   }
@@ -91,7 +87,6 @@ export const onUpdateEvent = /* GraphQL */ `
     onUpdateEvent {
       id
       name
-      quizzes
       tags
     }
   }
@@ -101,7 +96,6 @@ export const onDeleteEvent = /* GraphQL */ `
     onDeleteEvent {
       id
       name
-      quizzes
       tags
     }
   }
@@ -166,6 +160,60 @@ export const onDeleteResponse = /* GraphQL */ `
       quizId
       responses
       owner
+    }
+  }
+`;
+export const onCreateQuizQuestions = /* GraphQL */ `
+  subscription OnCreateQuizQuestions {
+    onCreateQuizQuestions {
+      id
+      quizId
+      questions {
+        id
+        question
+        type
+        choices {
+          id
+          text
+        }
+        tags
+      }
+    }
+  }
+`;
+export const onUpdateQuizQuestions = /* GraphQL */ `
+  subscription OnUpdateQuizQuestions {
+    onUpdateQuizQuestions {
+      id
+      quizId
+      questions {
+        id
+        question
+        type
+        choices {
+          id
+          text
+        }
+        tags
+      }
+    }
+  }
+`;
+export const onDeleteQuizQuestions = /* GraphQL */ `
+  subscription OnDeleteQuizQuestions {
+    onDeleteQuizQuestions {
+      id
+      quizId
+      questions {
+        id
+        question
+        type
+        choices {
+          id
+          text
+        }
+        tags
+      }
     }
   }
 `;
