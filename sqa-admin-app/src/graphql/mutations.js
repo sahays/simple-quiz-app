@@ -16,6 +16,7 @@ export const createQuestion = /* GraphQL */ `
       }
       answers
       tags
+      owner
     }
   }
 `;
@@ -34,6 +35,7 @@ export const updateQuestion = /* GraphQL */ `
       }
       answers
       tags
+      owner
     }
   }
 `;
@@ -52,6 +54,7 @@ export const deleteQuestion = /* GraphQL */ `
       }
       answers
       tags
+      owner
     }
   }
 `;
@@ -62,6 +65,7 @@ export const createQuiz = /* GraphQL */ `
   ) {
     createQuiz(input: $input, condition: $condition) {
       id
+      code
       name
       tags
       questions {
@@ -74,6 +78,7 @@ export const createQuiz = /* GraphQL */ `
         }
         tags
       }
+      owner
     }
   }
 `;
@@ -84,6 +89,7 @@ export const updateQuiz = /* GraphQL */ `
   ) {
     updateQuiz(input: $input, condition: $condition) {
       id
+      code
       name
       tags
       questions {
@@ -96,6 +102,7 @@ export const updateQuiz = /* GraphQL */ `
         }
         tags
       }
+      owner
     }
   }
 `;
@@ -106,6 +113,7 @@ export const deleteQuiz = /* GraphQL */ `
   ) {
     deleteQuiz(input: $input, condition: $condition) {
       id
+      code
       name
       tags
       questions {
@@ -118,6 +126,7 @@ export const deleteQuiz = /* GraphQL */ `
         }
         tags
       }
+      owner
     }
   }
 `;
@@ -166,6 +175,7 @@ export const createUser = /* GraphQL */ `
       id
       sub
       username
+      owner
     }
   }
 `;
@@ -178,6 +188,7 @@ export const updateUser = /* GraphQL */ `
       id
       sub
       username
+      owner
     }
   }
 `;
@@ -190,6 +201,7 @@ export const deleteUser = /* GraphQL */ `
       id
       sub
       username
+      owner
     }
   }
 `;

@@ -51,6 +51,8 @@ const ListQuestions = ({ history }) => {
   const renderQuestions = () => {
     if (!questions) {
       return <p>Loading...</p>;
+    } else if (questions.length === 0) {
+      return <p>Start by adding a new question</p>;
     }
     return (
       <React.Fragment>

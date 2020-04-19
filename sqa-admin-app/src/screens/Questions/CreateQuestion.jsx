@@ -7,11 +7,13 @@ import RandomUtil from "../../utils/RandomUtil";
 import Checkbox from "../../controls/Checkbox";
 import { reject as _reject } from "underscore";
 import GraphQlUtil from "../../utils/GraphQlUtil";
-import * as mutations from "../../graphql/mutations";
+import { createQuestion } from "../../graphql/mutations";
 import FormikField from "../../controls/FormikField";
+import StringUtil from "../../utils/StringUtil";
 
 const CreateQuestion = () => {
   const { getRandomAlphabets } = RandomUtil();
+  const { trimSplit } = StringUtil();
   const { mutation } = GraphQlUtil();
   const initValue = {
     question: "",
@@ -33,12 +35,12 @@ const CreateQuestion = () => {
     console.log(values);
     try {
       if (answers.length > 0) {
-        await mutation(mutations.createQuestion, {
+        await mutation(createQuestion, {
           question: values.question,
           type: answers.length > 1 ? "checkbox" : "radio",
           choices: values.choices,
           answers: answers,
-          tags: values.tags.split(","),
+          tags: trimSplit(values.tags),
         });
         setInfoMsg("New question added");
         setInitialValue(initValue);

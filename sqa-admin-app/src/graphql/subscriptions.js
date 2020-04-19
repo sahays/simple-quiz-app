@@ -2,8 +2,8 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateQuestion = /* GraphQL */ `
-  subscription OnCreateQuestion {
-    onCreateQuestion {
+  subscription OnCreateQuestion($owner: String) {
+    onCreateQuestion(owner: $owner) {
       id
       question
       type
@@ -13,6 +13,7 @@ export const onCreateQuestion = /* GraphQL */ `
       }
       answers
       tags
+      owner
     }
   }
 `;
@@ -28,12 +29,13 @@ export const onUpdateQuestion = /* GraphQL */ `
       }
       answers
       tags
+      owner
     }
   }
 `;
 export const onDeleteQuestion = /* GraphQL */ `
-  subscription OnDeleteQuestion {
-    onDeleteQuestion {
+  subscription OnDeleteQuestion($owner: String!) {
+    onDeleteQuestion(owner: $owner) {
       id
       question
       type
@@ -43,13 +45,15 @@ export const onDeleteQuestion = /* GraphQL */ `
       }
       answers
       tags
+      owner
     }
   }
 `;
 export const onCreateQuiz = /* GraphQL */ `
-  subscription OnCreateQuiz {
-    onCreateQuiz {
+  subscription OnCreateQuiz($owner: String) {
+    onCreateQuiz(owner: $owner) {
       id
+      code
       name
       tags
       questions {
@@ -62,6 +66,7 @@ export const onCreateQuiz = /* GraphQL */ `
         }
         tags
       }
+      owner
     }
   }
 `;
@@ -69,6 +74,7 @@ export const onUpdateQuiz = /* GraphQL */ `
   subscription OnUpdateQuiz {
     onUpdateQuiz {
       id
+      code
       name
       tags
       questions {
@@ -81,13 +87,15 @@ export const onUpdateQuiz = /* GraphQL */ `
         }
         tags
       }
+      owner
     }
   }
 `;
 export const onDeleteQuiz = /* GraphQL */ `
-  subscription OnDeleteQuiz {
-    onDeleteQuiz {
+  subscription OnDeleteQuiz($owner: String!) {
+    onDeleteQuiz(owner: $owner) {
       id
+      code
       name
       tags
       questions {
@@ -100,6 +108,7 @@ export const onDeleteQuiz = /* GraphQL */ `
         }
         tags
       }
+      owner
     }
   }
 `;
@@ -131,11 +140,12 @@ export const onDeleteEvent = /* GraphQL */ `
   }
 `;
 export const onCreateUser = /* GraphQL */ `
-  subscription OnCreateUser {
-    onCreateUser {
+  subscription OnCreateUser($owner: String!) {
+    onCreateUser(owner: $owner) {
       id
       sub
       username
+      owner
     }
   }
 `;
@@ -145,6 +155,7 @@ export const onUpdateUser = /* GraphQL */ `
       id
       sub
       username
+      owner
     }
   }
 `;
@@ -154,6 +165,7 @@ export const onDeleteUser = /* GraphQL */ `
       id
       sub
       username
+      owner
     }
   }
 `;
@@ -170,8 +182,8 @@ export const onCreateResponse = /* GraphQL */ `
   }
 `;
 export const onUpdateResponse = /* GraphQL */ `
-  subscription OnUpdateResponse($owner: String) {
-    onUpdateResponse(owner: $owner) {
+  subscription OnUpdateResponse {
+    onUpdateResponse {
       id
       questionId
       userId
@@ -182,8 +194,8 @@ export const onUpdateResponse = /* GraphQL */ `
   }
 `;
 export const onDeleteResponse = /* GraphQL */ `
-  subscription OnDeleteResponse($owner: String) {
-    onDeleteResponse(owner: $owner) {
+  subscription OnDeleteResponse {
+    onDeleteResponse {
       id
       questionId
       userId

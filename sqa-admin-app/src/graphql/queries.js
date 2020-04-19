@@ -13,6 +13,7 @@ export const getQuestion = /* GraphQL */ `
       }
       answers
       tags
+      owner
     }
   }
 `;
@@ -33,6 +34,7 @@ export const listQuestions = /* GraphQL */ `
         }
         answers
         tags
+        owner
       }
       nextToken
     }
@@ -42,6 +44,7 @@ export const getQuiz = /* GraphQL */ `
   query GetQuiz($id: ID!) {
     getQuiz(id: $id) {
       id
+      code
       name
       tags
       questions {
@@ -54,6 +57,7 @@ export const getQuiz = /* GraphQL */ `
         }
         tags
       }
+      owner
     }
   }
 `;
@@ -66,6 +70,7 @@ export const listQuizs = /* GraphQL */ `
     listQuizs(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        code
         name
         tags
         questions {
@@ -74,6 +79,7 @@ export const listQuizs = /* GraphQL */ `
           type
           tags
         }
+        owner
       }
       nextToken
     }
@@ -110,6 +116,7 @@ export const getUser = /* GraphQL */ `
       id
       sub
       username
+      owner
     }
   }
 `;
@@ -124,6 +131,7 @@ export const listUsers = /* GraphQL */ `
         id
         sub
         username
+        owner
       }
       nextToken
     }
