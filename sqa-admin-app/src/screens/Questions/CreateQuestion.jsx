@@ -24,6 +24,7 @@ const CreateQuestion = () => {
   const [busy, setBusy] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [infoMsg, setInfoMsg] = useState(null);
+  const [warnMsg, setWarnMsg] = useState(null);
 
   const onSubmit = async (values) => {
     setBusy(true);
@@ -42,7 +43,7 @@ const CreateQuestion = () => {
         setInfoMsg("New question added");
         setInitialValue(initValue);
       } else {
-        setErrorMsg("You must pick an answer");
+        setWarnMsg("You must pick an answer");
       }
     } catch (e) {
       console.log("error: ", e);
@@ -139,7 +140,7 @@ const CreateQuestion = () => {
                                 <Col sm={1}>
                                   <Checkbox
                                     name={`choices[${index}].id`}
-                                    className="mt-5"
+                                    className="mt-4"
                                     value={choice.id}
                                     checked={answers.indexOf(choice.id) > -1}
                                     onChange={onChange}
@@ -197,6 +198,7 @@ const CreateQuestion = () => {
                       busy={busy}
                       errorMsg={errorMsg}
                       infoMsg={infoMsg}
+                      warnMsg={warnMsg}
                     />
                   </Form>
                 )}

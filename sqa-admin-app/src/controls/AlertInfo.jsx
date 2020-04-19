@@ -10,10 +10,8 @@ const AlertInfo = ({ infoMsg, title }) => {
     }
     return (
       <Alert onClose={() => setClose(true)} variant="success" dismissible>
-        <strong>{title}</strong>
-        <div>
-          <small>{infoMsg}</small>
-        </div>
+        <small>{title}</small>
+        <p>{infoMsg}</p>
       </Alert>
     );
   }

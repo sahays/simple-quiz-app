@@ -64,7 +64,16 @@ export const createQuiz = /* GraphQL */ `
       id
       name
       tags
-      questions
+      questions {
+        id
+        question
+        type
+        choices {
+          id
+          text
+        }
+        tags
+      }
     }
   }
 `;
@@ -77,7 +86,16 @@ export const updateQuiz = /* GraphQL */ `
       id
       name
       tags
-      questions
+      questions {
+        id
+        question
+        type
+        choices {
+          id
+          text
+        }
+        tags
+      }
     }
   }
 `;
@@ -90,7 +108,16 @@ export const deleteQuiz = /* GraphQL */ `
       id
       name
       tags
-      questions
+      questions {
+        id
+        question
+        type
+        choices {
+          id
+          text
+        }
+        tags
+      }
     }
   }
 `;

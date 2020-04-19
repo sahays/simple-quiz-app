@@ -44,7 +44,16 @@ export const getQuiz = /* GraphQL */ `
       id
       name
       tags
-      questions
+      questions {
+        id
+        question
+        type
+        choices {
+          id
+          text
+        }
+        tags
+      }
     }
   }
 `;
@@ -59,7 +68,12 @@ export const listQuizs = /* GraphQL */ `
         id
         name
         tags
-        questions
+        questions {
+          id
+          question
+          type
+          tags
+        }
       }
       nextToken
     }

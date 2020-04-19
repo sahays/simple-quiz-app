@@ -7,22 +7,23 @@ import * as yup from "yup";
 import FormikField from "../../controls/FormikField";
 import GraphQlUtil from "../../utils/GraphQlUtil";
 import { listQuestions as ListQuestions } from "../../graphql/queries";
+import { createQuiz } from "../../graphql/mutations";
 import Checkbox from "../../controls/Checkbox";
-import { find as _find } from "underscore";
+import { find as _find, omit as _omit } from "underscore";
 
 const CreateQuiz = () => {
   const charLimit = 200;
   const initValue = {
     name: "",
-    tags: [],
+    tags: "",
     questions: [],
   };
-  const [initialValue, setInitialValue] = useState(initValue);
+  const [initialValue] = useState(initValue);
   const [busy, setBusy] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [infoMsg, setInfoMsg] = useState(null);
   const [questions, setQuestions] = useState(null);
-  const { query } = GraphQlUtil();
+  const { query, mutation } = GraphQlUtil();
 
   useEffect(() => {
     const load = async () => {
@@ -31,8 +32,11 @@ const CreateQuiz = () => {
           listQuestions: { items },
         },
       } = await query(ListQuestions);
-      console.log(items);
-      setQuestions(items);
+      const qq = [];
+      items.map((item) => {
+        return qq.push(_omit(item, "answers"));
+      });
+      setQuestions(qq);
     };
 
     load();
@@ -48,12 +52,29 @@ const CreateQuiz = () => {
     );
   };
 
-  const onSubmit = async (values) => {
-    console.log(values);
+  const onSubmit = async (values, { resetForm }) => {
+    setBusy(true);
+    setInfoMsg(null);
+    setErrorMsg(null);
+    const input = {
+      name: values.name,
+      tags: values.tags.split(","),
+      questions: values.questions,
+    };
+    console.log(input, values);
+    try {
+      await mutation(createQuiz, input);
+      setInfoMsg("New quiz added");
+      resetForm();
+    } catch (e) {
+      console.log("error: ", e);
+      setErrorMsg("Failed to add a new quiz");
+    }
+    setBusy(false);
   };
 
-  const renderTags = (q) => {
-    return q.tags.map((t, index) => {
+  const renderTags = (tags) => {
+    return tags.map((t, index) => {
       return (
         <Badge key={index} variant="info" className="mr-1">
           {t}
@@ -62,7 +83,18 @@ const CreateQuiz = () => {
     });
   };
 
+  const isChecked = ({ qq, values }) => {
+    const result = _find(values.questions, (q) => {
+      return q.id === qq.id;
+    });
+    if (result) return true;
+    return false;
+  };
+
   const renderQuestions = (values, arrayHelpers) => {
+    if (!questions) {
+      return <p>Loading...</p>;
+    }
     if (questions) {
       return questions.map((qq, index) => {
         return (
@@ -71,6 +103,7 @@ const CreateQuiz = () => {
               <Checkbox
                 name={`questions[${index}].id`}
                 value={qq.id}
+                checked={isChecked({ qq, values })}
                 onChange={(e) => {
                   if (e.target.checked) {
                     arrayHelpers.push(qq);
@@ -86,7 +119,7 @@ const CreateQuiz = () => {
             </Col>
             <Col>
               {renderQuestion(qq.question)}
-              {renderTags(qq)}
+              {renderTags(qq.tags)}
             </Col>
           </Row>
         );

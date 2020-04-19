@@ -52,7 +52,16 @@ export const onCreateQuiz = /* GraphQL */ `
       id
       name
       tags
-      questions
+      questions {
+        id
+        question
+        type
+        choices {
+          id
+          text
+        }
+        tags
+      }
     }
   }
 `;
@@ -62,7 +71,16 @@ export const onUpdateQuiz = /* GraphQL */ `
       id
       name
       tags
-      questions
+      questions {
+        id
+        question
+        type
+        choices {
+          id
+          text
+        }
+        tags
+      }
     }
   }
 `;
@@ -72,7 +90,16 @@ export const onDeleteQuiz = /* GraphQL */ `
       id
       name
       tags
-      questions
+      questions {
+        id
+        question
+        type
+        choices {
+          id
+          text
+        }
+        tags
+      }
     }
   }
 `;
