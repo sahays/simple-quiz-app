@@ -13,10 +13,12 @@ import {
 } from "react-bootstrap";
 import { find as _find } from "underscore";
 import ConfirmModal from "../../controls/ConfirmModal";
+import AlertError from "../../controls/AlertError";
 
 const ViewQuestion = ({ match, history }) => {
   const [questionId] = useState(match.params.id);
   const [question, setQuestion] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
   const { query, mutation } = GraphQlUtil();
 
   useEffect(() => {
@@ -36,6 +38,7 @@ const ViewQuestion = ({ match, history }) => {
   };
 
   const onDelete = async () => {
+    setErrorMsg(null);
     ConfirmModal({
       onYes: async () => {
         try {
@@ -43,16 +46,17 @@ const ViewQuestion = ({ match, history }) => {
             id: questionId,
           });
           console.log(result);
-          onBack();
+          history.push("/questions");
         } catch (e) {
-          console.log(e);
+          if (
+            e.errors &&
+            e.errors[0].errorType === "DynamoDB:ConditionalCheckFailedException"
+          ) {
+            setErrorMsg("Can't delete what you didn't create!");
+          }
         }
       },
     });
-  };
-
-  const onBack = () => {
-    history.push("/questions");
   };
 
   const renderChoices = () => {
@@ -113,11 +117,9 @@ const ViewQuestion = ({ match, history }) => {
           <Card.Text>{question.question}</Card.Text>
           {renderChoices()}
           {renderAnswers()}
+          {errorMsg && <AlertError errorMsg={errorMsg} title="Error" />}
         </Card.Body>
         <Card.Footer>
-          <Button variant="light" size="sm" onClick={onBack}>
-            &larr; All Questions
-          </Button>
           <Button
             variant="danger"
             size="sm"
