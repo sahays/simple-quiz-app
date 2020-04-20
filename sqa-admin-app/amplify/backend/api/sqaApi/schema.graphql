@@ -34,8 +34,10 @@ type Question
 
 type Quiz
   @model
+  @key(name: "byCode", fields: ["code"])
   @auth(
     rules: [
+      { allow: groups, groups: ["users"], operations: [read] }
       { allow: groups, groups: ["admins"], operations: [create, read] }
       { allow: owner, operations: [create, read, delete] }
     ]
@@ -45,6 +47,8 @@ type Quiz
   name: String!
   tags: [String]
   questions: [QuestionView]!
+  description: String
+  instructions: String
 }
 
 type Event @model @auth(rules: [{ allow: groups, groups: ["admins"] }]) {
@@ -66,6 +70,11 @@ type User
   username: String!
 }
 
+type ResponseType {
+  questionId: String!
+  responses: [String]!
+}
+
 type Response
   @model
   @auth(
@@ -75,8 +84,7 @@ type Response
     ]
   ) {
   id: ID!
-  questionId: String!
-  userId: String!
+  username: String!
   quizId: String!
-  responses: [String]!
+  responses: [ResponseType]!
 }

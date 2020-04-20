@@ -9,11 +9,11 @@ import { Container, Row, Col } from "react-bootstrap";
 import Amplify from "aws-amplify";
 import awsmobile from "./aws-exports";
 import { withAuthenticator } from "aws-amplify-react";
-import MainNavbar from "./controls/MainNavbar";
+import MainNavbar from "./screens/MainNavbar";
 import QuizCode from "./screens/QuizCode";
 import Quiz from "./screens/Quiz";
 
-Amplify.Logger.LOG_LEVEL = "DEBUG";
+// Amplify.Logger.LOG_LEVEL = "DEBUG";
 awsmobile.clientMetadata = {
   app: "sqa-user",
 };
@@ -28,7 +28,7 @@ const App = () => {
           <Col sm={1}></Col>
           <Col>
             <Switch>
-              <Route path="/quiz/:quizId" component={Quiz}></Route>
+              <Route path="/quiz/:id" component={Quiz}></Route>
               <Route path="/" component={QuizCode}></Route>
             </Switch>
           </Col>

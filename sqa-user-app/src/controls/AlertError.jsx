@@ -10,10 +10,8 @@ const AlertError = ({ errorMsg, title }) => {
     }
     return (
       <Alert onClose={() => setClose(true)} variant="danger" dismissible>
-        <strong>{title}</strong>
-        <div>
-          <small>{errorMsg}</small>
-        </div>
+        <small>{title}</small>
+        <p>{errorMsg}</p>
       </Alert>
     );
   }

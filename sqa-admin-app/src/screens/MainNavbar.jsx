@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { Auth } from "aws-amplify";
-import Emoji from "./emoji";
+import Emoji from "../controls/Emoji";
 
 const MainNavbar = () => {
   const [firstName, setFirstName] = useState("");

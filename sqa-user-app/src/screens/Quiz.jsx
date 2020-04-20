@@ -1,30 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import Question from "./Question";
+import { StorageUtil } from "../utils/StorageUtil";
 
-const Quiz = () => {
-  const [name, setName] = useState("Name of the quiz");
+const Quiz = ({ match }) => {
+  const { readItem } = StorageUtil();
+  const [quizId] = useState(match.params.id);
+  const [quiz, setQuiz] = useState(null);
+  const [name, setName] = useState(null);
   const [visibleIndex, setVisibleIndex] = useState(0);
-  const [questions, setQuestions] = useState([
-    {
-      question: "where is hello world?",
-      type: "radio",
-      choices: [
-        { id: "1", text: "one" },
-        { id: "2", text: "two" },
-      ],
-    },
-    {
-      question: "what is hello world?",
-      type: "checkbox",
-      choices: [
-        { id: "1", text: "one" },
-        { id: "2", text: "two" },
-        { id: "3", text: "two" },
-        { id: "4", text: "two" },
-      ],
-    },
-  ]);
+  const [questions, setQuestions] = useState(null);
+
+  useEffect(() => {
+    const items = readItem(quizId);
+    const item = items[0];
+    console.log(item);
+    setQuiz(item);
+    setName(items.name);
+    setQuestions(item.questions);
+  }, [quizId]);
 
   const onPrevios = () => {
     if (visibleIndex > 0) {
@@ -41,8 +35,10 @@ const Quiz = () => {
   const onSubmit = () => {};
 
   const renderQuestions = () => {
+    if (!questions) {
+      return <p>No questions loaded</p>;
+    }
     return questions.map((q, index) => {
-      console.log(index);
       return (
         <Question
           key={index}

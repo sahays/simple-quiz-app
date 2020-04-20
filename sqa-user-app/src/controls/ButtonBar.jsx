@@ -2,8 +2,9 @@ import React from "react";
 import { Button, Spinner } from "react-bootstrap";
 import AlertError from "./AlertError";
 import AlertInfo from "./AlertInfo";
+import AlertWarn from "./AlertWarn";
 
-const ButtonBar = ({ busy, errorMsg, infoMsg }) => {
+const ButtonBar = ({ busy, errorMsg, infoMsg, warnMsg }) => {
   const renderSubmit = () => {
     if (busy)
       return (
@@ -20,8 +21,9 @@ const ButtonBar = ({ busy, errorMsg, infoMsg }) => {
   return (
     <React.Fragment>
       <hr />
-      {errorMsg && <AlertError errorMsg={errorMsg} title="Error!" />}
-      {infoMsg && <AlertInfo infoMsg={infoMsg} title="Done!" />}
+      {errorMsg && <AlertError errorMsg={errorMsg} title="Error" />}
+      {infoMsg && <AlertInfo infoMsg={infoMsg} title="Success" />}
+      {warnMsg && <AlertWarn warnMsg={warnMsg} title="Warning" />}
       {renderSubmit()}
       <Button type="reset" variant="secondary">
         Reset

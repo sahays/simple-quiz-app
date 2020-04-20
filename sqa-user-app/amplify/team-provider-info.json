@@ -1,0 +1,15 @@
+{
+    "xone": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-sqa-admin-app-xone-212302-authRole",
+            "UnauthRoleArn": "arn:aws:iam::370359846330:role/amplify-sqa-admin-app-xone-212302-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::370359846330:role/amplify-sqa-admin-app-xone-212302-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "amplify-sqa-admin-app-xone-212302-deployment",
+            "UnauthRoleName": "amplify-sqa-admin-app-xone-212302-unauthRole",
+            "StackName": "amplify-sqa-admin-app-xone-212302",
+            "StackId": "arn:aws:cloudformation:us-west-2:370359846330:stack/amplify-sqa-admin-app-xone-212302/ce2bb650-7ed0-11ea-b79b-0ad539b374b4",
+            "AmplifyAppId": "d17o1mnyydm54o"
+        }
+    }
+}

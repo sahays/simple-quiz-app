@@ -21,6 +21,8 @@ const CreateQuiz = () => {
     name: "",
     tags: "",
     code: getRandomNumbers(),
+    description: "",
+    instructions: "",
     questions: [],
   };
   const [initialValue] = useState(initValue);
@@ -41,6 +43,7 @@ const CreateQuiz = () => {
       items.map((item) => {
         return qq.push(_omit(item, ["answers", "owner"]));
       });
+      console.log(qq);
       setQuestions(qq);
     };
 
@@ -155,6 +158,15 @@ const CreateQuiz = () => {
                     .required("A name is required")
                     .min(3, "At least 3 characters")
                     .max(255, "Max 255 characters"),
+                  description: yup
+                    .string()
+                    .required("description is required")
+                    .min(5, "At least 5 characters")
+                    .max(512, "Max 512 characters"),
+                  instructions: yup
+                    .string()
+                    .min(5, "At least 3 characters")
+                    .max(512, "Max 512 characters"),
                   tags: yup
                     .string()
                     .required("Tags are required")
@@ -198,6 +210,32 @@ const CreateQuiz = () => {
                       as="input"
                       placeholder="name"
                     />
+                    <small className="text-muted">
+                      short description in{" "}
+                      <a
+                        href="https://www.markdownguide.org/cheat-sheet/"
+                        rel="noopener noreferrer"
+                        target="_blank">
+                        markdown
+                      </a>{" "}
+                      or plain text
+                    </small>
+                    <FormikField
+                      name="description"
+                      className="form form-control mb-3"
+                      as="textarea"
+                      placeholder="description"
+                    />
+                    <small className="text-muted">
+                      precise instructions in markdown or plain text
+                    </small>
+                    <FormikField
+                      name="instructions"
+                      className="form form-control mb-3"
+                      as="textarea"
+                      placeholder="instructions"
+                    />
+                    <small className="text-muted">pick questions</small>
                     <FieldArray
                       name="questions"
                       render={(arrayHelpers) => {
