@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Card, Button } from "react-bootstrap";
 import Choices from "./Choices";
+import { MarkdownViewer } from "../controls/MarkdownViewer";
 
 const Question = ({
   question,
@@ -31,7 +32,7 @@ const Question = ({
     visible && (
       <Card>
         <Card.Body>
-          <h3>{question}</h3>
+          <MarkdownViewer source={question} />
           <Choices data={choices} type={type}></Choices>
         </Card.Body>
         <Card.Footer>

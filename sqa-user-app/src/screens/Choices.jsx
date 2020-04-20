@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Form } from "react-bootstrap";
+import { Form, Row, Col } from "react-bootstrap";
+import { MarkdownViewer } from "../controls/MarkdownViewer";
 
 const Choices = ({ data, type }) => {
   if (!data) {
@@ -7,7 +8,14 @@ const Choices = ({ data, type }) => {
   }
   return data.map((d, index) => {
     return (
-      <Form.Check key={index} type={type} id={d.id} label={d.text}></Form.Check>
+      <Row>
+        <Col sm={1}>
+          <Form.Check key={index} type={type} id={d.id}></Form.Check>
+        </Col>
+        <Col>
+          <MarkdownViewer source={d.text} />
+        </Col>
+      </Row>
     );
   });
 };

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import GraphQlUtil from "../../utils/GraphQlUtil";
 import { getQuestion } from "../../graphql/queries";
 import { deleteQuestion } from "../../graphql/mutations";
+
 import {
   Container,
   Row,
@@ -14,6 +15,7 @@ import {
 import { find as _find } from "underscore";
 import ConfirmModal from "../../controls/ConfirmModal";
 import AlertError from "../../controls/AlertError";
+import { MarkdownViewer } from "../../controls/MarkdownViewer";
 
 const ViewQuestion = ({ match, history }) => {
   const [questionId] = useState(match.params.id);
@@ -63,12 +65,14 @@ const ViewQuestion = ({ match, history }) => {
     return (
       <React.Fragment>
         <small>Choices</small>
-        <Table responsive="sm" size="sm" borderless>
+        <Table responsive="sm" size="sm" bordered>
           <tbody>
             {question.choices.map((c, index) => {
               return (
                 <tr key={index}>
-                  <td style={{ padding: 0, margin: 0 }}>{c.text}</td>
+                  <td>
+                    <MarkdownViewer source={c.text} />
+                  </td>
                 </tr>
               );
             })}
@@ -82,12 +86,12 @@ const ViewQuestion = ({ match, history }) => {
     return (
       <React.Fragment>
         <small>Answers</small>
-        <Table responsive="sm" size="sm" borderless>
+        <Table responsive="sm" size="sm" bordered>
           <tbody>
             {question.answers.map((a, index) => {
               return (
                 <tr key={index}>
-                  <td style={{ padding: 0, margin: 0 }}>{getAnswerText(a)}</td>
+                  <td>{getAnswerText(a)}</td>
                 </tr>
               );
             })}
@@ -114,7 +118,7 @@ const ViewQuestion = ({ match, history }) => {
             })}
           </p>
           <small>Question</small>
-          <Card.Text>{question.question}</Card.Text>
+          <MarkdownViewer source={question.question} />
           {renderChoices()}
           {renderAnswers()}
           {errorMsg && <AlertError errorMsg={errorMsg} title="Error" />}
