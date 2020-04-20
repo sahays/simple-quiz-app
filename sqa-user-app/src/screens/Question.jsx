@@ -5,6 +5,7 @@ import { MarkdownViewer } from "../controls/MarkdownViewer";
 
 const Question = ({
   question,
+  quizName,
   choices,
   type,
   onNext,
@@ -31,6 +32,7 @@ const Question = ({
   return (
     visible && (
       <Card>
+        <Card.Header>{quizName}</Card.Header>
         <Card.Body>
           <MarkdownViewer source={question} />
           <Choices data={choices} type={type}></Choices>

@@ -16,7 +16,7 @@ const Quiz = ({ match }) => {
     const item = items[0];
     console.log(item);
     setQuiz(item);
-    setName(items.name);
+    setName(item.name);
     setQuestions(item.questions);
   }, [quizId]);
 
@@ -42,6 +42,7 @@ const Quiz = ({ match }) => {
       return (
         <Question
           key={index}
+          quizName={name}
           onPrevios={onPrevios}
           onNext={onNext}
           visible={visibleIndex === index}
@@ -57,12 +58,7 @@ const Quiz = ({ match }) => {
   return (
     <Container>
       <Row>
-        <Col>
-          <Card>
-            <Card.Header>{name}</Card.Header>
-            <Card.Body>{renderQuestions()}</Card.Body>
-          </Card>
-        </Col>
+        <Col>{renderQuestions()}</Col>
       </Row>
     </Container>
   );
