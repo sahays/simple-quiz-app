@@ -20,6 +20,12 @@
             },
             "auth": {
                 "sqaAuth": {}
+            },
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "d17o1mnyydm54o",
+                    "type": "manual"
+                }
             }
         }
     }

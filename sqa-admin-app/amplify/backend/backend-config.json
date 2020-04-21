@@ -1,73 +1,80 @@
 {
-	"function": {
-		"sqaAuthPostConfirmation": {
-			"build": true,
-			"providerPlugin": "awscloudformation",
-			"service": "Lambda"
-		},
-		"sqaAuthPreSignup": {
-			"build": true,
-			"providerPlugin": "awscloudformation",
-			"service": "Lambda"
-		}
-	},
-	"auth": {
-		"userPoolGroups": {
-			"service": "Cognito-UserPool-Groups",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [
-				{
-					"category": "auth",
-					"resourceName": "sqaAuth",
-					"attributes": [
-						"UserPoolId",
-						"AppClientIDWeb",
-						"AppClientID",
-						"IdentityPoolId"
-					]
-				}
-			]
-		},
-		"sqaAuth": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [
-				{
-					"category": "function",
-					"resourceName": "sqaAuthPostConfirmation",
-					"triggerProvider": "Cognito",
-					"attributes": [
-						"Arn",
-						"Name"
-					]
-				},
-				{
-					"category": "function",
-					"resourceName": "sqaAuthPreSignup",
-					"triggerProvider": "Cognito",
-					"attributes": [
-						"Arn",
-						"Name"
-					]
-				}
-			]
-		}
-	},
-	"api": {
-		"sqaApi": {
-			"service": "AppSync",
-			"providerPlugin": "awscloudformation",
-			"output": {
-				"authConfig": {
-					"additionalAuthenticationProviders": [],
-					"defaultAuthentication": {
-						"authenticationType": "AMAZON_COGNITO_USER_POOLS",
-						"userPoolConfig": {
-							"userPoolId": "authsqaAuth"
-						}
-					}
-				}
-			}
-		}
-	}
+    "function": {
+        "sqaAuthPostConfirmation": {
+            "build": true,
+            "providerPlugin": "awscloudformation",
+            "service": "Lambda"
+        },
+        "sqaAuthPreSignup": {
+            "build": true,
+            "providerPlugin": "awscloudformation",
+            "service": "Lambda"
+        }
+    },
+    "auth": {
+        "userPoolGroups": {
+            "service": "Cognito-UserPool-Groups",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [
+                {
+                    "category": "auth",
+                    "resourceName": "sqaAuth",
+                    "attributes": [
+                        "UserPoolId",
+                        "AppClientIDWeb",
+                        "AppClientID",
+                        "IdentityPoolId"
+                    ]
+                }
+            ]
+        },
+        "sqaAuth": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [
+                {
+                    "category": "function",
+                    "resourceName": "sqaAuthPostConfirmation",
+                    "triggerProvider": "Cognito",
+                    "attributes": [
+                        "Arn",
+                        "Name"
+                    ]
+                },
+                {
+                    "category": "function",
+                    "resourceName": "sqaAuthPreSignup",
+                    "triggerProvider": "Cognito",
+                    "attributes": [
+                        "Arn",
+                        "Name"
+                    ]
+                }
+            ]
+        }
+    },
+    "api": {
+        "sqaApi": {
+            "service": "AppSync",
+            "providerPlugin": "awscloudformation",
+            "output": {
+                "authConfig": {
+                    "additionalAuthenticationProviders": [],
+                    "defaultAuthentication": {
+                        "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+                        "userPoolConfig": {
+                            "userPoolId": "authsqaAuth"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "hosting": {
+        "amplifyhosting": {
+            "service": "amplifyhosting",
+            "providerPlugin": "awscloudformation",
+            "type": "manual"
+        }
+    }
 }

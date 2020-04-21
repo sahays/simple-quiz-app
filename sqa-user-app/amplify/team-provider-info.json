@@ -1,0 +1,23 @@
+{
+    "xone": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-sqa-user-app-xone-100905-authRole",
+            "UnauthRoleArn": "arn:aws:iam::370359846330:role/amplify-sqa-user-app-xone-100905-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::370359846330:role/amplify-sqa-user-app-xone-100905-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "amplify-sqa-user-app-xone-100905-deployment",
+            "UnauthRoleName": "amplify-sqa-user-app-xone-100905-unauthRole",
+            "StackName": "amplify-sqa-user-app-xone-100905",
+            "StackId": "arn:aws:cloudformation:us-west-2:370359846330:stack/amplify-sqa-user-app-xone-100905/d318bec0-83f2-11ea-a36e-0a83d4208d3a",
+            "AmplifyAppId": "d1fv0aihv69xpi"
+        },
+        "categories": {
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "d1fv0aihv69xpi",
+                    "type": "manual"
+                }
+            }
+        }
+    }
+}
