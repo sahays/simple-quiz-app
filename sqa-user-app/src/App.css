@@ -31,3 +31,17 @@ a:hover {
 .cell-width-sm {
   width: 30%;
 }
+
+small {
+  font-size: 0.6em;
+}
+
+.react-confirm-alert-body {
+  margin: 0;
+  font-family: "Amazon Ember", "Roboto", Arial, Helvetica, sans-serif !important;
+}
+
+.react-confirm-alert-body > h1 {
+  margin-top: 0;
+  font-size: 1.25em;
+}

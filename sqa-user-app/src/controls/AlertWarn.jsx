@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Alert } from "react-bootstrap";
 
-const AlertWarn = ({ warnMsg, title }) => {
+const AlertWarn = ({ warnMsg = "", title = "" }) => {
   const [close, setClose] = useState(false);
 
   if (warnMsg) {

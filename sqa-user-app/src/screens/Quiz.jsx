@@ -1,25 +1,58 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
-import { StorageUtil } from "../utils/StorageUtil";
 import { MarkdownViewer } from "../controls/MarkdownViewer";
 import { find as _find } from "underscore";
+import GraphQlUtil from "../utils/GraphQlUtil";
+import { createResponse } from "../graphql/mutations";
+import { getQuiz as getQuizById } from "../graphql/queries";
+import ConfirmModal from "../controls/ConfirmModal";
+import { Auth } from "aws-amplify";
+import { useHistory } from "react-router-dom";
 
 const Quiz = ({ match }) => {
-  const { readItem } = StorageUtil();
+  const { mutation } = GraphQlUtil();
+  const history = useHistory();
   const [quizId] = useState(match.params.id);
-  const [item] = useState(readItem(quizId));
   const [quiz, setQuiz] = useState(null);
   const [visibleIndex, setVisibleIndex] = useState(0);
+  const [username, setUsername] = useState(null);
+  const [canNavigate, setCanNavigate] = useState(false);
 
   useEffect(() => {
-    item.questions.map((q) => {
-      q.responses = [];
-      q.isValid = false;
-      return null;
-    });
-    console.log(item);
-    setQuiz(item);
-  }, [item]);
+    const { query } = GraphQlUtil();
+    const loadUser = async () => {
+      const user = await Auth.currentAuthenticatedUser();
+      setUsername(user.username);
+    };
+    const loadQuiz = async () => {
+      try {
+        // no retakes: load response to check if this quiz has already been tried
+        const {
+          data: { getQuiz },
+        } = await query(getQuizById, {
+          id: quizId,
+        });
+        const data = getQuiz;
+        data.questions.map((q) => {
+          q.responses = [];
+          q.isValid = false;
+          return null;
+        });
+        // console.log(pluck(data.questions, "responses"));
+        setQuiz(data);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    loadQuiz();
+    loadUser();
+  }, [quizId]);
+
+  useEffect(() => {
+    if (canNavigate) {
+      if (canNavigate) history.push("/");
+    }
+  }, [canNavigate, history]);
 
   const onPrevios = () => {
     if (visibleIndex > 0) {
@@ -33,8 +66,33 @@ const Quiz = ({ match }) => {
     }
   };
 
-  const onSubmit = () => {
-    console.log(quiz);
+  const pickResponses = () => {
+    return quiz.questions.map((q) => {
+      return {
+        questionId: q.id,
+        responses: q.responses,
+      };
+    });
+  };
+
+  const onSubmit = async () => {
+    ConfirmModal({
+      title: "Submit Quiz",
+      message: "Are you sure you want to finish and submit?",
+      onYes: async () => {
+        try {
+          const input = {
+            username: username,
+            quizId: quiz.id,
+            responses: pickResponses(),
+          };
+          await mutation(createResponse, input);
+          setCanNavigate(true);
+        } catch (e) {
+          console.log(e);
+        }
+      },
+    });
   };
 
   const nextOrSubmit = (q) => {

@@ -3,16 +3,18 @@ import { Navbar, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import Emoji from "../controls/Emoji";
+// import { StorageUtil } from "../utils/StorageUtil";
 
 const MainNavbar = () => {
   const [firstName, setFirstName] = useState("");
 
   useEffect(() => {
+    // const { createItem } = StorageUtil();
     const loadUser = async () => {
-      const {
-        attributes: { given_name },
-      } = await Auth.currentAuthenticatedUser();
-      setFirstName(given_name);
+      const user = await Auth.currentAuthenticatedUser();
+      const attrs = user.attributes;
+      setFirstName(attrs.given_name);
+      // createItem("userinfo", user);
     };
 
     loadUser();
