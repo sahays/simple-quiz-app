@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Badge,
-  Form,
-  Button,
-} from "react-bootstrap";
+import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 import { StorageUtil } from "../utils/StorageUtil";
 import { MarkdownViewer } from "../controls/MarkdownViewer";
 import { find as _find } from "underscore";
@@ -22,6 +14,7 @@ const Quiz = ({ match }) => {
   useEffect(() => {
     item.questions.map((q) => {
       q.responses = [];
+      q.isValid = false;
       return null;
     });
     console.log(item);
@@ -40,6 +33,31 @@ const Quiz = ({ match }) => {
     }
   };
 
+  const onSubmit = () => {
+    console.log(quiz);
+  };
+
+  const nextOrSubmit = (q) => {
+    if (visibleIndex === quiz.questions.length - 1) {
+      return (
+        <Button
+          disabled={!q.isValid}
+          className="float-right"
+          onClick={() => onSubmit()}>
+          Finish and Submit
+        </Button>
+      );
+    }
+    return (
+      <Button
+        disabled={!q.isValid}
+        className="float-right"
+        onClick={() => onNext()}>
+        Next
+      </Button>
+    );
+  };
+
   const onChange = (e) => {
     const { name, type, id, checked } = e.target;
     const qz = { ...quiz };
@@ -55,6 +73,7 @@ const Quiz = ({ match }) => {
     } else {
       responses.splice(responses.indexOf(id), 1);
     }
+    qq.isValid = !(responses.length === 0);
     setQuiz(qz);
   };
 
@@ -87,13 +106,7 @@ const Quiz = ({ match }) => {
               })}
             </Card.Body>
             <Card.Footer>
-              <Button
-                size="sm"
-                variant="primary"
-                className="float-right"
-                onClick={onNext}>
-                Next
-              </Button>
+              {nextOrSubmit(q)}
               <Button size="sm" variant="secondary" onClick={onPrevios}>
                 Previous
               </Button>
