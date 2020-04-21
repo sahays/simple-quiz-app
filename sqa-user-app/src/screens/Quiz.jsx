@@ -22,6 +22,7 @@ const Quiz = ({ match }) => {
   const [userAttrs, setUserAttrs] = useState(null);
   const [canNavigate, setCanNavigate] = useState(false);
   const [takeQuiz, setTakeQuiz] = useState(true);
+  const [splash, setSplash] = useState(true);
 
   useEffect(() => {
     const { filter, query } = GraphQlUtil();
@@ -152,6 +153,17 @@ const Quiz = ({ match }) => {
     setQuiz(qz);
   };
 
+  const renderSteps = () => {
+    if (!quiz) return <p></p>;
+    return (
+      <p>
+        <small className="text-muted">
+          Question {visibleIndex + 1} of {quiz.questions.length}
+        </small>
+      </p>
+    );
+  };
+
   const renderQuestions = () => {
     if (!takeQuiz)
       return (
@@ -164,6 +176,7 @@ const Quiz = ({ match }) => {
           </small>
         </div>
       );
+
     if (!quiz) return <p>Loading...</p>;
 
     return quiz.questions.map((q, index) => {
@@ -172,6 +185,7 @@ const Quiz = ({ match }) => {
           <Card key={index}>
             <Card.Header>{quiz.name}</Card.Header>
             <Card.Body>
+              {renderSteps()}
               <MarkdownViewer source={q.question}></MarkdownViewer>
               {q.choices.map((c, index) => {
                 return (
@@ -204,10 +218,37 @@ const Quiz = ({ match }) => {
     });
   };
 
+  const renderSplash = () => {
+    if (!quiz) return <p>Loading...</p>;
+    return (
+      <Card>
+        <Card.Header>{quiz.name}</Card.Header>
+        <Card.Body>
+          <Card.Title>About the quiz</Card.Title>
+          <Card.Text>{quiz.description}</Card.Text>
+          <Card.Title>Instructions</Card.Title>
+          <Card.Text>{quiz.instructions}</Card.Text>
+          <Card.Title>Total number of questions</Card.Title>
+          <Card.Text>{quiz.questions.length}</Card.Text>
+        </Card.Body>
+        <Card.Footer>
+          <Button variant="primary" size="sm" onClick={() => setSplash(false)}>
+            Start quiz
+          </Button>
+        </Card.Footer>
+      </Card>
+    );
+  };
+
+  const renderView = () => {
+    if (splash) return renderSplash();
+    return renderQuestions();
+  };
+
   return (
     <Container>
       <Row>
-        <Col>{renderQuestions()}</Col>
+        <Col>{renderView()}</Col>
       </Row>
     </Container>
   );
