@@ -118,68 +118,15 @@ export const onDeleteQuiz = /* GraphQL */ `
     }
   }
 `;
-export const onCreateEvent = /* GraphQL */ `
-  subscription OnCreateEvent {
-    onCreateEvent {
-      id
-      name
-      tags
-    }
-  }
-`;
-export const onUpdateEvent = /* GraphQL */ `
-  subscription OnUpdateEvent {
-    onUpdateEvent {
-      id
-      name
-      tags
-    }
-  }
-`;
-export const onDeleteEvent = /* GraphQL */ `
-  subscription OnDeleteEvent {
-    onDeleteEvent {
-      id
-      name
-      tags
-    }
-  }
-`;
-export const onCreateUser = /* GraphQL */ `
-  subscription OnCreateUser($owner: String!) {
-    onCreateUser(owner: $owner) {
-      id
-      sub
-      username
-      owner
-    }
-  }
-`;
-export const onUpdateUser = /* GraphQL */ `
-  subscription OnUpdateUser {
-    onUpdateUser {
-      id
-      sub
-      username
-      owner
-    }
-  }
-`;
-export const onDeleteUser = /* GraphQL */ `
-  subscription OnDeleteUser {
-    onDeleteUser {
-      id
-      sub
-      username
-      owner
-    }
-  }
-`;
 export const onCreateResponse = /* GraphQL */ `
   subscription OnCreateResponse($owner: String) {
     onCreateResponse(owner: $owner) {
       id
       username
+      userAttrs {
+        firstName
+        lastName
+      }
       quizId
       responses {
         questionId
@@ -194,6 +141,10 @@ export const onUpdateResponse = /* GraphQL */ `
     onUpdateResponse {
       id
       username
+      userAttrs {
+        firstName
+        lastName
+      }
       quizId
       responses {
         questionId
@@ -208,6 +159,10 @@ export const onDeleteResponse = /* GraphQL */ `
     onDeleteResponse {
       id
       username
+      userAttrs {
+        firstName
+        lastName
+      }
       quizId
       responses {
         questionId

@@ -48,7 +48,10 @@ const ListQuizzes = ({ history }) => {
                   <div>
                     <p>{qq.name}</p>
                     <small>{qq.description}</small>
-                    <Button size="sm" variant="light" onClick={onQuizClick}>
+                    <Button
+                      size="sm"
+                      variant="light"
+                      onClick={() => onQuizClick(qq.id)}>
                       More...
                     </Button>
                   </div>

@@ -16,6 +16,7 @@ import CreateQuiz from "./screens/Quizzes/CreateQuiz";
 import CreateQuestion from "./screens/Questions/CreateQuestion";
 import ViewQuestion from "./screens/Questions/ViewQuestion";
 import MainNavbar from "./screens/MainNavbar";
+import ViewQuiz from "./screens/Quizzes/ViewQuiz";
 
 awsmobile.clientMetadata = {
   app: "sqa-admin",
@@ -38,6 +39,7 @@ const App = () => {
 
               <Route path="/quizzes" component={ListQuizzes}></Route>
               <Route path="/quiz/create" component={CreateQuiz}></Route>
+              <Route path="/quiz/view/:id" component={ViewQuiz}></Route>
 
               <Route path="/" component={Home}></Route>
             </Switch>

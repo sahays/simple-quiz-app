@@ -136,81 +136,6 @@ export const deleteQuiz = /* GraphQL */ `
     }
   }
 `;
-export const createEvent = /* GraphQL */ `
-  mutation CreateEvent(
-    $input: CreateEventInput!
-    $condition: ModelEventConditionInput
-  ) {
-    createEvent(input: $input, condition: $condition) {
-      id
-      name
-      tags
-    }
-  }
-`;
-export const updateEvent = /* GraphQL */ `
-  mutation UpdateEvent(
-    $input: UpdateEventInput!
-    $condition: ModelEventConditionInput
-  ) {
-    updateEvent(input: $input, condition: $condition) {
-      id
-      name
-      tags
-    }
-  }
-`;
-export const deleteEvent = /* GraphQL */ `
-  mutation DeleteEvent(
-    $input: DeleteEventInput!
-    $condition: ModelEventConditionInput
-  ) {
-    deleteEvent(input: $input, condition: $condition) {
-      id
-      name
-      tags
-    }
-  }
-`;
-export const createUser = /* GraphQL */ `
-  mutation CreateUser(
-    $input: CreateUserInput!
-    $condition: ModelUserConditionInput
-  ) {
-    createUser(input: $input, condition: $condition) {
-      id
-      sub
-      username
-      owner
-    }
-  }
-`;
-export const updateUser = /* GraphQL */ `
-  mutation UpdateUser(
-    $input: UpdateUserInput!
-    $condition: ModelUserConditionInput
-  ) {
-    updateUser(input: $input, condition: $condition) {
-      id
-      sub
-      username
-      owner
-    }
-  }
-`;
-export const deleteUser = /* GraphQL */ `
-  mutation DeleteUser(
-    $input: DeleteUserInput!
-    $condition: ModelUserConditionInput
-  ) {
-    deleteUser(input: $input, condition: $condition) {
-      id
-      sub
-      username
-      owner
-    }
-  }
-`;
 export const createResponse = /* GraphQL */ `
   mutation CreateResponse(
     $input: CreateResponseInput!
@@ -219,6 +144,10 @@ export const createResponse = /* GraphQL */ `
     createResponse(input: $input, condition: $condition) {
       id
       username
+      userAttrs {
+        firstName
+        lastName
+      }
       quizId
       responses {
         questionId
@@ -236,6 +165,10 @@ export const updateResponse = /* GraphQL */ `
     updateResponse(input: $input, condition: $condition) {
       id
       username
+      userAttrs {
+        firstName
+        lastName
+      }
       quizId
       responses {
         questionId
@@ -253,6 +186,10 @@ export const deleteResponse = /* GraphQL */ `
     deleteResponse(input: $input, condition: $condition) {
       id
       username
+      userAttrs {
+        firstName
+        lastName
+      }
       quizId
       responses {
         questionId
