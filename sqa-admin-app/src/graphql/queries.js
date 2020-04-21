@@ -89,63 +89,15 @@ export const listQuizs = /* GraphQL */ `
     }
   }
 `;
-export const getEvent = /* GraphQL */ `
-  query GetEvent($id: ID!) {
-    getEvent(id: $id) {
-      id
-      name
-      tags
-    }
-  }
-`;
-export const listEvents = /* GraphQL */ `
-  query ListEvents(
-    $filter: ModelEventFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listEvents(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        tags
-      }
-      nextToken
-    }
-  }
-`;
-export const getUser = /* GraphQL */ `
-  query GetUser($id: ID!) {
-    getUser(id: $id) {
-      id
-      sub
-      username
-      owner
-    }
-  }
-`;
-export const listUsers = /* GraphQL */ `
-  query ListUsers(
-    $filter: ModelUserFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        sub
-        username
-        owner
-      }
-      nextToken
-    }
-  }
-`;
 export const getResponse = /* GraphQL */ `
   query GetResponse($id: ID!) {
     getResponse(id: $id) {
       id
       username
+      userAttrs {
+        firstName
+        lastName
+      }
       quizId
       responses {
         questionId
@@ -165,6 +117,10 @@ export const listResponses = /* GraphQL */ `
       items {
         id
         username
+        userAttrs {
+          firstName
+          lastName
+        }
         quizId
         responses {
           questionId

@@ -51,28 +51,14 @@ type Quiz
   instructions: String
 }
 
-type Event @model @auth(rules: [{ allow: groups, groups: ["admins"] }]) {
-  id: ID!
-  name: String!
-  tags: [String]
-}
-
-type User
-  @model
-  @auth(
-    rules: [
-      { allow: groups, groups: ["admins"], operations: [read] }
-      { allow: owner, operations: [create, read] }
-    ]
-  ) {
-  id: ID!
-  sub: String!
-  username: String!
-}
-
 type ResponseType {
   questionId: String!
   responses: [String]!
+}
+
+type UserAttrs {
+  firstName: String!
+  lastName: String!
 }
 
 type Response
@@ -80,11 +66,12 @@ type Response
   @auth(
     rules: [
       { allow: groups, groups: ["admins"], operations: [create, read] }
-      { allow: owner, operations: [create] }
+      { allow: owner, operations: [create, read] }
     ]
   ) {
   id: ID!
   username: String!
+  userAttrs: UserAttrs!
   quizId: String!
   responses: [ResponseType]!
 }

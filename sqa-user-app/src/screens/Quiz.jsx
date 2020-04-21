@@ -3,8 +3,12 @@ import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 import { MarkdownViewer } from "../controls/MarkdownViewer";
 import { find as _find } from "underscore";
 import GraphQlUtil from "../utils/GraphQlUtil";
+import { Link } from "react-router-dom";
 import { createResponse } from "../graphql/mutations";
-import { getQuiz as getQuizById } from "../graphql/queries";
+import {
+  getQuiz as getQuizById,
+  listResponses as responsesByUser,
+} from "../graphql/queries";
 import ConfirmModal from "../controls/ConfirmModal";
 import { Auth } from "aws-amplify";
 import { useHistory } from "react-router-dom";
@@ -15,18 +19,30 @@ const Quiz = ({ match }) => {
   const [quizId] = useState(match.params.id);
   const [quiz, setQuiz] = useState(null);
   const [visibleIndex, setVisibleIndex] = useState(0);
-  const [username, setUsername] = useState(null);
+  const [userAttrs, setUserAttrs] = useState(null);
   const [canNavigate, setCanNavigate] = useState(false);
+  const [takeQuiz, setTakeQuiz] = useState(true);
 
   useEffect(() => {
-    const { query } = GraphQlUtil();
+    const { filter, query } = GraphQlUtil();
     const loadUser = async () => {
+      console.log("loading user...");
       const user = await Auth.currentAuthenticatedUser();
-      setUsername(user.username);
-    };
-    const loadQuiz = async () => {
-      try {
-        // no retakes: load response to check if this quiz has already been tried
+      const { attributes } = user;
+      setUserAttrs({
+        username: user.username,
+        lastName: attributes.family_name,
+        firstName: attributes.given_name,
+      });
+      const {
+        data: { listResponses },
+      } = await filter(responsesByUser, {
+        username: { eq: user.username },
+        quizId: { eq: quizId },
+      });
+      if (listResponses.items && listResponses.items.length > 0) {
+        setTakeQuiz(false);
+      } else {
         const {
           data: { getQuiz },
         } = await query(getQuizById, {
@@ -38,13 +54,9 @@ const Quiz = ({ match }) => {
           q.isValid = false;
           return null;
         });
-        // console.log(pluck(data.questions, "responses"));
         setQuiz(data);
-      } catch (e) {
-        console.log(e);
       }
     };
-    loadQuiz();
     loadUser();
   }, [quizId]);
 
@@ -76,13 +88,18 @@ const Quiz = ({ match }) => {
   };
 
   const onSubmit = async () => {
+    console.log(userAttrs);
     ConfirmModal({
       title: "Submit Quiz",
       message: "Are you sure you want to finish and submit?",
       onYes: async () => {
         try {
           const input = {
-            username: username,
+            username: userAttrs.username,
+            userAttrs: {
+              firstName: userAttrs.firstName,
+              lastName: userAttrs.lastName,
+            },
             quizId: quiz.id,
             responses: pickResponses(),
           };
@@ -136,7 +153,19 @@ const Quiz = ({ match }) => {
   };
 
   const renderQuestions = () => {
+    if (!takeQuiz)
+      return (
+        <div>
+          <p>Thank you!</p>
+          <small>
+            Thanks for you interest in this quiz. We have recorded your
+            responses and you don't have to retake. Do you want to{" "}
+            <Link to="/">try another quiz code</Link>?
+          </small>
+        </div>
+      );
     if (!quiz) return <p>Loading...</p>;
+
     return quiz.questions.map((q, index) => {
       return (
         visibleIndex === index && (
