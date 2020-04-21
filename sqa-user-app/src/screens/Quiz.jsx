@@ -38,7 +38,6 @@ const Quiz = ({ match }) => {
     if (visibleIndex < quiz.questions.length - 1) {
       setVisibleIndex(visibleIndex + 1);
     }
-    console.log(quiz);
   };
 
   const onChange = (e) => {
@@ -61,59 +60,48 @@ const Quiz = ({ match }) => {
 
   const renderQuestions = () => {
     if (!quiz) return <p>Loading...</p>;
-    return (
-      <Card>
-        <Card.Header>{quiz.name}</Card.Header>
-        <Card.Body>
-          {quiz.tags.map((tag, index) => {
-            return (
-              <Badge key={index} variant="info" className="mr-1">
-                {tag}
-              </Badge>
-            );
-          })}
-          {quiz.questions.map((q, index) => {
-            return (
-              visibleIndex === index && (
-                <div key={index}>
-                  <MarkdownViewer source={q.question}></MarkdownViewer>
-                  {q.choices.map((c, index) => {
-                    return (
-                      <Row key={index}>
-                        <Col sm={1}>
-                          <Form.Check
-                            key={index}
-                            type={q.type}
-                            id={c.id}
-                            onChange={onChange}
-                            checked={q.responses.indexOf(c.id) > -1}
-                            name={q.id}></Form.Check>
-                        </Col>
-                        <Col>
-                          <MarkdownViewer source={c.text}></MarkdownViewer>
-                        </Col>
-                      </Row>
-                    );
-                  })}
-                  <div>
-                    <Button
-                      size="sm"
-                      variant="primary"
-                      className="float-right"
-                      onClick={onNext}>
-                      Next
-                    </Button>
-                    <Button size="sm" variant="secondary" onClick={onPrevios}>
-                      Previous
-                    </Button>
-                  </div>
-                </div>
-              )
-            );
-          })}
-        </Card.Body>
-      </Card>
-    );
+    return quiz.questions.map((q, index) => {
+      return (
+        visibleIndex === index && (
+          <Card key={index}>
+            <Card.Header>{quiz.name}</Card.Header>
+            <Card.Body>
+              <MarkdownViewer source={q.question}></MarkdownViewer>
+              {q.choices.map((c, index) => {
+                return (
+                  <Row key={index}>
+                    <Col sm={1}>
+                      <Form.Check
+                        key={index}
+                        type={q.type}
+                        id={c.id}
+                        onChange={onChange}
+                        checked={q.responses.indexOf(c.id) > -1}
+                        name={q.id}></Form.Check>
+                    </Col>
+                    <Col>
+                      <MarkdownViewer source={c.text}></MarkdownViewer>
+                    </Col>
+                  </Row>
+                );
+              })}
+            </Card.Body>
+            <Card.Footer>
+              <Button
+                size="sm"
+                variant="primary"
+                className="float-right"
+                onClick={onNext}>
+                Next
+              </Button>
+              <Button size="sm" variant="secondary" onClick={onPrevios}>
+                Previous
+              </Button>
+            </Card.Footer>
+          </Card>
+        )
+      );
+    });
   };
 
   return (
