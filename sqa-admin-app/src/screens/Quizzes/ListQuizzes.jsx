@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Card, Table, Button } from "react-bootstrap";
+import { Container, Row, Col, Card, Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import GraphQlUtil from "../../utils/GraphQlUtil";
 import * as queries from "../../graphql/queries";
 
 const ListQuizzes = ({ history }) => {
   const [quizzes, setQuizzes] = useState(null);
-  const { query } = GraphQlUtil();
 
   useEffect(() => {
+    const { listAll } = GraphQlUtil();
     const load = async () => {
       const {
         data: { listQuizs },
-      } = await query(queries.listQuizs);
+      } = await listAll(queries.listQuizs);
       setQuizzes(listQuizs.items);
     };
 
     load();
-  }, [query]);
+  }, []);
 
   const onQuizClick = (id) => {
     history.push("/quiz/view/" + id);
@@ -31,34 +31,30 @@ const ListQuizzes = ({ history }) => {
     }
 
     return (
-      <Table className="table-responsive-sm" bordered hover striped>
+      <Table className="table-responsive-sm" size="sm" bordered hover striped>
+        <caption>Showing {quizzes.length} quizzes</caption>
         <thead>
           <tr>
             <th>Name</th>
             <th>Code</th>
             <th>Questions</th>
-            <th>Responses</th>
           </tr>
         </thead>
         <tbody>
           {quizzes.map((qq, index) => {
             return (
-              <tr key={index}>
+              <tr
+                key={index}
+                onClick={() => onQuizClick(qq.id)}
+                className="clickable">
                 <td style={{ width: "40%" }}>
                   <div>
                     <p>{qq.name}</p>
                     <small>{qq.description}</small>
-                    <Button
-                      size="sm"
-                      variant="light"
-                      onClick={() => onQuizClick(qq.id)}>
-                      More...
-                    </Button>
                   </div>
                 </td>
                 <td>{qq.code}</td>
                 <td>{qq.questions.length}</td>
-                <td>{0}</td>
               </tr>
             );
           })}

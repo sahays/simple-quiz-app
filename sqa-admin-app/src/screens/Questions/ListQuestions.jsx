@@ -11,22 +11,27 @@ import {
 import { Link } from "react-router-dom";
 import GraphQlUtil from "../../utils/GraphQlUtil";
 import * as queries from "../../graphql/queries";
+import { pluck, flatten, uniq } from "underscore";
 
 const ListQuestions = ({ history }) => {
   const charLimit = 200;
+  const [allQuestions, setAllQuestions] = useState(null);
   const [questions, setQuestions] = useState(null);
-  const { query } = GraphQlUtil();
+  const [allTags, setAllTags] = useState([]);
 
   useEffect(() => {
+    const { query } = GraphQlUtil();
     const load = async () => {
       const {
         data: { listQuestions },
       } = await query(queries.listQuestions);
-      setQuestions(listQuestions.items);
+      const data = listQuestions.items;
+      setAllTags(uniq(flatten(pluck(data, "tags"))));
+      setQuestions(data);
+      setAllQuestions(data);
     };
-
     load();
-  }, [query]);
+  }, []);
 
   const renderQuestion = (q) => {
     return q.length > charLimit
@@ -52,26 +57,20 @@ const ListQuestions = ({ history }) => {
     if (!questions) {
       return <p>Loading...</p>;
     } else if (questions.length === 0) {
-      return <p>Start by adding a new question</p>;
+      return <p>No questions to show</p>;
     }
     return (
       <React.Fragment>
-        <Table className="table-responsive-sm" bordered hover>
+        <p>{renderAllTags()}</p>
+        <Table className="table-responsive-sm" size="sm" bordered hover>
+          <caption>Showing {questions.length} questions</caption>
           <tbody>
             {questions.map((q, index) => {
               return (
-                <tr key={index}>
-                  <td style={{ cursor: "pointer" }}>
+                <tr key={index} onClick={() => onQuestionClick(q.id)}>
+                  <td className="clickable">
                     {renderTags(q)}
                     <p>{renderQuestion(q.question)}</p>
-                    <div>
-                      <Button
-                        variant="light"
-                        size="sm"
-                        onClick={() => onQuestionClick(q.id)}>
-                        More...
-                      </Button>
-                    </div>
                   </td>
                 </tr>
               );
@@ -83,6 +82,36 @@ const ListQuestions = ({ history }) => {
         </small>
       </React.Fragment>
     );
+  };
+
+  const onTagClick = (e) => {
+    const data = [...questions];
+    const filtered = data.filter((q) => {
+      return q.tags.indexOf(e.target.innerText) > -1;
+    });
+    setQuestions(filtered);
+  };
+
+  const renderAllTags = () => {
+    let result = [];
+    if (allTags) {
+      result = allTags.map((t, index) => {
+        return (
+          <Badge
+            key={index}
+            variant="primary"
+            className="mr-1 clickable"
+            onClick={onTagClick}>
+            {t}
+          </Badge>
+        );
+      });
+    }
+    return result;
+  };
+
+  const onFilterReset = () => {
+    setQuestions(allQuestions);
   };
 
   return (
@@ -97,6 +126,11 @@ const ListQuestions = ({ history }) => {
               </div>
             </Card.Header>
             <Card.Body>{renderQuestions()}</Card.Body>
+            <Card.Footer>
+              <Button variant="secondary" size="sm" onClick={onFilterReset}>
+                Reset
+              </Button>
+            </Card.Footer>
           </Card>
         </Col>
       </Row>
