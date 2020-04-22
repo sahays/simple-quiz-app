@@ -5,12 +5,12 @@ export const StorageUtil = () => {
   };
   const deleteItem = (key) => {
     key = applyNs(key);
-    if (key in localStorage) localStorage.removeItem(key);
+    if (hasItem(key)) localStorage.removeItem(key);
   };
 
   const readItem = (key) => {
     key = applyNs(key);
-    if (key in localStorage) {
+    if (hasItem(key)) {
       return JSON.parse(localStorage.getItem(key));
     }
     return null;
@@ -21,9 +21,15 @@ export const StorageUtil = () => {
     localStorage.setItem(key, JSON.stringify(data));
   };
 
+  const hasItem = (key) => {
+    if (!key.startsWith(ns)) key = applyNs(key);
+    return key in localStorage;
+  };
+
   return {
     deleteItem,
     readItem,
     createItem,
+    hasItem,
   };
 };

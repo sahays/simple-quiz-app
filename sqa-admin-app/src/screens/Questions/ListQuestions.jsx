@@ -1,32 +1,18 @@
 import React, { useEffect, useState } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Table,
-  Badge,
-  Button,
-} from "react-bootstrap";
+import { Container, Row, Col, Card, Table, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import GraphQlUtil from "../../utils/GraphQlUtil";
-import * as queries from "../../graphql/queries";
-import { pluck, flatten, uniq } from "underscore";
+import { QuestionStore } from "../../cache-stores/QuestionStore";
+import { FilterQuestions } from "../Quizzes/Quiz/FilterQuestions";
 
 const ListQuestions = ({ history }) => {
   const charLimit = 200;
   const [allQuestions, setAllQuestions] = useState(null);
   const [questions, setQuestions] = useState(null);
-  const [allTags, setAllTags] = useState([]);
 
   useEffect(() => {
-    const { query } = GraphQlUtil();
+    const { getAllQuestions } = QuestionStore();
     const load = async () => {
-      const {
-        data: { listQuestions },
-      } = await query(queries.listQuestions);
-      const data = listQuestions.items;
-      setAllTags(uniq(flatten(pluck(data, "tags"))));
+      const data = await getAllQuestions();
       setQuestions(data);
       setAllQuestions(data);
     };
@@ -42,7 +28,7 @@ const ListQuestions = ({ history }) => {
   const renderTags = (q) => {
     return q.tags.map((t, index) => {
       return (
-        <Badge key={index} variant="info" className="mr-1">
+        <Badge key={index} variant="light" className="mr-1">
           {t}
         </Badge>
       );
@@ -61,7 +47,6 @@ const ListQuestions = ({ history }) => {
     }
     return (
       <React.Fragment>
-        <p>{renderAllTags()}</p>
         <Table className="table-responsive-sm" size="sm" bordered hover>
           <caption>Showing {questions.length} questions</caption>
           <tbody>
@@ -84,30 +69,8 @@ const ListQuestions = ({ history }) => {
     );
   };
 
-  const onTagClick = (e) => {
-    const data = [...questions];
-    const filtered = data.filter((q) => {
-      return q.tags.indexOf(e.target.innerText) > -1;
-    });
+  const onFilter = (filtered) => {
     setQuestions(filtered);
-  };
-
-  const renderAllTags = () => {
-    let result = [];
-    if (allTags) {
-      result = allTags.map((t, index) => {
-        return (
-          <Badge
-            key={index}
-            variant="primary"
-            className="mr-1 clickable"
-            onClick={onTagClick}>
-            {t}
-          </Badge>
-        );
-      });
-    }
-    return result;
   };
 
   const onFilterReset = () => {
@@ -125,12 +88,19 @@ const ListQuestions = ({ history }) => {
                 <Link to="/question/create">+ Question</Link>
               </div>
             </Card.Header>
-            <Card.Body>{renderQuestions()}</Card.Body>
-            <Card.Footer>
+            <Card.Body>
+              <FilterQuestions
+                questions={questions}
+                onFilter={onFilter}
+                onReset={onFilterReset}
+              />
+              {renderQuestions()}
+            </Card.Body>
+            {/* <Card.Footer>
               <Button variant="secondary" size="sm" onClick={onFilterReset}>
                 Reset
               </Button>
-            </Card.Footer>
+            </Card.Footer> */}
           </Card>
         </Col>
       </Row>
