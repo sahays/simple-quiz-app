@@ -3,8 +3,14 @@ import Checkbox from "../../../controls/Checkbox";
 import { Badge, Row, Col } from "react-bootstrap";
 import { find as _find } from "underscore";
 import { FieldArray } from "formik";
+import { FilterQuestions } from "./FilterQuestions";
 
-export const PickQuestions = ({ values, questions }) => {
+export const PickQuestions = ({
+  values,
+  questions,
+  onFilterReset,
+  onFilter,
+}) => {
   const charLimit = 200;
   const renderQuestion = (q) => {
     return (
@@ -76,10 +82,17 @@ export const PickQuestions = ({ values, questions }) => {
   };
 
   return (
-    <FieldArray
-      name="questions"
-      render={(arrayHelpers) => {
-        return <div>{renderQuestions(values, arrayHelpers)}</div>;
-      }}></FieldArray>
+    <React.Fragment>
+      <FilterQuestions
+        questions={questions}
+        onFilter={onFilter}
+        onReset={onFilterReset}
+      />
+      <FieldArray
+        name="questions"
+        render={(arrayHelpers) => {
+          return <div>{renderQuestions(values, arrayHelpers)}</div>;
+        }}></FieldArray>
+    </React.Fragment>
   );
 };

@@ -29,6 +29,7 @@ const CreateQuiz = () => {
   const [errorMsg, setErrorMsg] = useState(null);
   const [infoMsg, setInfoMsg] = useState(null);
   const [questions, setQuestions] = useState(null);
+  const [allQuestions, setAllQuestions] = useState(null);
   const { mutation } = GraphQlUtil();
 
   useEffect(() => {
@@ -39,7 +40,7 @@ const CreateQuiz = () => {
       items.map((item) => {
         return qq.push(_omit(item, ["answers", "owner"]));
       });
-      console.log(qq);
+      setAllQuestions(qq);
       setQuestions(qq);
     };
 
@@ -116,7 +117,12 @@ const CreateQuiz = () => {
                 {({ values }) => (
                   <Form>
                     <AboutQuiz />
-                    <PickQuestions values={values} questions={questions} />
+                    <PickQuestions
+                      values={values}
+                      questions={questions}
+                      onFilter={(filtered) => setQuestions(filtered)}
+                      onFilterReset={() => setQuestions(allQuestions)}
+                    />
                     <ButtonBar
                       busy={busy}
                       errorMsg={errorMsg}

@@ -96,11 +96,6 @@ const ListQuestions = ({ history }) => {
               />
               {renderQuestions()}
             </Card.Body>
-            {/* <Card.Footer>
-              <Button variant="secondary" size="sm" onClick={onFilterReset}>
-                Reset
-              </Button>
-            </Card.Footer> */}
           </Card>
         </Col>
       </Row>
