@@ -30,15 +30,16 @@ const CreateQuiz = () => {
   const [errorMsg, setErrorMsg] = useState(null);
   const [infoMsg, setInfoMsg] = useState(null);
   const [questions, setQuestions] = useState(null);
-  const { query, mutation } = GraphQlUtil();
+  const { mutation } = GraphQlUtil();
 
   useEffect(() => {
+    const { listAll } = GraphQlUtil();
     const load = async () => {
       const {
         data: {
           listQuestions: { items },
         },
-      } = await query(ListQuestions);
+      } = await listAll(ListQuestions);
       const qq = [];
       items.map((item) => {
         return qq.push(_omit(item, ["answers", "owner"]));
@@ -48,7 +49,7 @@ const CreateQuiz = () => {
     };
 
     load();
-  }, [query]);
+  }, []);
 
   const renderQuestion = (q) => {
     return (

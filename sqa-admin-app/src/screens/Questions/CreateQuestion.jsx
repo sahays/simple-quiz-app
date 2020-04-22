@@ -43,6 +43,8 @@ const CreateQuestion = () => {
           tags: trimSplit(values.tags),
         });
         setInfoMsg("New question added");
+        answers.length = 0;
+        setAnswers(answers);
         setInitialValue(initValue);
       } else {
         setWarnMsg("You must pick an answer");
