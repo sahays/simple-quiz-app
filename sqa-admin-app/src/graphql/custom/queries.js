@@ -25,6 +25,7 @@ export const getQuiz = /* GraphQL */ `
         id
         question
         type
+        answers
         choices {
           id
           text

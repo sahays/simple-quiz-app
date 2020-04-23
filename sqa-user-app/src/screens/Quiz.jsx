@@ -4,9 +4,9 @@ import { MarkdownViewer } from "../controls/MarkdownViewer";
 import { find as _find } from "underscore";
 import GraphQlUtil from "../utils/GraphQlUtil";
 import { Link } from "react-router-dom";
-import { createResponse } from "../graphql/mutations";
 import { listResponses as responsesByUser } from "../graphql/queries";
 import { getQuiz as getQuizById } from "../graphql/custom/queries";
+import { createResponse } from "../graphql/mutations";
 import ConfirmModal from "../controls/ConfirmModal";
 import { Auth } from "aws-amplify";
 import { useHistory } from "react-router-dom";
@@ -63,7 +63,7 @@ const Quiz = ({ match }) => {
     if (canNavigate) {
       if (canNavigate) history.push(`/result/${userAttrs.username}/${quizId}`);
     }
-  }, [canNavigate, history]);
+  }, [canNavigate, history, quizId, userAttrs]);
 
   const onPrevios = () => {
     if (visibleIndex > 0) {
@@ -102,7 +102,7 @@ const Quiz = ({ match }) => {
             quizId: quiz.id,
             responses: pickResponses(),
           };
-          // await mutation(createResponse, input);
+          await mutation(createResponse, input);
           setCanNavigate(true);
         } catch (e) {
           console.log(e);

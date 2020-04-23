@@ -60,7 +60,6 @@ export const getQuiz = /* GraphQL */ `
         answers
         tags
         explanation
-        owner
       }
       description
       instructions
@@ -88,7 +87,6 @@ export const listQuizs = /* GraphQL */ `
           answers
           tags
           explanation
-          owner
         }
         description
         instructions

@@ -1,6 +1,9 @@
 import { StorageUtil } from "../utils/StorageUtil";
 import { listQuestions } from "../graphql/queries";
-import { createQuestion } from "../graphql/mutations";
+import {
+  createQuestion,
+  deleteQuestion as deleteQ,
+} from "../graphql/mutations";
 import GraphQlUtil from "../utils/GraphQlUtil";
 
 export const QuestionStore = () => {
@@ -30,10 +33,11 @@ export const QuestionStore = () => {
     type,
     choices,
     answers,
+    explanation,
     tags,
   }) => {
     // clear cache
-    invalidate();
+    deleteItem(key);
     // insert
     try {
       await mutation(createQuestion, {
@@ -42,6 +46,7 @@ export const QuestionStore = () => {
         choices,
         answers,
         tags,
+        explanation,
       });
     } catch (e) {
       console.log(e);
@@ -54,9 +59,22 @@ export const QuestionStore = () => {
     window.location.reload();
   };
 
+  const deleteQuestion = async (questionId) => {
+    try {
+      const result = await mutation(deleteQ, {
+        id: questionId,
+      });
+      deleteItem(key);
+      return result;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return {
     getAllQuestions,
     createNewQuestion,
     invalidate,
+    deleteQuestion,
   };
 };

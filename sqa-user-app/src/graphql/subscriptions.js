@@ -70,7 +70,6 @@ export const onCreateQuiz = /* GraphQL */ `
         answers
         tags
         explanation
-        owner
       }
       description
       instructions
@@ -97,7 +96,6 @@ export const onUpdateQuiz = /* GraphQL */ `
         answers
         tags
         explanation
-        owner
       }
       description
       instructions
@@ -124,7 +122,6 @@ export const onDeleteQuiz = /* GraphQL */ `
         answers
         tags
         explanation
-        owner
       }
       description
       instructions

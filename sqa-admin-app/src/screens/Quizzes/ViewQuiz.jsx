@@ -60,7 +60,7 @@ const ViewQuiz = ({ match }) => {
           quizId: { eq: quizId },
         });
         const data = processResponses(listResponses.items);
-        groupByUser(data);
+        calculateScore(data);
       }
     };
 
@@ -76,7 +76,7 @@ const ViewQuiz = ({ match }) => {
       return data;
     };
 
-    const groupByUser = (responses) => {
+    const calculateScore = (responses) => {
       const users = [];
       responses.map((r) => {
         let score = 0;
