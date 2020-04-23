@@ -57,6 +57,7 @@ export const getQuiz = /* GraphQL */ `
           id
           text
         }
+        answers
         tags
         explanation
       }
@@ -83,6 +84,7 @@ export const listQuizs = /* GraphQL */ `
           id
           question
           type
+          answers
           tags
           explanation
         }

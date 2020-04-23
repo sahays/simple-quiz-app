@@ -42,7 +42,7 @@ export const PickQuestions = ({
   };
 
   const renderQuestions = (values, arrayHelpers) => {
-    if (questions) {
+    if (questions && questions.length > 0) {
       return (
         <React.Fragment>
           <small className="text-muted">pick questions</small>
@@ -79,6 +79,8 @@ export const PickQuestions = ({
           })}
         </React.Fragment>
       );
+    } else {
+      return <p>There are no questions to show</p>;
     }
   };
 

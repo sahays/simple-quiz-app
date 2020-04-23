@@ -79,8 +79,10 @@ export const createQuiz = /* GraphQL */ `
           id
           text
         }
+        answers
         tags
         explanation
+        owner
       }
       description
       instructions
@@ -107,8 +109,10 @@ export const updateQuiz = /* GraphQL */ `
           id
           text
         }
+        answers
         tags
         explanation
+        owner
       }
       description
       instructions
@@ -135,8 +139,10 @@ export const deleteQuiz = /* GraphQL */ `
           id
           text
         }
+        answers
         tags
         explanation
+        owner
       }
       description
       instructions

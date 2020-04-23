@@ -8,23 +8,34 @@ export const listQuizs = /* GraphQL */ `
       items {
         id
         code
-        name
-        tags
-        questions {
-          id
-          question
-          type
-          choices {
-            id
-            text
-          }
-          tags
-        }
-        description
-        instructions
-        owner
       }
       nextToken
+    }
+  }
+`;
+
+export const getQuiz = /* GraphQL */ `
+  query GetQuiz($id: ID!) {
+    getQuiz(id: $id) {
+      id
+      code
+      name
+      tags
+      questions {
+        id
+        question
+        type
+        choices {
+          id
+          text
+        }
+        tags
+        explanation
+      }
+      description
+      instructions
+      timeLimit
+      owner
     }
   }
 `;

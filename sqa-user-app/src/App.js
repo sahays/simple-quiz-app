@@ -12,6 +12,7 @@ import { withAuthenticator } from "aws-amplify-react";
 import MainNavbar from "./screens/MainNavbar";
 import QuizCode from "./screens/QuizCode";
 import Quiz from "./screens/Quiz";
+import { Result } from "./screens/Result";
 
 // Amplify.Logger.LOG_LEVEL = "DEBUG";
 awsmobile.clientMetadata = {
@@ -29,6 +30,7 @@ const App = () => {
           <Col>
             <Switch>
               <Route path="/quiz/:id" component={Quiz}></Route>
+              <Route path="/result/:username/:id" component={Result}></Route>
               <Route path="/" component={QuizCode}></Route>
             </Switch>
           </Col>

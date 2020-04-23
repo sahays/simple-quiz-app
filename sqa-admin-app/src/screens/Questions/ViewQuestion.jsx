@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import GraphQlUtil from "../../utils/GraphQlUtil";
 import { getQuestion } from "../../graphql/queries";
-import { deleteQuestion } from "../../graphql/mutations";
+import { QuestionStore } from "../../cache-stores/QuestionStore";
 
 import {
   Container,
@@ -21,7 +21,8 @@ const ViewQuestion = ({ match, history }) => {
   const [questionId] = useState(match.params.id);
   const [question, setQuestion] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-  const { query, mutation } = GraphQlUtil();
+  const { query } = GraphQlUtil();
+  const { deleteQuestion } = QuestionStore();
 
   useEffect(() => {
     const load = async () => {
@@ -44,9 +45,7 @@ const ViewQuestion = ({ match, history }) => {
     ConfirmModal({
       onYes: async () => {
         try {
-          const result = await mutation(deleteQuestion, {
-            id: questionId,
-          });
+          const result = await deleteQuestion(questionId);
           console.log(result);
           history.push("/questions");
         } catch (e) {
@@ -101,6 +100,12 @@ const ViewQuestion = ({ match, history }) => {
     );
   };
 
+  const renderExplanation = () => {
+    if (question) {
+      return <MarkdownViewer source={question.explanation} />;
+    }
+  };
+
   const renderQuestion = () => {
     if (!question) {
       return <p>Loading...</p>;
@@ -121,6 +126,7 @@ const ViewQuestion = ({ match, history }) => {
           <MarkdownViewer source={question.question} />
           {renderChoices()}
           {renderAnswers()}
+          {renderExplanation()}
           {errorMsg && <AlertError errorMsg={errorMsg} title="Error" />}
         </Card.Body>
         <Card.Footer>

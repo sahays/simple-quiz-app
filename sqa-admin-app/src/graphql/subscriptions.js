@@ -67,6 +67,7 @@ export const onCreateQuiz = /* GraphQL */ `
           id
           text
         }
+        answers
         tags
         explanation
       }
@@ -92,6 +93,7 @@ export const onUpdateQuiz = /* GraphQL */ `
           id
           text
         }
+        answers
         tags
         explanation
       }
@@ -117,6 +119,7 @@ export const onDeleteQuiz = /* GraphQL */ `
           id
           text
         }
+        answers
         tags
         explanation
       }

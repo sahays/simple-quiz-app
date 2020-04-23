@@ -39,7 +39,7 @@ const CreateQuiz = () => {
       const items = await getAllQuestions();
       const qq = [];
       items.map((item) => {
-        return qq.push(_omit(item, ["answers", "owner"]));
+        return qq.push(_omit(item, ["owner"]));
       });
       setAllQuestions(qq);
       setQuestions(qq);
@@ -56,7 +56,9 @@ const CreateQuiz = () => {
       await mutation(createQuiz, {
         name: values.name,
         code: values.code,
-        tags: trimSplit(values.tags),
+        tags: trimSplit(values.tags.toLowerCase()),
+        description: values.description,
+        instructions: values.instructions,
         questions: values.questions,
       });
       setInfoMsg("New quiz added");
@@ -99,7 +101,7 @@ const CreateQuiz = () => {
                     .max(512, "Max 512 characters"),
                   instructions: yup
                     .string()
-                    .min(5, "At least 3 characters")
+                    .min(5, "At least 5 characters")
                     .max(512, "Max 512 characters"),
                   tags: yup
                     .string()

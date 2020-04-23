@@ -5,10 +5,8 @@ import { find as _find } from "underscore";
 import GraphQlUtil from "../utils/GraphQlUtil";
 import { Link } from "react-router-dom";
 import { createResponse } from "../graphql/mutations";
-import {
-  getQuiz as getQuizById,
-  listResponses as responsesByUser,
-} from "../graphql/queries";
+import { listResponses as responsesByUser } from "../graphql/queries";
+import { getQuiz as getQuizById } from "../graphql/custom/queries";
 import ConfirmModal from "../controls/ConfirmModal";
 import { Auth } from "aws-amplify";
 import { useHistory } from "react-router-dom";
@@ -63,7 +61,7 @@ const Quiz = ({ match }) => {
 
   useEffect(() => {
     if (canNavigate) {
-      if (canNavigate) history.push("/");
+      if (canNavigate) history.push(`/result/${userAttrs.username}/${quizId}`);
     }
   }, [canNavigate, history]);
 
@@ -104,7 +102,7 @@ const Quiz = ({ match }) => {
             quizId: quiz.id,
             responses: pickResponses(),
           };
-          await mutation(createResponse, input);
+          // await mutation(createResponse, input);
           setCanNavigate(true);
         } catch (e) {
           console.log(e);
@@ -224,12 +222,26 @@ const Quiz = ({ match }) => {
       <Card>
         <Card.Header>{quiz.name}</Card.Header>
         <Card.Body>
-          <Card.Title>About the quiz</Card.Title>
-          <Card.Text>{quiz.description}</Card.Text>
-          <Card.Title>Instructions</Card.Title>
-          <Card.Text>{quiz.instructions}</Card.Text>
+          {quiz.description && quiz.description.length > 0 && (
+            <React.Fragment>
+              <Card.Title>About the quiz</Card.Title>
+              <Card.Text>{quiz.description}</Card.Text>
+            </React.Fragment>
+          )}
+          {quiz.instructions && quiz.instructions.length > 0 && (
+            <React.Fragment>
+              <Card.Title>Instructions</Card.Title>
+              <Card.Text>{quiz.instructions}</Card.Text>
+            </React.Fragment>
+          )}
           <Card.Title>Total number of questions</Card.Title>
           <Card.Text>{quiz.questions.length}</Card.Text>
+          {quiz.timeLimit && (
+            <React.Fragment>
+              <Card.Title>Time limit</Card.Title>
+              <Card.Text>{quiz.timeLimit}</Card.Text>
+            </React.Fragment>
+          )}
         </Card.Body>
         <Card.Footer>
           <Button variant="primary" size="sm" onClick={() => setSplash(false)}>

@@ -42,7 +42,7 @@ const CreateQuestion = () => {
           answers: answers,
           explanation: values.explanation,
           timeLimit: values.timeLimit,
-          tags: trimSplit(values.tags),
+          tags: trimSplit(values.tags.toLowerCase()),
         });
         setInfoMsg("New question added");
         answers.length = 0;
@@ -120,7 +120,6 @@ const CreateQuestion = () => {
                         id: yup.string().required(), // these constraints take precedence
                         text: yup
                           .string()
-                          .min(3, "At least 3 characters")
                           .max(512, "Max 512 characters")
                           .required("Choice is required"), // these constraints take precedence
                       })

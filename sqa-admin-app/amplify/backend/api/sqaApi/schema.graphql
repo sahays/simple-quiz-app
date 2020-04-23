@@ -8,11 +8,12 @@ type ChoiceType {
   text: String!
 }
 
-type QuestionView {
+type QuestionScalarType {
   id: ID!
   question: String!
   type: QuestionType!
   choices: [ChoiceType]!
+  answers: [String]!
   tags: [String]
   explanation: String
 }
@@ -48,7 +49,7 @@ type Quiz
   code: String!
   name: String!
   tags: [String]
-  questions: [QuestionView]!
+  questions: [QuestionScalarType]!
   description: String
   instructions: String
   timeLimit: Int

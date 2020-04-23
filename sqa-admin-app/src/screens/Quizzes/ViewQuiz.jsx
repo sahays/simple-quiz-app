@@ -53,13 +53,15 @@ const ViewQuiz = ({ match }) => {
   useEffect(() => {
     const { filter } = GraphQlUtil();
     const loadResponses = async () => {
-      const {
-        data: { listResponses },
-      } = await filter(lisResponsesByQuizId, {
-        quizId: { eq: quizId },
-      });
-      const data = processResponses(listResponses.items);
-      groupByUser(data);
+      if (quiz && questions) {
+        const {
+          data: { listResponses },
+        } = await filter(lisResponsesByQuizId, {
+          quizId: { eq: quizId },
+        });
+        const data = processResponses(listResponses.items);
+        groupByUser(data);
+      }
     };
 
     const processResponses = (items) => {
@@ -82,9 +84,11 @@ const ViewQuiz = ({ match }) => {
           const qq = _find(questions, (q) => {
             return q.questionId === rr.questionId;
           });
-          const correct =
-            qq.answers.sort().join(",") === rr.responses.sort().join(",");
-          if (correct) score++;
+          if (qq) {
+            const correct =
+              qq.answers.sort().join(",") === rr.responses.sort().join(",");
+            if (correct) score++;
+          }
           return null;
         });
         users.push({
@@ -106,7 +110,7 @@ const ViewQuiz = ({ match }) => {
       clearInterval(poller);
       console.log("cleared poller");
     };
-  }, [quizId, questions]);
+  }, [quizId, questions, quiz]);
 
   const onDeleteResponses = () => {
     // delete all responses from the quiz
