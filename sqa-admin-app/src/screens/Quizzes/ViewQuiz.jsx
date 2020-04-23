@@ -112,8 +112,25 @@ const ViewQuiz = ({ match }) => {
     };
   }, [quizId, questions, quiz]);
 
-  const onDeleteResponses = () => {
-    // delete all responses from the quiz
+  const showLeaderboard = () => {
+    return (
+      <React.Fragment>
+        <h3>Leaderboard</h3>
+        <Table>
+          <tbody>
+            {leaderboard &&
+              leaderboard.map((l, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{l.user}</td>
+                    <td>{l.score}</td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </Table>
+      </React.Fragment>
+    );
   };
 
   const renderQuiz = () => {
@@ -134,26 +151,8 @@ const ViewQuiz = ({ match }) => {
           </p>
           <p>{quiz.description}</p>
 
-          {leaderboard && <h3>Leaderboard</h3>}
-          <Table>
-            <tbody>
-              {leaderboard &&
-                leaderboard.map((l, index) => {
-                  return (
-                    <tr key={index}>
-                      <td>{l.user}</td>
-                      <td>{l.score}</td>
-                    </tr>
-                  );
-                })}
-            </tbody>
-          </Table>
+          {showLeaderboard()}
         </Card.Body>
-        <Card.Footer>
-          <Button variant="danger" size="sm" onClick={onDeleteResponses}>
-            Delete Responses
-          </Button>
-        </Card.Footer>
       </Card>
     );
   };
