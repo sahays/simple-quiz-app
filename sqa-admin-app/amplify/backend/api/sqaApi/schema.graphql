@@ -51,7 +51,7 @@ type Quiz
   questions: [QuestionView]!
   description: String
   instructions: String
-  duration: Int
+  timeLimit: Int
 }
 
 type ResponseType {

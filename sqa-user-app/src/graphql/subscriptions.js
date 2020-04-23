@@ -72,7 +72,7 @@ export const onCreateQuiz = /* GraphQL */ `
       }
       description
       instructions
-      duration
+      timeLimit
       owner
     }
   }
@@ -97,7 +97,7 @@ export const onUpdateQuiz = /* GraphQL */ `
       }
       description
       instructions
-      duration
+      timeLimit
       owner
     }
   }
@@ -122,7 +122,7 @@ export const onDeleteQuiz = /* GraphQL */ `
       }
       description
       instructions
-      duration
+      timeLimit
       owner
     }
   }

@@ -17,6 +17,7 @@ const CreateQuestion = () => {
     question: "",
     type: "",
     tags: [],
+    explanation: "",
     choices: [{ id: getRandomAlphabets(), text: "" }],
   };
   const [answers, setAnswers] = useState([]);
@@ -39,6 +40,8 @@ const CreateQuestion = () => {
           type: answers.length > 1 ? "checkbox" : "radio",
           choices: values.choices,
           answers: answers,
+          explanation: values.explanation,
+          timeLimit: values.timeLimit,
           tags: trimSplit(values.tags),
         });
         setInfoMsg("New question added");
@@ -66,6 +69,21 @@ const CreateQuestion = () => {
     setAnswers(ids);
   };
 
+  const markupHelptext = () => {
+    return (
+      <small>
+        Use either{" "}
+        <a
+          href="https://www.markdownguide.org/cheat-sheet/"
+          rel="noopener noreferrer"
+          target="_blank">
+          markdown
+        </a>{" "}
+        or plain text
+      </small>
+    );
+  };
+
   return (
     <Container>
       <Row>
@@ -83,6 +101,11 @@ const CreateQuestion = () => {
                   question: yup
                     .string()
                     .required("A question is required")
+                    .min(10, "At least 10 characters")
+                    .max(1024, "Max 1024 characters"),
+                  explanation: yup
+                    .string()
+                    .required("An explanation is required")
                     .min(10, "At least 10 characters")
                     .max(1024, "Max 1024 characters"),
                   tags: yup
@@ -106,9 +129,10 @@ const CreateQuestion = () => {
                 })}>
                 {({ values }) => (
                   <Form>
-                    <small className="text-muted">
-                      Tags are used as filters. Use comma separated tags e.g.
-                      ec2, level100 etc.
+                    <small>
+                      Tags are used as filters. If you are adding an entry level
+                      100 question related to EC2, you may want to use "EC2,
+                      100"
                     </small>
                     <FormikField
                       name="tags"
@@ -116,16 +140,7 @@ const CreateQuestion = () => {
                       as="input"
                       placeholder="comma separated tags"
                     />
-                    <small className="text-muted">
-                      Use either{" "}
-                      <a
-                        href="https://www.markdownguide.org/cheat-sheet/"
-                        rel="noopener noreferrer"
-                        target="_blank">
-                        markdown
-                      </a>{" "}
-                      or plain text
-                    </small>
+                    {markupHelptext()}
                     <FormikField
                       name="question"
                       className="form form-control mb-3"
@@ -150,7 +165,7 @@ const CreateQuestion = () => {
                                   />
                                 </Col>
                                 <Col>
-                                  <small className="text-muted">
+                                  <small>
                                     Use checkbox to mark as answer; use +/- to
                                     add/remove choices. Use either markdown or
                                     plain text
@@ -159,7 +174,7 @@ const CreateQuestion = () => {
                                     as="textarea"
                                     rows="4"
                                     type="text"
-                                    placeholder="enter choices"
+                                    placeholder="enter a choice"
                                     className="form form-control mb-3"
                                     name={`choices.${index}.text`}
                                   />
@@ -168,7 +183,7 @@ const CreateQuestion = () => {
                                   <div className="mt-5">
                                     <Button
                                       type="button"
-                                      variant="dark"
+                                      variant="secondary"
                                       className="float-right ml-1"
                                       size="sm"
                                       onClick={() =>
@@ -181,7 +196,7 @@ const CreateQuestion = () => {
                                     </Button>
                                     <Button
                                       type="button"
-                                      variant="dark"
+                                      variant="secondary"
                                       className="float-right"
                                       size="sm"
                                       onClick={() => {
@@ -197,6 +212,14 @@ const CreateQuestion = () => {
                           </div>
                         );
                       }}></FieldArray>
+                    {markupHelptext()}
+                    <FormikField
+                      name="explanation"
+                      className="form form-control mb-3"
+                      as="textarea"
+                      rows="8"
+                      placeholder="enter an explanation"
+                    />
                     <ButtonBar
                       busy={busy}
                       errorMsg={errorMsg}

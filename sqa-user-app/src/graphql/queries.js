@@ -62,7 +62,7 @@ export const getQuiz = /* GraphQL */ `
       }
       description
       instructions
-      duration
+      timeLimit
       owner
     }
   }
@@ -88,7 +88,7 @@ export const listQuizs = /* GraphQL */ `
         }
         description
         instructions
-        duration
+        timeLimit
         owner
       }
       nextToken
