@@ -13,6 +13,7 @@ export const getQuestion = /* GraphQL */ `
       }
       answers
       tags
+      explanation
       owner
     }
   }
@@ -34,6 +35,7 @@ export const listQuestions = /* GraphQL */ `
         }
         answers
         tags
+        explanation
         owner
       }
       nextToken
@@ -56,9 +58,11 @@ export const getQuiz = /* GraphQL */ `
           text
         }
         tags
+        explanation
       }
       description
       instructions
+      duration
       owner
     }
   }
@@ -80,9 +84,11 @@ export const listQuizs = /* GraphQL */ `
           question
           type
           tags
+          explanation
         }
         description
         instructions
+        duration
         owner
       }
       nextToken

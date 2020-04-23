@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import GraphQlUtil from "../../utils/GraphQlUtil";
 import {
   getQuiz as getQuizById,
-  listQuestions as listAllQuestions,
   listResponses as lisResponsesByQuizId,
 } from "../../graphql/queries";
-import { Card, Badge, Table } from "react-bootstrap";
+import { Card, Badge, Table, Button } from "react-bootstrap";
 import { find as _find, sortBy as _sortBy } from "underscore";
+import { QuestionStore } from "../../cache-stores/QuestionStore";
 
 const ViewQuiz = ({ match }) => {
   const [quizId] = useState(match.params.id);
@@ -15,8 +15,8 @@ const ViewQuiz = ({ match }) => {
   const [leaderboard, setLeaderboard] = useState(null);
 
   useEffect(() => {
-    const { query, listAll } = GraphQlUtil();
-
+    const { query } = GraphQlUtil();
+    const { getAllQuestions } = QuestionStore();
     const loadQuiz = async () => {
       try {
         const {
@@ -32,11 +32,9 @@ const ViewQuiz = ({ match }) => {
 
     const loadQuestions = async () => {
       try {
-        const {
-          data: { listQuestions },
-        } = await listAll(listAllQuestions);
+        const items = await getAllQuestions();
         const data = [];
-        listQuestions.items.map((item) => {
+        items.map((item) => {
           return data.push({
             questionId: item.id,
             answers: item.answers.sort(),
@@ -110,6 +108,10 @@ const ViewQuiz = ({ match }) => {
     };
   }, [quizId, questions]);
 
+  const onDeleteResponses = () => {
+    // delete all responses from the quiz
+  };
+
   const renderQuiz = () => {
     if (!quiz) return <p>Loading...</p>;
     return (
@@ -143,6 +145,11 @@ const ViewQuiz = ({ match }) => {
             </tbody>
           </Table>
         </Card.Body>
+        <Card.Footer>
+          <Button variant="danger" size="sm" onClick={onDeleteResponses}>
+            Delete Responses
+          </Button>
+        </Card.Footer>
       </Card>
     );
   };

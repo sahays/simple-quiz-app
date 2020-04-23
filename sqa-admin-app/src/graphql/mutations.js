@@ -16,6 +16,7 @@ export const createQuestion = /* GraphQL */ `
       }
       answers
       tags
+      explanation
       owner
     }
   }
@@ -35,6 +36,7 @@ export const updateQuestion = /* GraphQL */ `
       }
       answers
       tags
+      explanation
       owner
     }
   }
@@ -54,6 +56,7 @@ export const deleteQuestion = /* GraphQL */ `
       }
       answers
       tags
+      explanation
       owner
     }
   }
@@ -77,9 +80,11 @@ export const createQuiz = /* GraphQL */ `
           text
         }
         tags
+        explanation
       }
       description
       instructions
+      duration
       owner
     }
   }
@@ -103,9 +108,11 @@ export const updateQuiz = /* GraphQL */ `
           text
         }
         tags
+        explanation
       }
       description
       instructions
+      duration
       owner
     }
   }
@@ -129,9 +136,11 @@ export const deleteQuiz = /* GraphQL */ `
           text
         }
         tags
+        explanation
       }
       description
       instructions
+      duration
       owner
     }
   }

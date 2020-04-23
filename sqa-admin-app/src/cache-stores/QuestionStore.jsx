@@ -33,7 +33,7 @@ export const QuestionStore = () => {
     tags,
   }) => {
     // clear cache
-    deleteItem(key);
+    invalidate();
     // insert
     try {
       await mutation(createQuestion, {
@@ -48,8 +48,15 @@ export const QuestionStore = () => {
     }
   };
 
+  const invalidate = () => {
+    console.log("invalidated");
+    deleteItem(key);
+    window.location.reload();
+  };
+
   return {
     getAllQuestions,
     createNewQuestion,
+    invalidate,
   };
 };

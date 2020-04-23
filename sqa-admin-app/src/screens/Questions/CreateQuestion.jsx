@@ -6,15 +6,13 @@ import * as yup from "yup";
 import RandomUtil from "../../utils/RandomUtil";
 import Checkbox from "../../controls/Checkbox";
 import { reject as _reject } from "underscore";
-import GraphQlUtil from "../../utils/GraphQlUtil";
-import { createQuestion } from "../../graphql/mutations";
 import FormikField from "../../controls/FormikField";
 import StringUtil from "../../utils/StringUtil";
+import { QuestionStore } from "../../cache-stores/QuestionStore";
 
 const CreateQuestion = () => {
   const { getRandomAlphabets } = RandomUtil();
   const { trimSplit } = StringUtil();
-  const { mutation } = GraphQlUtil();
   const initValue = {
     question: "",
     type: "",
@@ -35,7 +33,8 @@ const CreateQuestion = () => {
     console.log(values);
     try {
       if (answers.length > 0) {
-        await mutation(createQuestion, {
+        const { createNewQuestion } = QuestionStore();
+        await createNewQuestion({
           question: values.question,
           type: answers.length > 1 ? "checkbox" : "radio",
           choices: values.choices,

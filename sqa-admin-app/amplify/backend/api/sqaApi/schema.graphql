@@ -14,6 +14,7 @@ type QuestionView {
   type: QuestionType!
   choices: [ChoiceType]!
   tags: [String]
+  explanation: String
 }
 
 type Question
@@ -30,6 +31,7 @@ type Question
   choices: [ChoiceType]!
   answers: [String]!
   tags: [String]
+  explanation: String
 }
 
 type Quiz
@@ -49,6 +51,7 @@ type Quiz
   questions: [QuestionView]!
   description: String
   instructions: String
+  duration: Int
 }
 
 type ResponseType {

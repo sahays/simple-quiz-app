@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import { pluck, flatten, uniq } from "underscore";
 import { Button } from "react-bootstrap";
 
-export const FilterQuestions = ({ questions, onFilter, onReset }) => {
+export const FilterQuestions = ({
+  questions,
+  onFilter,
+  onReset,
+  onRefresh,
+}) => {
   const [tags, setTags] = useState(null);
 
   useEffect(() => {
@@ -16,8 +21,6 @@ export const FilterQuestions = ({ questions, onFilter, onReset }) => {
         return q.tags.indexOf(text) > -1;
       });
       onFilter(filtered);
-    } else {
-      onReset();
     }
   };
 
@@ -40,13 +43,24 @@ export const FilterQuestions = ({ questions, onFilter, onReset }) => {
     }
     result.push(
       <Button
-        key={99}
+        key={98}
         variant="dark"
         type="button"
         size="sm"
         className="mr-1 clickable"
-        onClick={() => onTagClick(null)}>
+        onClick={() => onReset()}>
         Reset
+      </Button>
+    );
+    result.push(
+      <Button
+        key={99}
+        variant="warning"
+        type="button"
+        size="sm"
+        className="mr-1 clickable"
+        onClick={() => onRefresh()}>
+        Refresh
       </Button>
     );
     return result;

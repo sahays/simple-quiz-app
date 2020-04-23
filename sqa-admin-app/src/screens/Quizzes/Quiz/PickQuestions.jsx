@@ -8,8 +8,9 @@ import { FilterQuestions } from "./FilterQuestions";
 export const PickQuestions = ({
   values,
   questions,
-  onFilterReset,
+  onReset,
   onFilter,
+  onRefresh,
 }) => {
   const charLimit = 200;
   const renderQuestion = (q) => {
@@ -86,7 +87,8 @@ export const PickQuestions = ({
       <FilterQuestions
         questions={questions}
         onFilter={onFilter}
-        onReset={onFilterReset}
+        onReset={onReset}
+        onRefresh={onRefresh}
       />
       <FieldArray
         name="questions"
