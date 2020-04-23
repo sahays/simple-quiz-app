@@ -34,12 +34,15 @@ const Quiz = ({ match }) => {
         firstName: attributes.given_name,
       });
       const {
-        data: { listResponses },
+        data: {
+          listResponses: { items },
+        },
       } = await filter(responsesByUser, {
         username: { eq: user.username },
         quizId: { eq: quizId },
       });
-      if (listResponses.items && listResponses.items.length > 0) {
+      if (items && items.length > 0) {
+        console.log(items);
         setTakeQuiz(false);
       } else {
         const {
@@ -163,18 +166,6 @@ const Quiz = ({ match }) => {
   };
 
   const renderQuestions = () => {
-    if (!takeQuiz)
-      return (
-        <div>
-          <p>Thank you!</p>
-          <small>
-            Thanks for you interest in this quiz. We have recorded your
-            responses and you don't have to retake. Do you want to{" "}
-            <Link to="/">try another quiz code</Link>?
-          </small>
-        </div>
-      );
-
     if (!quiz) return <p>Loading...</p>;
 
     return quiz.questions.map((q, index) => {
@@ -217,6 +208,21 @@ const Quiz = ({ match }) => {
   };
 
   const renderSplash = () => {
+    if (!takeQuiz)
+      return (
+        <div>
+          <p>Thank you!</p>
+          <small>
+            Thanks for you interest in this quiz. We have recorded your
+            responses and you don't have to retake. Do you want to{" "}
+            <Link to="/">try another quiz code</Link>? or{" "}
+            <Link to={`/result/${userAttrs.username}/${quizId}`}>
+              view your results
+            </Link>
+          </small>
+        </div>
+      );
+
     if (!quiz) return <p>Loading...</p>;
     return (
       <Card>
