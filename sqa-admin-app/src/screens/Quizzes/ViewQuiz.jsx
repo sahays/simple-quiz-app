@@ -4,7 +4,7 @@ import {
   getQuiz as getQuizById,
   listResponses as lisResponsesByQuizId,
 } from "../../graphql/queries";
-import { Card, Badge, Table, Button } from "react-bootstrap";
+import { Card, Badge, Table } from "react-bootstrap";
 import { find as _find, sortBy as _sortBy } from "underscore";
 import { QuestionStore } from "../../cache-stores/QuestionStore";
 
@@ -92,7 +92,7 @@ const ViewQuiz = ({ match }) => {
           return null;
         });
         users.push({
-          user: r.username,
+          user: r.name,
           score: score,
         });
         return null;
@@ -115,15 +115,16 @@ const ViewQuiz = ({ match }) => {
   const showLeaderboard = () => {
     return (
       <React.Fragment>
-        <h3>Leaderboard</h3>
-        <Table>
+        <h4>Leaderboard</h4>
+        {leaderboard && <small>{`${leaderboard.length} responses`}</small>}
+        <Table bordered hover striped>
           <tbody>
             {leaderboard &&
               leaderboard.map((l, index) => {
                 return (
                   <tr key={index}>
                     <td>{l.user}</td>
-                    <td>{l.score}</td>
+                    <td style={{ width: "30%" }}>{l.score}</td>
                   </tr>
                 );
               })}

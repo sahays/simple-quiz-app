@@ -16,7 +16,7 @@ const query = async (queryFn, input) => {
   return result;
 };
 
-const filter = async (queryFn, input, limit) => {
+const filter = async (queryFn, input, limit = 500) => {
   const result = await API.graphql(
     graphqlOperation(queryFn, {
       filter: input,
