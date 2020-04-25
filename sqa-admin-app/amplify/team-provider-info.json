@@ -28,5 +28,36 @@
                 }
             }
         }
+    },
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-sqa-admin-app-dev-123133-authRole",
+            "UnauthRoleArn": "arn:aws:iam::865118636886:role/amplify-sqa-admin-app-dev-123133-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::865118636886:role/amplify-sqa-admin-app-dev-123133-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "amplify-sqa-admin-app-dev-123133-deployment",
+            "UnauthRoleName": "amplify-sqa-admin-app-dev-123133-unauthRole",
+            "StackName": "amplify-sqa-admin-app-dev-123133",
+            "StackId": "arn:aws:cloudformation:us-west-2:865118636886:stack/amplify-sqa-admin-app-dev-123133/36fdef70-8662-11ea-b178-0671cb7b53ca",
+            "AmplifyAppId": "dgxav3hzvsut2"
+        },
+        "categories": {
+            "auth": {
+                "userPoolGroups": {},
+                "sqaAuth": {}
+            },
+            "function": {
+                "sqaAuthPostConfirmation": {
+                    "GROUP": "users"
+                },
+                "sqaAuthPreSignup": {}
+            },
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "dgxav3hzvsut2",
+                    "type": "manual"
+                }
+            }
+        }
     }
 }

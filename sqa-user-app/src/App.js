@@ -8,11 +8,11 @@ import { Container, Row, Col } from "react-bootstrap";
 
 import Amplify from "aws-amplify";
 import awsmobile from "./aws-exports";
-import { withAuthenticator } from "aws-amplify-react";
 import MainNavbar from "./screens/MainNavbar";
-import QuizCode from "./screens/QuizCode";
 import Quiz from "./screens/Quiz";
 import { Result } from "./screens/Result";
+import { Signup } from "./screens/Signup";
+import QuizCode from "./screens/QuizCode";
 
 // Amplify.Logger.LOG_LEVEL = "DEBUG";
 awsmobile.clientMetadata = {
@@ -31,7 +31,9 @@ const App = () => {
             <Switch>
               <Route path="/quiz/:id" component={Quiz}></Route>
               <Route path="/result/:username/:id" component={Result}></Route>
-              <Route path="/" component={QuizCode}></Route>
+              <Route path="/code" component={QuizCode}></Route>
+
+              <Route path="/" component={Signup}></Route>
             </Switch>
           </Col>
           <Col sm={1}></Col>
@@ -41,48 +43,4 @@ const App = () => {
   );
 };
 
-const signUpConfig = {
-  header: "Sign Up",
-  hideAllDefaults: true,
-  signUpFields: [
-    {
-      label: "Username",
-      key: "username",
-      required: true,
-      displayOrder: 1,
-      type: "string",
-    },
-    {
-      label:
-        "Email address (we'll send a code to this address for verification)",
-      key: "email",
-      required: true,
-      displayOrder: 2,
-      type: "email",
-    },
-    {
-      label: "Password",
-      key: "password",
-      required: true,
-      displayOrder: 3,
-      type: "password",
-    },
-    {
-      label: "First Name",
-      key: "given_name",
-      required: true,
-      displayOrder: 4,
-      type: "string",
-    },
-    {
-      label: "Last Name",
-      key: "family_name",
-      required: true,
-      displayOrder: 5,
-      type: "string",
-    },
-  ],
-};
-// const usernameAttributes = "email";
-
-export default withAuthenticator(App, { signUpConfig });
+export default App;
