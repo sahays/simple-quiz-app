@@ -5,7 +5,7 @@ import * as yup from "yup";
 import QuestionStore from "../../data-stores/QuestionStore";
 import Emoji from "../../controls/Emoji";
 
-const SearchBar = ({ onSearch, charThreshold }) => {
+const SearchBar = ({ onSearch, charThreshold, className }) => {
 	const { searchQuestions } = QuestionStore();
 	const initValue = {
 		searchText: "",
@@ -27,7 +27,7 @@ const SearchBar = ({ onSearch, charThreshold }) => {
 			})}
 		>
 			{(values) => (
-				<FormikForm>
+				<FormikForm className={className}>
 					<InputGroup>
 						<InputGroup.Prepend>
 							<InputGroup.Text>
