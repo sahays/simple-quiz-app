@@ -1,0 +1,16 @@
+# input CreateQuestionInput {
+#   id: ID!
+#   question: String!
+#   type: QuestionType!
+#   choices: [String]!
+#   answers: [String]!
+#   explanation: String!
+# }
+
+# type CreateQuestionOutput {
+#   id: ID!
+# }
+
+# type Mutation {
+#   createQuestion(input: CreateQuestionInput): CreateQuestionOutput
+# }

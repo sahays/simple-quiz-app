@@ -1,121 +1,16 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateQuestion = /* GraphQL */ `
-  subscription OnCreateQuestion($owner: String) {
-    onCreateQuestion(owner: $owner) {
-      id
-      question
-      type
-      choices {
-        id
-        text
-      }
-      answers
-      explanation
-      tags {
-        items {
-          id
-          tagId
-          questionId
-        }
-        nextToken
-      }
-      quizzes {
-        items {
-          id
-          questionId
-          quizId
-        }
-        nextToken
-      }
-      owner
-    }
-  }
-`;
-export const onUpdateQuestion = /* GraphQL */ `
-  subscription OnUpdateQuestion {
-    onUpdateQuestion {
-      id
-      question
-      type
-      choices {
-        id
-        text
-      }
-      answers
-      explanation
-      tags {
-        items {
-          id
-          tagId
-          questionId
-        }
-        nextToken
-      }
-      quizzes {
-        items {
-          id
-          questionId
-          quizId
-        }
-        nextToken
-      }
-      owner
-    }
-  }
-`;
-export const onDeleteQuestion = /* GraphQL */ `
-  subscription OnDeleteQuestion($owner: String!) {
-    onDeleteQuestion(owner: $owner) {
-      id
-      question
-      type
-      choices {
-        id
-        text
-      }
-      answers
-      explanation
-      tags {
-        items {
-          id
-          tagId
-          questionId
-        }
-        nextToken
-      }
-      quizzes {
-        items {
-          id
-          questionId
-          quizId
-        }
-        nextToken
-      }
-      owner
-    }
-  }
-`;
 export const onCreateTag = /* GraphQL */ `
   subscription OnCreateTag {
     onCreateTag {
       id
       text
+      type
       questions {
-        items {
-          id
-          tagId
-          questionId
-        }
         nextToken
       }
       quizzes {
-        items {
-          id
-          tagId
-          quizId
-        }
         nextToken
       }
     }
@@ -126,20 +21,11 @@ export const onUpdateTag = /* GraphQL */ `
     onUpdateTag {
       id
       text
+      type
       questions {
-        items {
-          id
-          tagId
-          questionId
-        }
         nextToken
       }
       quizzes {
-        items {
-          id
-          tagId
-          quizId
-        }
         nextToken
       }
     }
@@ -150,20 +36,11 @@ export const onDeleteTag = /* GraphQL */ `
     onDeleteTag {
       id
       text
+      type
       questions {
-        items {
-          id
-          tagId
-          questionId
-        }
         nextToken
       }
       quizzes {
-        items {
-          id
-          tagId
-          quizId
-        }
         nextToken
       }
     }
@@ -178,12 +55,7 @@ export const onCreateQuizTag = /* GraphQL */ `
       tag {
         id
         text
-        questions {
-          nextToken
-        }
-        quizzes {
-          nextToken
-        }
+        type
       }
       quiz {
         id
@@ -192,12 +64,6 @@ export const onCreateQuizTag = /* GraphQL */ `
         description
         instructions
         timeLimit
-        tags {
-          nextToken
-        }
-        questions {
-          nextToken
-        }
         owner
       }
     }
@@ -212,12 +78,7 @@ export const onUpdateQuizTag = /* GraphQL */ `
       tag {
         id
         text
-        questions {
-          nextToken
-        }
-        quizzes {
-          nextToken
-        }
+        type
       }
       quiz {
         id
@@ -226,12 +87,6 @@ export const onUpdateQuizTag = /* GraphQL */ `
         description
         instructions
         timeLimit
-        tags {
-          nextToken
-        }
-        questions {
-          nextToken
-        }
         owner
       }
     }
@@ -246,12 +101,7 @@ export const onDeleteQuizTag = /* GraphQL */ `
       tag {
         id
         text
-        questions {
-          nextToken
-        }
-        quizzes {
-          nextToken
-        }
+        type
       }
       quiz {
         id
@@ -260,12 +110,6 @@ export const onDeleteQuizTag = /* GraphQL */ `
         description
         instructions
         timeLimit
-        tags {
-          nextToken
-        }
-        questions {
-          nextToken
-        }
         owner
       }
     }
@@ -280,30 +124,14 @@ export const onCreateQuestionTag = /* GraphQL */ `
       tag {
         id
         text
-        questions {
-          nextToken
-        }
-        quizzes {
-          nextToken
-        }
+        type
       }
       question {
         id
         question
         type
-        choices {
-          id
-          text
-        }
         answers
         explanation
-        tags {
-          nextToken
-        }
-        quizzes {
-          nextToken
-        }
-        owner
       }
     }
   }
@@ -317,30 +145,14 @@ export const onUpdateQuestionTag = /* GraphQL */ `
       tag {
         id
         text
-        questions {
-          nextToken
-        }
-        quizzes {
-          nextToken
-        }
+        type
       }
       question {
         id
         question
         type
-        choices {
-          id
-          text
-        }
         answers
         explanation
-        tags {
-          nextToken
-        }
-        quizzes {
-          nextToken
-        }
-        owner
       }
     }
   }
@@ -354,30 +166,14 @@ export const onDeleteQuestionTag = /* GraphQL */ `
       tag {
         id
         text
-        questions {
-          nextToken
-        }
-        quizzes {
-          nextToken
-        }
+        type
       }
       question {
         id
         question
         type
-        choices {
-          id
-          text
-        }
         answers
         explanation
-        tags {
-          nextToken
-        }
-        quizzes {
-          nextToken
-        }
-        owner
       }
     }
   }
@@ -392,19 +188,9 @@ export const onCreateQuiz = /* GraphQL */ `
       instructions
       timeLimit
       tags {
-        items {
-          id
-          tagId
-          quizId
-        }
         nextToken
       }
       questions {
-        items {
-          id
-          questionId
-          quizId
-        }
         nextToken
       }
       owner
@@ -421,19 +207,9 @@ export const onUpdateQuiz = /* GraphQL */ `
       instructions
       timeLimit
       tags {
-        items {
-          id
-          tagId
-          quizId
-        }
         nextToken
       }
       questions {
-        items {
-          id
-          questionId
-          quizId
-        }
         nextToken
       }
       owner
@@ -450,19 +226,9 @@ export const onDeleteQuiz = /* GraphQL */ `
       instructions
       timeLimit
       tags {
-        items {
-          id
-          tagId
-          quizId
-        }
         nextToken
       }
       questions {
-        items {
-          id
-          questionId
-          quizId
-        }
         nextToken
       }
       owner
@@ -482,31 +248,14 @@ export const onCreateQuizQuestion = /* GraphQL */ `
         description
         instructions
         timeLimit
-        tags {
-          nextToken
-        }
-        questions {
-          nextToken
-        }
         owner
       }
       question {
         id
         question
         type
-        choices {
-          id
-          text
-        }
         answers
         explanation
-        tags {
-          nextToken
-        }
-        quizzes {
-          nextToken
-        }
-        owner
       }
     }
   }
@@ -524,31 +273,14 @@ export const onUpdateQuizQuestion = /* GraphQL */ `
         description
         instructions
         timeLimit
-        tags {
-          nextToken
-        }
-        questions {
-          nextToken
-        }
         owner
       }
       question {
         id
         question
         type
-        choices {
-          id
-          text
-        }
         answers
         explanation
-        tags {
-          nextToken
-        }
-        quizzes {
-          nextToken
-        }
-        owner
       }
     }
   }
@@ -566,31 +298,14 @@ export const onDeleteQuizQuestion = /* GraphQL */ `
         description
         instructions
         timeLimit
-        tags {
-          nextToken
-        }
-        questions {
-          nextToken
-        }
         owner
       }
       question {
         id
         question
         type
-        choices {
-          id
-          text
-        }
         answers
         explanation
-        tags {
-          nextToken
-        }
-        quizzes {
-          nextToken
-        }
-        owner
       }
     }
   }
