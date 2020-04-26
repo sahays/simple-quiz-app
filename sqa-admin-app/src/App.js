@@ -18,80 +18,82 @@ import MainNavbar from "./screens/MainNavbar";
 import ViewQuiz from "./screens/Quizzes/ViewQuiz";
 import SearchQuestions from "./screens/Questions/SearchQuestions";
 
+Amplify.Logger.LOG_LEVEL = "DEBUG";
+
 awsmobile.clientMetadata = {
-  app: "sqa-admin",
+	app: "sqa-admin",
 };
 
 Amplify.configure(awsmobile);
 
 const App = () => {
-  return (
-    <BrowserRouter>
-      <MainNavbar />
-      <Container>
-        <Row>
-          <Col sm={1}></Col>
-          <Col>
-            <Switch>
-              <Route path="/questions" component={SearchQuestions}></Route>
-              <Route path="/question/create" component={CreateQuestion}></Route>
-              <Route path="/question/view/:id" component={ViewQuestion}></Route>
+	return (
+		<BrowserRouter>
+			<MainNavbar />
+			<Container>
+				<Row>
+					<Col sm={1}></Col>
+					<Col>
+						<Switch>
+							<Route path="/questions" component={SearchQuestions}></Route>
+							<Route path="/question/create" component={CreateQuestion}></Route>
+							<Route path="/question/view/:id" component={ViewQuestion}></Route>
 
-              <Route path="/quizzes" component={ListQuizzes}></Route>
-              <Route path="/quiz/create" component={CreateQuiz}></Route>
-              <Route path="/quiz/view/:id" component={ViewQuiz}></Route>
+							<Route path="/quizzes" component={ListQuizzes}></Route>
+							<Route path="/quiz/create" component={CreateQuiz}></Route>
+							<Route path="/quiz/view/:id" component={ViewQuiz}></Route>
 
-              <Route path="/" component={Home}></Route>
-            </Switch>
-          </Col>
-          <Col sm={1}></Col>
-        </Row>
-      </Container>
-    </BrowserRouter>
-  );
+							<Route path="/" component={Home}></Route>
+						</Switch>
+					</Col>
+					<Col sm={1}></Col>
+				</Row>
+			</Container>
+		</BrowserRouter>
+	);
 };
 
 const signUpConfig = {
-  header: "Sign Up",
-  hideAllDefaults: true,
-  signUpFields: [
-    {
-      label: "Username",
-      key: "username",
-      required: true,
-      displayOrder: 1,
-      type: "string",
-    },
-    {
-      label:
-        "Email address (we'll send a code to this address for verification)",
-      key: "email",
-      required: true,
-      displayOrder: 2,
-      type: "email",
-    },
-    {
-      label: "Password",
-      key: "password",
-      required: true,
-      displayOrder: 2,
-      type: "password",
-    },
-    {
-      label: "First Name",
-      key: "given_name",
-      required: true,
-      displayOrder: 3,
-      type: "string",
-    },
-    {
-      label: "Last Name",
-      key: "family_name",
-      required: true,
-      displayOrder: 4,
-      type: "string",
-    },
-  ],
+	header: "Sign Up",
+	hideAllDefaults: true,
+	signUpFields: [
+		{
+			label: "Username",
+			key: "username",
+			required: true,
+			displayOrder: 1,
+			type: "string",
+		},
+		{
+			label:
+				"Email address (we'll send a code to this address for verification)",
+			key: "email",
+			required: true,
+			displayOrder: 2,
+			type: "email",
+		},
+		{
+			label: "Password",
+			key: "password",
+			required: true,
+			displayOrder: 2,
+			type: "password",
+		},
+		{
+			label: "First Name",
+			key: "given_name",
+			required: true,
+			displayOrder: 3,
+			type: "string",
+		},
+		{
+			label: "Last Name",
+			key: "family_name",
+			required: true,
+			displayOrder: 4,
+			type: "string",
+		},
+	],
 };
 // const usernameAttributes = "email";
 

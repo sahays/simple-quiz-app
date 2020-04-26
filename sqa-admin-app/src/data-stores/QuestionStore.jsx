@@ -1,63 +1,63 @@
 import GraphQlUtil from "../utils/GraphQlUtil";
 import { createQuestion } from "../graphql/mutations";
-import { getQuestion } from "../graphql/queries";
+import { getQuestion, listQuestions } from "../graphql/queries";
 import { Logger } from "aws-amplify";
 
 const QuestionStore = () => {
-  const { mutation, filter, query } = GraphQlUtil();
-  const logger = new Logger("QuestionStore");
-  const addNewQuestion = async ({
-    question,
-    choices,
-    answers,
-    explanation,
-    type,
-  }) => {
-    try {
-      const result = await mutation(createQuestion, {
-        question,
-        choices,
-        answers,
-        explanation,
-        type,
-        dateCreated: Date.now(),
-      });
-      logger.debug(result);
-      return result;
-    } catch (e) {
-      logger.error(e);
-      throw e;
-    }
-  };
+	const { mutation, filter, query } = GraphQlUtil();
+	const logger = new Logger("QuestionStore");
+	const addNewQuestion = async ({
+		question,
+		choices,
+		answers,
+		explanation,
+		type,
+	}) => {
+		try {
+			const result = await mutation(createQuestion, {
+				question,
+				choices,
+				answers,
+				explanation,
+				type,
+				dateCreated: Date.now(),
+			});
+			logger.debug(result);
+			return result;
+		} catch (e) {
+			logger.error(e);
+			throw e;
+		}
+	};
 
-  const getQuestionById = async (id) => {
-    try {
-      const result = await query(getQuestion, {
-        id: id,
-      });
-      return result;
-    } catch (e) {
-      logger.error(`failed to get question by ${id} because of ${e}`);
-    }
-  };
+	const getQuestionById = async (id) => {
+		try {
+			const result = await query(getQuestion, {
+				id: id,
+			});
+			return result;
+		} catch (e) {
+			logger.error(`failed to get question by ${id} because of ${e}`);
+		}
+	};
 
-  const searchQuestions = async (text) => {
-    try {
-      const result = await filter(searchQuestions, {
-        question: { contains: text },
-      });
-      return result;
-    } catch (e) {
-      logger.error(`failed to get question by '${text}'`);
-      logger.error(e);
-    }
-  };
+	const searchQuestions = async (text) => {
+		try {
+			const result = await filter(listQuestions, {
+				question: { contains: text },
+			});
+			return result;
+		} catch (e) {
+			logger.error(`failed to get question by '${text}'`);
+			logger.error(e);
+		}
+	};
 
-  return {
-    addNewQuestion,
-    searchQuestions,
-    getQuestionById,
-  };
+	return {
+		addNewQuestion,
+		searchQuestions,
+		getQuestionById,
+	};
 };
 
 export default QuestionStore;
