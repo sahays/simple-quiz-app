@@ -12,8 +12,23 @@ export const getQuestion = /* GraphQL */ `
         text
       }
       answers
-      tags
       explanation
+      tags {
+        items {
+          id
+          tagId
+          questionId
+        }
+        nextToken
+      }
+      quizzes {
+        items {
+          id
+          questionId
+          quizId
+        }
+        nextToken
+      }
       owner
     }
   }
@@ -34,9 +49,59 @@ export const listQuestions = /* GraphQL */ `
           text
         }
         answers
-        tags
         explanation
+        tags {
+          nextToken
+        }
+        quizzes {
+          nextToken
+        }
         owner
+      }
+      nextToken
+    }
+  }
+`;
+export const getTag = /* GraphQL */ `
+  query GetTag($id: ID!) {
+    getTag(id: $id) {
+      id
+      text
+      questions {
+        items {
+          id
+          tagId
+          questionId
+        }
+        nextToken
+      }
+      quizzes {
+        items {
+          id
+          tagId
+          quizId
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const listTags = /* GraphQL */ `
+  query ListTags(
+    $filter: ModelTagFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTags(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        text
+        questions {
+          nextToken
+        }
+        quizzes {
+          nextToken
+        }
       }
       nextToken
     }
@@ -48,22 +113,25 @@ export const getQuiz = /* GraphQL */ `
       id
       code
       name
-      tags
-      questions {
-        id
-        question
-        type
-        choices {
-          id
-          text
-        }
-        answers
-        tags
-        explanation
-      }
       description
       instructions
       timeLimit
+      tags {
+        items {
+          id
+          tagId
+          quizId
+        }
+        nextToken
+      }
+      questions {
+        items {
+          id
+          questionId
+          quizId
+        }
+        nextToken
+      }
       owner
     }
   }
@@ -79,18 +147,15 @@ export const listQuizs = /* GraphQL */ `
         id
         code
         name
-        tags
-        questions {
-          id
-          question
-          type
-          answers
-          tags
-          explanation
-        }
         description
         instructions
         timeLimit
+        tags {
+          nextToken
+        }
+        questions {
+          nextToken
+        }
         owner
       }
       nextToken

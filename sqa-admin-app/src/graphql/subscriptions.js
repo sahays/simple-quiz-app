@@ -12,8 +12,23 @@ export const onCreateQuestion = /* GraphQL */ `
         text
       }
       answers
-      tags
       explanation
+      tags {
+        items {
+          id
+          tagId
+          questionId
+        }
+        nextToken
+      }
+      quizzes {
+        items {
+          id
+          questionId
+          quizId
+        }
+        nextToken
+      }
       owner
     }
   }
@@ -29,8 +44,23 @@ export const onUpdateQuestion = /* GraphQL */ `
         text
       }
       answers
-      tags
       explanation
+      tags {
+        items {
+          id
+          tagId
+          questionId
+        }
+        nextToken
+      }
+      quizzes {
+        items {
+          id
+          questionId
+          quizId
+        }
+        nextToken
+      }
       owner
     }
   }
@@ -46,9 +76,309 @@ export const onDeleteQuestion = /* GraphQL */ `
         text
       }
       answers
-      tags
       explanation
+      tags {
+        items {
+          id
+          tagId
+          questionId
+        }
+        nextToken
+      }
+      quizzes {
+        items {
+          id
+          questionId
+          quizId
+        }
+        nextToken
+      }
       owner
+    }
+  }
+`;
+export const onCreateTag = /* GraphQL */ `
+  subscription OnCreateTag {
+    onCreateTag {
+      id
+      text
+      questions {
+        items {
+          id
+          tagId
+          questionId
+        }
+        nextToken
+      }
+      quizzes {
+        items {
+          id
+          tagId
+          quizId
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const onUpdateTag = /* GraphQL */ `
+  subscription OnUpdateTag {
+    onUpdateTag {
+      id
+      text
+      questions {
+        items {
+          id
+          tagId
+          questionId
+        }
+        nextToken
+      }
+      quizzes {
+        items {
+          id
+          tagId
+          quizId
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const onDeleteTag = /* GraphQL */ `
+  subscription OnDeleteTag {
+    onDeleteTag {
+      id
+      text
+      questions {
+        items {
+          id
+          tagId
+          questionId
+        }
+        nextToken
+      }
+      quizzes {
+        items {
+          id
+          tagId
+          quizId
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const onCreateQuizTag = /* GraphQL */ `
+  subscription OnCreateQuizTag {
+    onCreateQuizTag {
+      id
+      tagId
+      quizId
+      tag {
+        id
+        text
+        questions {
+          nextToken
+        }
+        quizzes {
+          nextToken
+        }
+      }
+      quiz {
+        id
+        code
+        name
+        description
+        instructions
+        timeLimit
+        tags {
+          nextToken
+        }
+        questions {
+          nextToken
+        }
+        owner
+      }
+    }
+  }
+`;
+export const onUpdateQuizTag = /* GraphQL */ `
+  subscription OnUpdateQuizTag {
+    onUpdateQuizTag {
+      id
+      tagId
+      quizId
+      tag {
+        id
+        text
+        questions {
+          nextToken
+        }
+        quizzes {
+          nextToken
+        }
+      }
+      quiz {
+        id
+        code
+        name
+        description
+        instructions
+        timeLimit
+        tags {
+          nextToken
+        }
+        questions {
+          nextToken
+        }
+        owner
+      }
+    }
+  }
+`;
+export const onDeleteQuizTag = /* GraphQL */ `
+  subscription OnDeleteQuizTag {
+    onDeleteQuizTag {
+      id
+      tagId
+      quizId
+      tag {
+        id
+        text
+        questions {
+          nextToken
+        }
+        quizzes {
+          nextToken
+        }
+      }
+      quiz {
+        id
+        code
+        name
+        description
+        instructions
+        timeLimit
+        tags {
+          nextToken
+        }
+        questions {
+          nextToken
+        }
+        owner
+      }
+    }
+  }
+`;
+export const onCreateQuestionTag = /* GraphQL */ `
+  subscription OnCreateQuestionTag {
+    onCreateQuestionTag {
+      id
+      tagId
+      questionId
+      tag {
+        id
+        text
+        questions {
+          nextToken
+        }
+        quizzes {
+          nextToken
+        }
+      }
+      question {
+        id
+        question
+        type
+        choices {
+          id
+          text
+        }
+        answers
+        explanation
+        tags {
+          nextToken
+        }
+        quizzes {
+          nextToken
+        }
+        owner
+      }
+    }
+  }
+`;
+export const onUpdateQuestionTag = /* GraphQL */ `
+  subscription OnUpdateQuestionTag {
+    onUpdateQuestionTag {
+      id
+      tagId
+      questionId
+      tag {
+        id
+        text
+        questions {
+          nextToken
+        }
+        quizzes {
+          nextToken
+        }
+      }
+      question {
+        id
+        question
+        type
+        choices {
+          id
+          text
+        }
+        answers
+        explanation
+        tags {
+          nextToken
+        }
+        quizzes {
+          nextToken
+        }
+        owner
+      }
+    }
+  }
+`;
+export const onDeleteQuestionTag = /* GraphQL */ `
+  subscription OnDeleteQuestionTag {
+    onDeleteQuestionTag {
+      id
+      tagId
+      questionId
+      tag {
+        id
+        text
+        questions {
+          nextToken
+        }
+        quizzes {
+          nextToken
+        }
+      }
+      question {
+        id
+        question
+        type
+        choices {
+          id
+          text
+        }
+        answers
+        explanation
+        tags {
+          nextToken
+        }
+        quizzes {
+          nextToken
+        }
+        owner
+      }
     }
   }
 `;
@@ -58,22 +388,25 @@ export const onCreateQuiz = /* GraphQL */ `
       id
       code
       name
-      tags
-      questions {
-        id
-        question
-        type
-        choices {
-          id
-          text
-        }
-        answers
-        tags
-        explanation
-      }
       description
       instructions
       timeLimit
+      tags {
+        items {
+          id
+          tagId
+          quizId
+        }
+        nextToken
+      }
+      questions {
+        items {
+          id
+          questionId
+          quizId
+        }
+        nextToken
+      }
       owner
     }
   }
@@ -84,22 +417,25 @@ export const onUpdateQuiz = /* GraphQL */ `
       id
       code
       name
-      tags
-      questions {
-        id
-        question
-        type
-        choices {
-          id
-          text
-        }
-        answers
-        tags
-        explanation
-      }
       description
       instructions
       timeLimit
+      tags {
+        items {
+          id
+          tagId
+          quizId
+        }
+        nextToken
+      }
+      questions {
+        items {
+          id
+          questionId
+          quizId
+        }
+        nextToken
+      }
       owner
     }
   }
@@ -110,8 +446,51 @@ export const onDeleteQuiz = /* GraphQL */ `
       id
       code
       name
-      tags
+      description
+      instructions
+      timeLimit
+      tags {
+        items {
+          id
+          tagId
+          quizId
+        }
+        nextToken
+      }
       questions {
+        items {
+          id
+          questionId
+          quizId
+        }
+        nextToken
+      }
+      owner
+    }
+  }
+`;
+export const onCreateQuizQuestion = /* GraphQL */ `
+  subscription OnCreateQuizQuestion {
+    onCreateQuizQuestion {
+      id
+      questionId
+      quizId
+      quiz {
+        id
+        code
+        name
+        description
+        instructions
+        timeLimit
+        tags {
+          nextToken
+        }
+        questions {
+          nextToken
+        }
+        owner
+      }
+      question {
         id
         question
         type
@@ -120,13 +499,99 @@ export const onDeleteQuiz = /* GraphQL */ `
           text
         }
         answers
-        tags
         explanation
+        tags {
+          nextToken
+        }
+        quizzes {
+          nextToken
+        }
+        owner
       }
-      description
-      instructions
-      timeLimit
-      owner
+    }
+  }
+`;
+export const onUpdateQuizQuestion = /* GraphQL */ `
+  subscription OnUpdateQuizQuestion {
+    onUpdateQuizQuestion {
+      id
+      questionId
+      quizId
+      quiz {
+        id
+        code
+        name
+        description
+        instructions
+        timeLimit
+        tags {
+          nextToken
+        }
+        questions {
+          nextToken
+        }
+        owner
+      }
+      question {
+        id
+        question
+        type
+        choices {
+          id
+          text
+        }
+        answers
+        explanation
+        tags {
+          nextToken
+        }
+        quizzes {
+          nextToken
+        }
+        owner
+      }
+    }
+  }
+`;
+export const onDeleteQuizQuestion = /* GraphQL */ `
+  subscription OnDeleteQuizQuestion {
+    onDeleteQuizQuestion {
+      id
+      questionId
+      quizId
+      quiz {
+        id
+        code
+        name
+        description
+        instructions
+        timeLimit
+        tags {
+          nextToken
+        }
+        questions {
+          nextToken
+        }
+        owner
+      }
+      question {
+        id
+        question
+        type
+        choices {
+          id
+          text
+        }
+        answers
+        explanation
+        tags {
+          nextToken
+        }
+        quizzes {
+          nextToken
+        }
+        owner
+      }
     }
   }
 `;

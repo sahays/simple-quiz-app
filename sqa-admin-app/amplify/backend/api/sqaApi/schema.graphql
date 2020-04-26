@@ -31,13 +31,42 @@ type Question
   type: QuestionType!
   choices: [ChoiceType]!
   answers: [String]!
-  tags: [String]
   explanation: String
+  tags: [QuestionTag] @connection(keyName: "byQuestion", fields: ["id"])
+  quizzes: [QuizQuestion] @connection(keyName: "byQuestion", fields: ["id"])
+}
+
+type Tag @model {
+  id: ID!
+  text: String!
+  questions: [QuestionTag] @connection(keyName: "byQuestion", fields: ["id"])
+  quizzes: [QuizTag] @connection(keyName: "byQuiz", fields: ["id"])
+}
+
+type QuizTag
+  @model(queries: null)
+  @key(name: "byQuiz", fields: ["quizId", "tagId"])
+  @key(name: "byTag", fields: ["tagId", "quizId"]) {
+  id: ID!
+  tagId: ID!
+  quizId: ID!
+  tag: Tag! @connection(fields: ["tagId"])
+  quiz: Quiz! @connection(fields: ["quizId"])
+}
+
+type QuestionTag
+  @model(queries: null)
+  @key(name: "byQuestion", fields: ["questionId", "tagId"])
+  @key(name: "byTag", fields: ["tagId", "questionId"]) {
+  id: ID!
+  tagId: ID!
+  questionId: ID!
+  tag: Tag! @connection(fields: ["tagId"])
+  question: Question! @connection(fields: ["questionId"])
 }
 
 type Quiz
   @model
-  @key(name: "byCode", fields: ["code"])
   @auth(
     rules: [
       { allow: groups, groups: ["users"], operations: [read] }
@@ -48,11 +77,22 @@ type Quiz
   id: ID!
   code: String!
   name: String!
-  tags: [String]
-  questions: [QuestionScalarType]!
   description: String
   instructions: String
   timeLimit: Int
+  tags: [QuizTag] @connection(keyName: "byQuiz", fields: ["id"])
+  questions: [QuizQuestion] @connection(keyName: "byQuiz", fields: ["id"])
+}
+
+type QuizQuestion
+  @model(queries: null)
+  @key(name: "byQuestion", fields: ["questionId", "quizId"])
+  @key(name: "byQuiz", fields: ["quizId", "questionId"]) {
+  id: ID!
+  questionId: ID!
+  quizId: ID!
+  quiz: Quiz! @connection(fields: ["quizId"])
+  question: Question! @connection(fields: ["questionId"])
 }
 
 type ResponseType {
