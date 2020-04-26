@@ -20,7 +20,6 @@ type UserAttrs {
 
 type Question
   @model(subscriptions: null)
-  @searchable
   @auth(
     rules: [
       { allow: groups, groups: ["admins"], operations: [create, read] }
@@ -34,46 +33,10 @@ type Question
   answers: [String]!
   explanation: String
   dateCreated: AWSTimestamp
-  # tags: [QuestionTag] @connection(keyName: "byQuestion", fields: ["id"])
-  # quizzes: [QuizQuestion] @connection(keyName: "byQuestion", fields: ["id"])
-  # tags: [String]!
 }
-
-# type Tag
-#   @model(subscriptions: null)
-#   @auth(rules: [{ allow: groups, groups: ["admins"] }]) {
-#   id: ID!
-#   text: String!
-#   type: String!
-#   # questions: [QuestionTag] @connection(keyName: "byQuestion", fields: ["id"])
-#   # quizzes: [QuizTag] @connection(keyName: "byQuiz", fields: ["id"])
-# }
-
-# type QuizTag
-#   @model(queries: null, subscriptions: null)
-#   @key(name: "byQuiz", fields: ["quizId", "tagId"])
-#   @key(name: "byTag", fields: ["tagId", "quizId"]) {
-#   id: ID!
-#   tagId: ID!
-#   quizId: ID!
-#   tag: Tag! @connection(fields: ["tagId"])
-#   quiz: Quiz! @connection(fields: ["quizId"])
-# }
-
-# type QuestionTag
-#   @model(queries: null, subscriptions: null)
-#   @key(name: "byQuestion", fields: ["questionId", "tagId"])
-#   @key(name: "byTag", fields: ["tagId", "questionId"]) {
-#   id: ID!
-#   tagId: ID!
-#   questionId: ID!
-#   tag: Tag! @connection(fields: ["tagId"])
-#   question: Question! @connection(fields: ["questionId"])
-# }
 
 type Quiz
   @model(subscriptions: null)
-  @searchable
   @auth(
     rules: [
       { allow: groups, groups: ["users"], operations: [read] }
@@ -88,26 +51,11 @@ type Quiz
   instructions: String
   timeLimit: Int
   dateCreated: AWSTimestamp
-  # tags: [QuizTag] @connection(keyName: "byQuiz", fields: ["id"])
-  # questions: [QuizQuestion] @connection(keyName: "byQuiz", fields: ["id"])
-  # tags: [String]!
   questions: [String]!
 }
 
-# type QuizQuestion
-#   @model(queries: null, subscriptions: null)
-#   @key(name: "byQuestion", fields: ["questionId", "quizId"])
-#   @key(name: "byQuiz", fields: ["quizId", "questionId"]) {
-#   id: ID!
-#   questionId: ID!
-#   quizId: ID!
-#   quiz: Quiz! @connection(fields: ["quizId"])
-#   question: Question! @connection(fields: ["questionId"])
-# }
-
 type Response
   @model(subscriptions: null)
-  @searchable
   @key(
     name: "byCode"
     fields: ["quizCode", "username"]

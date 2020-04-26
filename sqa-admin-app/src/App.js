@@ -10,13 +10,13 @@ import { withAuthenticator } from "aws-amplify-react";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import Home from "./screens/Home";
-import ListQuestions from "./screens/Questions/ListQuestions";
 import ListQuizzes from "./screens/Quizzes/ListQuizzes";
 import CreateQuiz from "./screens/Quizzes/CreateQuiz";
 import CreateQuestion from "./screens/Questions/CreateQuestion";
 import ViewQuestion from "./screens/Questions/ViewQuestion";
 import MainNavbar from "./screens/MainNavbar";
 import ViewQuiz from "./screens/Quizzes/ViewQuiz";
+import SearchQuestions from "./screens/Questions/SearchQuestions";
 
 awsmobile.clientMetadata = {
   app: "sqa-admin",
@@ -33,7 +33,7 @@ const App = () => {
           <Col sm={1}></Col>
           <Col>
             <Switch>
-              <Route path="/questions" component={ListQuestions}></Route>
+              <Route path="/questions" component={SearchQuestions}></Route>
               <Route path="/question/create" component={CreateQuestion}></Route>
               <Route path="/question/view/:id" component={ViewQuestion}></Route>
 

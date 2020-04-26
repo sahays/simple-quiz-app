@@ -44,11 +44,12 @@ const QuestionStore = () => {
   const searchQuestions = async (text) => {
     try {
       const result = await filter(searchQuestions, {
-        question: { match: text },
+        question: { contains: text },
       });
       return result;
     } catch (e) {
-      logger.error(`failed to get question by ${text} because of ${e}`);
+      logger.error(`failed to get question by '${text}'`);
+      logger.error(e);
     }
   };
 

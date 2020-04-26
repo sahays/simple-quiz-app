@@ -16,7 +16,7 @@ const query = async (queryFn, input) => {
   return result;
 };
 
-const filter = async (queryFn, input, limit = 500) => {
+const filter = async (queryFn, input, limit = 100) => {
   const result = await API.graphql(
     graphqlOperation(queryFn, {
       filter: input,
@@ -27,7 +27,7 @@ const filter = async (queryFn, input, limit = 500) => {
   return result;
 };
 
-const listAll = async (listFn, limit = 500) => {
+const listAll = async (listFn, limit = 100) => {
   const result = await API.graphql(
     graphqlOperation(listFn, {
       limit: limit,
