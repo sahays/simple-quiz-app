@@ -1,6 +1,55 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const batchGetQuestions = /* GraphQL */ `
+  query BatchGetQuestions($ids: [String]) {
+    batchGetQuestions(ids: $ids) {
+      id
+      question
+      type
+      choices {
+        id
+        text
+      }
+      answers
+      explanation
+      dateCreated
+    }
+  }
+`;
+export const batchGetResponses = /* GraphQL */ `
+  query BatchGetResponses($ids: [String]) {
+    batchGetResponses(ids: $ids) {
+      id
+      username
+      userAttrs {
+        firstName
+        lastName
+      }
+      quizId
+      quizCode
+      responses {
+        questionId
+        responses
+      }
+      dateCreated
+    }
+  }
+`;
+export const batchGetQuizzes = /* GraphQL */ `
+  query BatchGetQuizzes($ids: [String]) {
+    batchGetQuizzes(ids: $ids) {
+      id
+      code
+      name
+      description
+      instructions
+      timeLimit
+      dateCreated
+      questions
+    }
+  }
+`;
 export const getQuestion = /* GraphQL */ `
   query GetQuestion($id: ID!) {
     getQuestion(id: $id) {
@@ -12,9 +61,8 @@ export const getQuestion = /* GraphQL */ `
         text
       }
       answers
-      tags
       explanation
-      owner
+      dateCreated
     }
   }
 `;
@@ -29,14 +77,9 @@ export const listQuestions = /* GraphQL */ `
         id
         question
         type
-        choices {
-          id
-          text
-        }
         answers
-        tags
         explanation
-        owner
+        dateCreated
       }
       nextToken
     }
@@ -48,23 +91,11 @@ export const getQuiz = /* GraphQL */ `
       id
       code
       name
-      tags
-      questions {
-        id
-        question
-        type
-        choices {
-          id
-          text
-        }
-        answers
-        tags
-        explanation
-      }
       description
       instructions
       timeLimit
-      owner
+      dateCreated
+      questions
     }
   }
 `;
@@ -79,19 +110,11 @@ export const listQuizs = /* GraphQL */ `
         id
         code
         name
-        tags
-        questions {
-          id
-          question
-          type
-          answers
-          tags
-          explanation
-        }
         description
         instructions
         timeLimit
-        owner
+        dateCreated
+        questions
       }
       nextToken
     }
@@ -107,11 +130,12 @@ export const getResponse = /* GraphQL */ `
         lastName
       }
       quizId
+      quizCode
       responses {
         questionId
         responses
       }
-      owner
+      dateCreated
     }
   }
 `;
@@ -125,18 +149,118 @@ export const listResponses = /* GraphQL */ `
       items {
         id
         username
-        userAttrs {
-          firstName
-          lastName
-        }
         quizId
-        responses {
-          questionId
-          responses
-        }
-        owner
+        quizCode
+        dateCreated
       }
       nextToken
+    }
+  }
+`;
+export const userResponsesByQuizCode = /* GraphQL */ `
+  query UserResponsesByQuizCode(
+    $quizCode: String
+    $username: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelResponseFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    userResponsesByQuizCode(
+      quizCode: $quizCode
+      username: $username
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        username
+        quizId
+        quizCode
+        dateCreated
+      }
+      nextToken
+    }
+  }
+`;
+export const searchQuestions = /* GraphQL */ `
+  query SearchQuestions(
+    $filter: SearchableQuestionFilterInput
+    $sort: SearchableQuestionSortInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    searchQuestions(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        question
+        type
+        answers
+        explanation
+        dateCreated
+      }
+      nextToken
+      total
+    }
+  }
+`;
+export const searchQuizs = /* GraphQL */ `
+  query SearchQuizs(
+    $filter: SearchableQuizFilterInput
+    $sort: SearchableQuizSortInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    searchQuizs(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        code
+        name
+        description
+        instructions
+        timeLimit
+        dateCreated
+        questions
+      }
+      nextToken
+      total
+    }
+  }
+`;
+export const searchResponses = /* GraphQL */ `
+  query SearchResponses(
+    $filter: SearchableResponseFilterInput
+    $sort: SearchableResponseSortInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    searchResponses(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        username
+        quizId
+        quizCode
+        dateCreated
+      }
+      nextToken
+      total
     }
   }
 `;

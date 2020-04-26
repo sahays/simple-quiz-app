@@ -15,9 +15,8 @@ export const createQuestion = /* GraphQL */ `
         text
       }
       answers
-      tags
       explanation
-      owner
+      dateCreated
     }
   }
 `;
@@ -35,9 +34,8 @@ export const updateQuestion = /* GraphQL */ `
         text
       }
       answers
-      tags
       explanation
-      owner
+      dateCreated
     }
   }
 `;
@@ -55,9 +53,8 @@ export const deleteQuestion = /* GraphQL */ `
         text
       }
       answers
-      tags
       explanation
-      owner
+      dateCreated
     }
   }
 `;
@@ -70,23 +67,11 @@ export const createQuiz = /* GraphQL */ `
       id
       code
       name
-      tags
-      questions {
-        id
-        question
-        type
-        choices {
-          id
-          text
-        }
-        answers
-        tags
-        explanation
-      }
       description
       instructions
       timeLimit
-      owner
+      dateCreated
+      questions
     }
   }
 `;
@@ -99,23 +84,11 @@ export const updateQuiz = /* GraphQL */ `
       id
       code
       name
-      tags
-      questions {
-        id
-        question
-        type
-        choices {
-          id
-          text
-        }
-        answers
-        tags
-        explanation
-      }
       description
       instructions
       timeLimit
-      owner
+      dateCreated
+      questions
     }
   }
 `;
@@ -128,23 +101,11 @@ export const deleteQuiz = /* GraphQL */ `
       id
       code
       name
-      tags
-      questions {
-        id
-        question
-        type
-        choices {
-          id
-          text
-        }
-        answers
-        tags
-        explanation
-      }
       description
       instructions
       timeLimit
-      owner
+      dateCreated
+      questions
     }
   }
 `;
@@ -161,11 +122,12 @@ export const createResponse = /* GraphQL */ `
         lastName
       }
       quizId
+      quizCode
       responses {
         questionId
         responses
       }
-      owner
+      dateCreated
     }
   }
 `;
@@ -182,11 +144,12 @@ export const updateResponse = /* GraphQL */ `
         lastName
       }
       quizId
+      quizCode
       responses {
         questionId
         responses
       }
-      owner
+      dateCreated
     }
   }
 `;
@@ -203,11 +166,12 @@ export const deleteResponse = /* GraphQL */ `
         lastName
       }
       quizId
+      quizCode
       responses {
         questionId
         responses
       }
-      owner
+      dateCreated
     }
   }
 `;

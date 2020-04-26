@@ -1,18 +1,17 @@
 import GraphQlUtil from "../utils/GraphQlUtil";
-const { mutation, filter } = GraphQlUtil();
 import { createQuestion } from "../graphql/mutations";
-import { listQuestions, getQuestion } from "../graphql/queries";
+import { getQuestion } from "../graphql/queries";
 import { Logger } from "aws-amplify";
-const logger = new Logger("QuestionStore");
 
 const QuestionStore = () => {
+  const { mutation, filter, query } = GraphQlUtil();
+  const logger = new Logger("QuestionStore");
   const addNewQuestion = async ({
     question,
     choices,
     answers,
     explanation,
-    questionType,
-    tags,
+    type,
   }) => {
     try {
       const result = await mutation(createQuestion, {
@@ -20,23 +19,14 @@ const QuestionStore = () => {
         choices,
         answers,
         explanation,
-        questionType,
-        tags,
+        type,
+        dateCreated: Date.now(),
       });
+      logger.debug(result);
       return result;
     } catch (e) {
-      logger.error(`failed to create question because of ${e}`);
-    }
-  };
-
-  const listQuestionsByTag = async (tagId) => {
-    try {
-      const result = await filter(listQuestions, {
-        tags: { contains: tagId },
-      });
-      return result;
-    } catch (e) {
-      logger.error(`failed to list questions by ${tagId} because of ${e}`);
+      logger.error(e);
+      throw e;
     }
   };
 
@@ -51,9 +41,20 @@ const QuestionStore = () => {
     }
   };
 
+  const searchQuestions = async (text) => {
+    try {
+      const result = await filter(searchQuestions, {
+        question: { match: text },
+      });
+      return result;
+    } catch (e) {
+      logger.error(`failed to get question by ${text} because of ${e}`);
+    }
+  };
+
   return {
     addNewQuestion,
-    listQuestionsByTag,
+    searchQuestions,
     getQuestionById,
   };
 };

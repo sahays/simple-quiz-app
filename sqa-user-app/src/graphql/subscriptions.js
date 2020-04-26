@@ -1,54 +1,180 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateQuestion = /* GraphQL */ `
-  subscription OnCreateQuestion($owner: String) {
-    onCreateQuestion(owner: $owner) {
+export const onCreateTag = /* GraphQL */ `
+  subscription OnCreateTag {
+    onCreateTag {
       id
-      question
+      text
       type
-      choices {
-        id
-        text
+      questions {
+        nextToken
       }
-      answers
-      tags
-      explanation
-      owner
+      quizzes {
+        nextToken
+      }
     }
   }
 `;
-export const onUpdateQuestion = /* GraphQL */ `
-  subscription OnUpdateQuestion {
-    onUpdateQuestion {
+export const onUpdateTag = /* GraphQL */ `
+  subscription OnUpdateTag {
+    onUpdateTag {
       id
-      question
+      text
       type
-      choices {
-        id
-        text
+      questions {
+        nextToken
       }
-      answers
-      tags
-      explanation
-      owner
+      quizzes {
+        nextToken
+      }
     }
   }
 `;
-export const onDeleteQuestion = /* GraphQL */ `
-  subscription OnDeleteQuestion($owner: String!) {
-    onDeleteQuestion(owner: $owner) {
+export const onDeleteTag = /* GraphQL */ `
+  subscription OnDeleteTag {
+    onDeleteTag {
       id
-      question
+      text
       type
-      choices {
+      questions {
+        nextToken
+      }
+      quizzes {
+        nextToken
+      }
+    }
+  }
+`;
+export const onCreateQuizTag = /* GraphQL */ `
+  subscription OnCreateQuizTag {
+    onCreateQuizTag {
+      id
+      tagId
+      quizId
+      tag {
         id
         text
+        type
       }
-      answers
-      tags
-      explanation
-      owner
+      quiz {
+        id
+        code
+        name
+        description
+        instructions
+        timeLimit
+        owner
+      }
+    }
+  }
+`;
+export const onUpdateQuizTag = /* GraphQL */ `
+  subscription OnUpdateQuizTag {
+    onUpdateQuizTag {
+      id
+      tagId
+      quizId
+      tag {
+        id
+        text
+        type
+      }
+      quiz {
+        id
+        code
+        name
+        description
+        instructions
+        timeLimit
+        owner
+      }
+    }
+  }
+`;
+export const onDeleteQuizTag = /* GraphQL */ `
+  subscription OnDeleteQuizTag {
+    onDeleteQuizTag {
+      id
+      tagId
+      quizId
+      tag {
+        id
+        text
+        type
+      }
+      quiz {
+        id
+        code
+        name
+        description
+        instructions
+        timeLimit
+        owner
+      }
+    }
+  }
+`;
+export const onCreateQuestionTag = /* GraphQL */ `
+  subscription OnCreateQuestionTag {
+    onCreateQuestionTag {
+      id
+      tagId
+      questionId
+      tag {
+        id
+        text
+        type
+      }
+      question {
+        id
+        question
+        type
+        answers
+        explanation
+      }
+    }
+  }
+`;
+export const onUpdateQuestionTag = /* GraphQL */ `
+  subscription OnUpdateQuestionTag {
+    onUpdateQuestionTag {
+      id
+      tagId
+      questionId
+      tag {
+        id
+        text
+        type
+      }
+      question {
+        id
+        question
+        type
+        answers
+        explanation
+      }
+    }
+  }
+`;
+export const onDeleteQuestionTag = /* GraphQL */ `
+  subscription OnDeleteQuestionTag {
+    onDeleteQuestionTag {
+      id
+      tagId
+      questionId
+      tag {
+        id
+        text
+        type
+      }
+      question {
+        id
+        question
+        type
+        answers
+        explanation
+      }
     }
   }
 `;
@@ -58,22 +184,15 @@ export const onCreateQuiz = /* GraphQL */ `
       id
       code
       name
-      tags
-      questions {
-        id
-        question
-        type
-        choices {
-          id
-          text
-        }
-        answers
-        tags
-        explanation
-      }
       description
       instructions
       timeLimit
+      tags {
+        nextToken
+      }
+      questions {
+        nextToken
+      }
       owner
     }
   }
@@ -84,22 +203,15 @@ export const onUpdateQuiz = /* GraphQL */ `
       id
       code
       name
-      tags
-      questions {
-        id
-        question
-        type
-        choices {
-          id
-          text
-        }
-        answers
-        tags
-        explanation
-      }
       description
       instructions
       timeLimit
+      tags {
+        nextToken
+      }
+      questions {
+        nextToken
+      }
       owner
     }
   }
@@ -110,23 +222,91 @@ export const onDeleteQuiz = /* GraphQL */ `
       id
       code
       name
-      tags
-      questions {
-        id
-        question
-        type
-        choices {
-          id
-          text
-        }
-        answers
-        tags
-        explanation
-      }
       description
       instructions
       timeLimit
+      tags {
+        nextToken
+      }
+      questions {
+        nextToken
+      }
       owner
+    }
+  }
+`;
+export const onCreateQuizQuestion = /* GraphQL */ `
+  subscription OnCreateQuizQuestion {
+    onCreateQuizQuestion {
+      id
+      questionId
+      quizId
+      quiz {
+        id
+        code
+        name
+        description
+        instructions
+        timeLimit
+        owner
+      }
+      question {
+        id
+        question
+        type
+        answers
+        explanation
+      }
+    }
+  }
+`;
+export const onUpdateQuizQuestion = /* GraphQL */ `
+  subscription OnUpdateQuizQuestion {
+    onUpdateQuizQuestion {
+      id
+      questionId
+      quizId
+      quiz {
+        id
+        code
+        name
+        description
+        instructions
+        timeLimit
+        owner
+      }
+      question {
+        id
+        question
+        type
+        answers
+        explanation
+      }
+    }
+  }
+`;
+export const onDeleteQuizQuestion = /* GraphQL */ `
+  subscription OnDeleteQuizQuestion {
+    onDeleteQuizQuestion {
+      id
+      questionId
+      quizId
+      quiz {
+        id
+        code
+        name
+        description
+        instructions
+        timeLimit
+        owner
+      }
+      question {
+        id
+        question
+        type
+        answers
+        explanation
+      }
     }
   }
 `;

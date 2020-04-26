@@ -7,16 +7,13 @@ import RandomUtil from "../../utils/RandomUtil";
 import Checkbox from "../../controls/Checkbox";
 import { reject as _reject } from "underscore";
 import FormikField from "../../controls/FormikField";
-import StringUtil from "../../utils/StringUtil";
-import { QuestionStore } from "../../cache-stores/QuestionStore";
+import QuestionStore from "../../data-stores/QuestionStore";
 
 const CreateQuestion = () => {
   const { getRandomAlphabets } = RandomUtil();
-  const { trimSplit } = StringUtil();
   const initValue = {
     question: "",
     type: "",
-    tags: [],
     explanation: "",
     choices: [{ id: getRandomAlphabets(), text: "" }],
   };
@@ -34,15 +31,13 @@ const CreateQuestion = () => {
     console.log(values);
     try {
       if (answers.length > 0) {
-        const { createNewQuestion } = QuestionStore();
-        await createNewQuestion({
+        const { addNewQuestion } = QuestionStore();
+        await addNewQuestion({
           question: values.question,
           type: answers.length > 1 ? "checkbox" : "radio",
           choices: values.choices,
           answers: answers,
           explanation: values.explanation,
-          timeLimit: values.timeLimit,
-          tags: trimSplit(values.tags.toLowerCase()),
         });
         setInfoMsg("New question added");
         answers.length = 0;
@@ -108,11 +103,6 @@ const CreateQuestion = () => {
                     .required("An explanation is required")
                     .min(10, "At least 10 characters")
                     .max(1024, "Max 1024 characters"),
-                  tags: yup
-                    .string()
-                    .required("Tags are required")
-                    .min(3, "At least 3 characters")
-                    .max(256, "Max 256 characters"),
                   choices: yup
                     .array()
                     .of(
@@ -128,17 +118,6 @@ const CreateQuestion = () => {
                 })}>
                 {({ values }) => (
                   <Form>
-                    <small>
-                      Tags are used as filters. If you are adding an entry level
-                      100 question related to EC2, you may want to use "EC2,
-                      100"
-                    </small>
-                    <FormikField
-                      name="tags"
-                      className="form form-control mb-3"
-                      as="input"
-                      placeholder="comma separated tags"
-                    />
                     {markupHelptext()}
                     <FormikField
                       name="question"
@@ -154,7 +133,7 @@ const CreateQuestion = () => {
                           <div>
                             {values.choices.map((choice, index) => (
                               <Row key={index} className="mb-3">
-                                <Col sm={1}>
+                                <Col xs={1}>
                                   <Checkbox
                                     name={`choices[${index}].id`}
                                     className="mt-4"
@@ -178,8 +157,8 @@ const CreateQuestion = () => {
                                     name={`choices.${index}.text`}
                                   />
                                 </Col>
-                                <Col sm={2}>
-                                  <div className="mt-5">
+                                <Col xs={2}>
+                                  <div className="mt-4">
                                     <Button
                                       type="button"
                                       variant="secondary"
