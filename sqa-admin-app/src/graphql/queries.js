@@ -1,6 +1,55 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const batchGetQuestions = /* GraphQL */ `
+  query BatchGetQuestions($ids: [String]) {
+    batchGetQuestions(ids: $ids) {
+      id
+      question
+      type
+      choices {
+        id
+        text
+      }
+      answers
+      explanation
+      dateCreated
+    }
+  }
+`;
+export const batchGetResponses = /* GraphQL */ `
+  query BatchGetResponses($ids: [String]) {
+    batchGetResponses(ids: $ids) {
+      id
+      username
+      userAttrs {
+        firstName
+        lastName
+      }
+      quizId
+      quizCode
+      responses {
+        questionId
+        responses
+      }
+      dateCreated
+    }
+  }
+`;
+export const batchGetQuizzes = /* GraphQL */ `
+  query BatchGetQuizzes($ids: [String]) {
+    batchGetQuizzes(ids: $ids) {
+      id
+      code
+      name
+      description
+      instructions
+      timeLimit
+      dateCreated
+      questions
+    }
+  }
+`;
 export const getQuestion = /* GraphQL */ `
   query GetQuestion($id: ID!) {
     getQuestion(id: $id) {
@@ -14,7 +63,6 @@ export const getQuestion = /* GraphQL */ `
       answers
       explanation
       dateCreated
-      tags
     }
   }
 `;
@@ -32,32 +80,6 @@ export const listQuestions = /* GraphQL */ `
         answers
         explanation
         dateCreated
-        tags
-      }
-      nextToken
-    }
-  }
-`;
-export const getTag = /* GraphQL */ `
-  query GetTag($id: ID!) {
-    getTag(id: $id) {
-      id
-      text
-      type
-    }
-  }
-`;
-export const listTags = /* GraphQL */ `
-  query ListTags(
-    $filter: ModelTagFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listTags(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        text
-        type
       }
       nextToken
     }
@@ -73,7 +95,6 @@ export const getQuiz = /* GraphQL */ `
       instructions
       timeLimit
       dateCreated
-      tags
       questions
     }
   }
@@ -93,7 +114,6 @@ export const listQuizs = /* GraphQL */ `
         instructions
         timeLimit
         dateCreated
-        tags
         questions
       }
       nextToken
@@ -137,8 +157,8 @@ export const listResponses = /* GraphQL */ `
     }
   }
 `;
-export const responsesByQuizCode = /* GraphQL */ `
-  query ResponsesByQuizCode(
+export const userResponsesByQuizCode = /* GraphQL */ `
+  query UserResponsesByQuizCode(
     $quizCode: String
     $username: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
@@ -146,7 +166,7 @@ export const responsesByQuizCode = /* GraphQL */ `
     $limit: Int
     $nextToken: String
   ) {
-    responsesByQuizCode(
+    userResponsesByQuizCode(
       quizCode: $quizCode
       username: $username
       sortDirection: $sortDirection
@@ -162,6 +182,85 @@ export const responsesByQuizCode = /* GraphQL */ `
         dateCreated
       }
       nextToken
+    }
+  }
+`;
+export const searchQuestions = /* GraphQL */ `
+  query SearchQuestions(
+    $filter: SearchableQuestionFilterInput
+    $sort: SearchableQuestionSortInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    searchQuestions(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        question
+        type
+        answers
+        explanation
+        dateCreated
+      }
+      nextToken
+      total
+    }
+  }
+`;
+export const searchQuizs = /* GraphQL */ `
+  query SearchQuizs(
+    $filter: SearchableQuizFilterInput
+    $sort: SearchableQuizSortInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    searchQuizs(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        code
+        name
+        description
+        instructions
+        timeLimit
+        dateCreated
+        questions
+      }
+      nextToken
+      total
+    }
+  }
+`;
+export const searchResponses = /* GraphQL */ `
+  query SearchResponses(
+    $filter: SearchableResponseFilterInput
+    $sort: SearchableResponseSortInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    searchResponses(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        username
+        quizId
+        quizCode
+        dateCreated
+      }
+      nextToken
+      total
     }
   }
 `;

@@ -14,6 +14,16 @@ export const Result = ({ match }) => {
   const [questions, setQuestions] = useState(null);
   const [responses, setResponses] = useState(null);
 
+  /**
+   * 3-way array matching
+   * var result = arrays.shift().reduce(function(res, v) {
+    if (res.indexOf(v) === -1 && arrays.every(function(a) {
+        return a.indexOf(v) !== -1;
+    })) res.push(v);
+    return res;
+}, []);
+   */
+
   useEffect(() => {
     // load questions
     const { query } = GraphQlUtil();

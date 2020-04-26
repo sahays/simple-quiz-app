@@ -1,0 +1,5 @@
+type Query {
+  batchGetQuestions(ids: [String]): [Question]
+  batchGetResponses(ids: [String]): [Response]
+  batchGetQuizzes(ids: [String]): [Quiz]
+}

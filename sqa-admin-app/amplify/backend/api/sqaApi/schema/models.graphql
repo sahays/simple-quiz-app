@@ -20,6 +20,7 @@ type UserAttrs {
 
 type Question
   @model(subscriptions: null)
+  @searchable
   @auth(
     rules: [
       { allow: groups, groups: ["admins"], operations: [create, read] }
@@ -35,16 +36,18 @@ type Question
   dateCreated: AWSTimestamp
   # tags: [QuestionTag] @connection(keyName: "byQuestion", fields: ["id"])
   # quizzes: [QuizQuestion] @connection(keyName: "byQuestion", fields: ["id"])
-  tags: [String]!
+  # tags: [String]!
 }
 
-type Tag @model(subscriptions: null) {
-  id: ID!
-  text: String!
-  type: String!
-  # questions: [QuestionTag] @connection(keyName: "byQuestion", fields: ["id"])
-  # quizzes: [QuizTag] @connection(keyName: "byQuiz", fields: ["id"])
-}
+# type Tag
+#   @model(subscriptions: null)
+#   @auth(rules: [{ allow: groups, groups: ["admins"] }]) {
+#   id: ID!
+#   text: String!
+#   type: String!
+#   # questions: [QuestionTag] @connection(keyName: "byQuestion", fields: ["id"])
+#   # quizzes: [QuizTag] @connection(keyName: "byQuiz", fields: ["id"])
+# }
 
 # type QuizTag
 #   @model(queries: null, subscriptions: null)
@@ -70,6 +73,7 @@ type Tag @model(subscriptions: null) {
 
 type Quiz
   @model(subscriptions: null)
+  @searchable
   @auth(
     rules: [
       { allow: groups, groups: ["users"], operations: [read] }
@@ -86,7 +90,7 @@ type Quiz
   dateCreated: AWSTimestamp
   # tags: [QuizTag] @connection(keyName: "byQuiz", fields: ["id"])
   # questions: [QuizQuestion] @connection(keyName: "byQuiz", fields: ["id"])
-  tags: [String]!
+  # tags: [String]!
   questions: [String]!
 }
 
@@ -103,10 +107,11 @@ type Quiz
 
 type Response
   @model(subscriptions: null)
+  @searchable
   @key(
     name: "byCode"
     fields: ["quizCode", "username"]
-    queryField: "responsesByQuizCode"
+    queryField: "userResponsesByQuizCode"
   )
   @auth(
     rules: [

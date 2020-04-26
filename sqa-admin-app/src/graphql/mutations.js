@@ -17,7 +17,6 @@ export const createQuestion = /* GraphQL */ `
       answers
       explanation
       dateCreated
-      tags
     }
   }
 `;
@@ -37,7 +36,6 @@ export const updateQuestion = /* GraphQL */ `
       answers
       explanation
       dateCreated
-      tags
     }
   }
 `;
@@ -57,43 +55,6 @@ export const deleteQuestion = /* GraphQL */ `
       answers
       explanation
       dateCreated
-      tags
-    }
-  }
-`;
-export const createTag = /* GraphQL */ `
-  mutation CreateTag(
-    $input: CreateTagInput!
-    $condition: ModelTagConditionInput
-  ) {
-    createTag(input: $input, condition: $condition) {
-      id
-      text
-      type
-    }
-  }
-`;
-export const updateTag = /* GraphQL */ `
-  mutation UpdateTag(
-    $input: UpdateTagInput!
-    $condition: ModelTagConditionInput
-  ) {
-    updateTag(input: $input, condition: $condition) {
-      id
-      text
-      type
-    }
-  }
-`;
-export const deleteTag = /* GraphQL */ `
-  mutation DeleteTag(
-    $input: DeleteTagInput!
-    $condition: ModelTagConditionInput
-  ) {
-    deleteTag(input: $input, condition: $condition) {
-      id
-      text
-      type
     }
   }
 `;
@@ -110,7 +71,6 @@ export const createQuiz = /* GraphQL */ `
       instructions
       timeLimit
       dateCreated
-      tags
       questions
     }
   }
@@ -128,7 +88,6 @@ export const updateQuiz = /* GraphQL */ `
       instructions
       timeLimit
       dateCreated
-      tags
       questions
     }
   }
@@ -146,7 +105,6 @@ export const deleteQuiz = /* GraphQL */ `
       instructions
       timeLimit
       dateCreated
-      tags
       questions
     }
   }
