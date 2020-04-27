@@ -1,6 +1,42 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createTags = /* GraphQL */ `
+  mutation CreateTags(
+    $input: CreateTagsInput!
+    $condition: ModelTagsConditionInput
+  ) {
+    createTags(input: $input, condition: $condition) {
+      type
+      typeId
+      text
+    }
+  }
+`;
+export const updateTags = /* GraphQL */ `
+  mutation UpdateTags(
+    $input: UpdateTagsInput!
+    $condition: ModelTagsConditionInput
+  ) {
+    updateTags(input: $input, condition: $condition) {
+      type
+      typeId
+      text
+    }
+  }
+`;
+export const deleteTags = /* GraphQL */ `
+  mutation DeleteTags(
+    $input: DeleteTagsInput!
+    $condition: ModelTagsConditionInput
+  ) {
+    deleteTags(input: $input, condition: $condition) {
+      type
+      typeId
+      text
+    }
+  }
+`;
 export const createQuestion = /* GraphQL */ `
   mutation CreateQuestion(
     $input: CreateQuestionInput!

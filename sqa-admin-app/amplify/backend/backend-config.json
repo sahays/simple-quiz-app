@@ -76,5 +76,12 @@
 			"providerPlugin": "awscloudformation",
 			"type": "manual"
 		}
+	},
+	"predictions": {
+		"interpretTextf13c3534": {
+			"providerPlugin": "awscloudformation",
+			"service": "Comprehend",
+			"interpretType": "interpretText"
+		}
 	}
 }

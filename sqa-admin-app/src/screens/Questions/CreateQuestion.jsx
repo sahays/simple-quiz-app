@@ -1,15 +1,26 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  Alert,
+  Badge,
+} from "react-bootstrap";
 import { Formik, Form, FieldArray } from "formik";
 import ButtonBar from "../../controls/ButtonBar";
 import * as yup from "yup";
 import RandomUtil from "../../utils/RandomUtil";
 import Checkbox from "../../controls/Checkbox";
-import { reject as _reject } from "underscore";
+import { reject as _reject, pluck, uniq, without } from "underscore";
 import FormikField from "../../controls/FormikField";
 import QuestionStore from "../../data-stores/QuestionStore";
+import Predictions from "@aws-amplify/predictions";
+import { Logger } from "aws-amplify";
 
 const CreateQuestion = () => {
+  const logger = new Logger("CreateQuestion");
   const { getRandomAlphabets } = RandomUtil();
   const initValue = {
     question: "",
@@ -23,6 +34,8 @@ const CreateQuestion = () => {
   const [errorMsg, setErrorMsg] = useState(null);
   const [infoMsg, setInfoMsg] = useState(null);
   const [warnMsg, setWarnMsg] = useState(null);
+  const [sentiment, setSentiment] = useState(null);
+  const [tags, setTags] = useState(null);
 
   const onSubmit = async (values) => {
     setBusy(true);
@@ -37,8 +50,10 @@ const CreateQuestion = () => {
           type: answers.length > 1 ? "checkbox" : "radio",
           choices: values.choices,
           answers: answers,
+          tags: tags,
           explanation: values.explanation,
         });
+        // save tags
         setInfoMsg("New question added");
         answers.length = 0;
         setAnswers(answers);
@@ -62,6 +77,68 @@ const CreateQuestion = () => {
     }
     ids.sort();
     setAnswers(ids);
+  };
+
+  const onFindTags = async ({ question, choices, explanation }) => {
+    const text = pluck(choices, "text").join() + question + explanation;
+    setBusy(true);
+    try {
+      const {
+        textInterpretation: { sentiment, textEntities },
+      } = await Predictions.interpret({
+        text: {
+          source: {
+            text: text,
+          },
+          type: "ALL",
+        },
+      });
+      setSentiment(sentiment.predominant);
+      setTags(uniq(pluck(textEntities, "text")));
+    } catch (e) {
+      logger.error(e);
+    }
+    setBusy(false);
+  };
+
+  const renderSentiment = () => {
+    if (sentiment === "NEGATIVE")
+      return (
+        <Alert variant="warning" size="sm" className="mt-2">
+          You might want to change the question/choices/explanation because it
+          shows a negative sentiment
+        </Alert>
+      );
+  };
+
+  const onRemoveTag = (tag) => {
+    const t = [...tags];
+    setTags(without(t, tag));
+  };
+
+  const renderTags = () => {
+    if (tags && tags.length > 0) {
+      return (
+        <React.Fragment>
+          <small>Click on a tag to remove</small>
+          <Card className="mb-3">
+            <Card.Body>
+              {tags.map((t, index) => {
+                return (
+                  <Badge
+                    key={index}
+                    variant="dark"
+                    className="mr-1 clickable"
+                    onClick={() => onRemoveTag(t)}>
+                    {t}
+                  </Badge>
+                );
+              })}
+            </Card.Body>
+          </Card>
+        </React.Fragment>
+      );
+    }
   };
 
   const markupHelptext = () => {
@@ -126,6 +203,7 @@ const CreateQuestion = () => {
                       rows="8"
                       placeholder="enter a question"
                     />
+                    <hr />
                     <FieldArray
                       name="choices"
                       render={(arrayHelpers) => {
@@ -190,6 +268,7 @@ const CreateQuestion = () => {
                           </div>
                         );
                       }}></FieldArray>
+                    <hr />
                     {markupHelptext()}
                     <FormikField
                       name="explanation"
@@ -198,6 +277,20 @@ const CreateQuestion = () => {
                       rows="8"
                       placeholder="enter an explanation"
                     />
+                    <hr />
+                    {renderTags()}
+                    {renderSentiment()}
+                    <Row>
+                      <Col>
+                        <Button
+                          size="sm"
+                          onClick={() => onFindTags(values)}
+                          className="float-right"
+                          variant="success">
+                          Find tags
+                        </Button>
+                      </Col>
+                    </Row>
                     <ButtonBar
                       busy={busy}
                       errorMsg={errorMsg}

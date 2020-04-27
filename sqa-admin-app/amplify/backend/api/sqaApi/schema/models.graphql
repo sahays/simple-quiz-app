@@ -18,6 +18,17 @@ type UserAttrs {
   lastName: String!
 }
 
+type Tags
+  @model(subscriptions: null)
+  @key(fields: ["type", "typeId"])
+  @auth(
+    rules: [{ allow: groups, groups: ["admins"], operations: [create, read] }]
+  ) {
+  type: String!
+  typeId: String!
+  text: String!
+}
+
 type Question
   @model(subscriptions: null)
   @auth(
@@ -31,6 +42,7 @@ type Question
   type: QuestionType!
   choices: [ChoiceType]!
   answers: [String]!
+  tags: String
   explanation: String
   dateCreated: AWSTimestamp
 }
