@@ -31,30 +31,31 @@ const ListQuizzes = ({ history }) => {
     }
 
     return (
-      <Table className="table-responsive-sm" size="sm" bordered hover striped>
+      <Table className="table-responsive-sm" bordered hover striped>
         <caption>Showing {quizzes.length} quizzes</caption>
         <thead>
           <tr>
             <th>Name</th>
             <th>Code</th>
             <th>Questions</th>
+            {/* <th>Action</th> */}
           </tr>
         </thead>
         <tbody>
           {quizzes.map((qq, index) => {
             return (
-              <tr
-                key={index}
-                onClick={() => onQuizClick(qq.id)}
-                className="clickable">
-                <td style={{ width: "40%" }}>
-                  <div>
-                    <p>{qq.name}</p>
-                    <small>{qq.description}</small>
-                  </div>
+              <tr key={index}>
+                <td
+                  onClick={() => onQuizClick(qq.id)}
+                  className="clickable"
+                  style={{ width: "50%" }}>
+                  {qq.name}
                 </td>
                 <td>{qq.code}</td>
                 <td>{qq.questions.length}</td>
+                {/* <td>
+                  <Button size="sm">Copy to new</Button>
+                </td> */}
               </tr>
             );
           })}

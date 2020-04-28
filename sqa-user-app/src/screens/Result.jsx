@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import GraphQlUtil from "../utils/GraphQlUtil";
-import { getQuiz as getQuizById } from "../graphql/custom/queries";
+import { getQuizWithAnswers } from "../graphql/custom/queries";
 import { listResponses as lisResponsesByQuizId } from "../graphql/queries";
 import { find as _find, pluck } from "underscore";
 import { Card } from "react-bootstrap";
@@ -20,7 +20,7 @@ export const Result = ({ match }) => {
     const loadQuestions = async () => {
       const {
         data: { getQuiz },
-      } = await query(getQuizById, {
+      } = await query(getQuizWithAnswers, {
         id: quizId,
       });
       setQuiz(getQuiz);
@@ -101,7 +101,7 @@ export const Result = ({ match }) => {
               );
             })}
             <p>
-              <strong>Responses</strong>
+              <strong>Your responses</strong>
             </p>
             {r.responses.map((rr, index) => {
               return (
@@ -113,7 +113,7 @@ export const Result = ({ match }) => {
               );
             })}
             <p>
-              <strong>Answers</strong>
+              <strong>Correct answers</strong>
             </p>
             {qq.answers.map((aa, index) => {
               return (

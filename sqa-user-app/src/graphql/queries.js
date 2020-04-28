@@ -140,3 +140,38 @@ export const listResponses = /* GraphQL */ `
     }
   }
 `;
+export const listUserResponsesByQuiz = /* GraphQL */ `
+  query ListUserResponsesByQuiz(
+    $quizId: String
+    $username: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelResponseFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserResponsesByQuiz(
+      quizId: $quizId
+      username: $username
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        username
+        userAttrs {
+          firstName
+          lastName
+        }
+        quizId
+        responses {
+          questionId
+          responses
+        }
+        owner
+      }
+      nextToken
+    }
+  }
+`;

@@ -27,13 +27,15 @@ const ListQuestions = ({ history }) => {
   };
 
   const renderTags = (q) => {
-    return q.tags.map((t, index) => {
-      return (
-        <Badge key={index} variant="light" className="mr-1">
-          {t}
-        </Badge>
-      );
-    });
+    if (q.tags) {
+      return q.tags.map((t, index) => {
+        return (
+          <Badge key={index} variant="light" className="mr-1">
+            {t}
+          </Badge>
+        );
+      });
+    }
   };
 
   const onQuestionClick = (id) => {

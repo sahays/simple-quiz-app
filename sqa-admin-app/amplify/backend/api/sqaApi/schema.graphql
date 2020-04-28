@@ -67,6 +67,11 @@ type UserAttrs {
 
 type Response
   @model
+  @key(
+    name: "byQuiz"
+    fields: ["quizId", "username"]
+    queryField: "listUserResponsesByQuiz"
+  )
   @auth(
     rules: [
       { allow: groups, groups: ["admins"], operations: [create, read] }

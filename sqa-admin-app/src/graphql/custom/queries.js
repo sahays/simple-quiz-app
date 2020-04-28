@@ -25,6 +25,33 @@ export const getQuiz = /* GraphQL */ `
         id
         question
         type
+        # answers
+        choices {
+          id
+          text
+        }
+        tags
+        explanation
+      }
+      description
+      instructions
+      timeLimit
+      owner
+    }
+  }
+`;
+
+export const getQuizWithAnswers = /* GraphQL */ `
+  query GetQuiz($id: ID!) {
+    getQuiz(id: $id) {
+      id
+      code
+      name
+      tags
+      questions {
+        id
+        question
+        type
         answers
         choices {
           id

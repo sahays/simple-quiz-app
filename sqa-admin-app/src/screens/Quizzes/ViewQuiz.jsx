@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import GraphQlUtil from "../../utils/GraphQlUtil";
 import {
   getQuiz as getQuizById,
-  listResponses as lisResponsesByQuizId,
+  listUserResponsesByQuiz,
 } from "../../graphql/queries";
-import { Card, Badge, Table } from "react-bootstrap";
+import { Card, Badge, Table, Button } from "react-bootstrap";
 import { find as _find, sortBy as _sortBy } from "underscore";
 import { QuestionStore } from "../../cache-stores/QuestionStore";
 
@@ -13,6 +13,8 @@ const ViewQuiz = ({ match }) => {
   const [quiz, setQuiz] = useState(null);
   const [questions, setQuestions] = useState(null);
   const [leaderboard, setLeaderboard] = useState(null);
+  const [poller, setPoller] = useState(null);
+  const { query } = GraphQlUtil();
 
   useEffect(() => {
     const { query } = GraphQlUtil();
@@ -50,111 +52,164 @@ const ViewQuiz = ({ match }) => {
     loadQuiz();
   }, [quizId]);
 
-  useEffect(() => {
-    const { filter } = GraphQlUtil();
-    const loadResponses = async () => {
-      if (quiz && questions) {
-        const {
-          data: { listResponses },
-        } = await filter(lisResponsesByQuizId, {
-          quizId: { eq: quizId },
-        });
-        const data = processResponses(listResponses.items);
-        calculateScore(data);
-      }
-    };
-
-    const processResponses = (items) => {
-      const data = [];
-      items.map((item) => {
-        return data.push({
-          username: item.username,
-          name: item.userAttrs.firstName + " " + item.userAttrs.lastName,
-          responses: item.responses,
-        });
+  const refreshResponses = async () => {
+    if (quiz && questions) {
+      const {
+        data: {
+          listUserResponsesByQuiz: { items },
+        },
+      } = await query(listUserResponsesByQuiz, {
+        quizId: quizId,
       });
-      return data;
-    };
+      const data = processResponses(items);
+      calculateScore(data);
+    }
+  };
 
-    const calculateScore = (responses) => {
-      const users = [];
-      responses.map((r) => {
-        let score = 0;
-        r.responses.map((rr) => {
-          const qq = _find(questions, (q) => {
-            return q.questionId === rr.questionId;
-          });
-          if (qq) {
-            const correct =
-              qq.answers.sort().join(",") === rr.responses.sort().join(",");
-            if (correct) score++;
-          }
-          return null;
+  const processResponses = (items) => {
+    const data = [];
+    items.map((item) => {
+      return data.push({
+        username: item.username,
+        name: item.userAttrs.firstName + " " + item.userAttrs.lastName,
+        responses: item.responses,
+      });
+    });
+    return data;
+  };
+
+  const calculateScore = (responses) => {
+    const users = [];
+    responses.map((r) => {
+      let score = 0;
+      r.responses.map((rr) => {
+        const qq = _find(questions, (q) => {
+          return q.questionId === rr.questionId;
         });
-        users.push({
-          user: r.name,
-          score: score,
-        });
+        if (qq) {
+          const correct =
+            qq.answers.sort().join(",") === rr.responses.sort().join(",");
+          if (correct) score++;
+        }
         return null;
       });
-      setLeaderboard(
-        _sortBy(users, (u) => {
-          return -u.score;
-        })
-      );
-    };
+      users.push({
+        user: r.name,
+        score: score,
+      });
+      return null;
+    });
+    setLeaderboard(
+      _sortBy(users, (u) => {
+        return -u.score;
+      })
+    );
+  };
 
-    const poller = setInterval(async () => loadResponses(), 10000);
+  const startLeaderboardRefresh = () => {
+    const code = setInterval(refreshResponses, 10000);
+    setPoller(code);
+  };
 
-    return () => {
+  const stopLeaderboardRefresh = () => {
+    if (poller) {
+      console.log("stop refresh");
       clearInterval(poller);
-      console.log("cleared poller");
-    };
-  }, [quizId, questions, quiz]);
+      setPoller(false);
+    }
+  };
 
-  const showLeaderboard = () => {
+  const renderRefresh = () => {
+    if (poller) {
+      return (
+        <Button
+          size="sm"
+          className="float-right"
+          onClick={stopLeaderboardRefresh}>
+          Stop Auto Refresh
+        </Button>
+      );
+    } else {
+      return (
+        <Button
+          size="sm"
+          className="float-right"
+          onClick={startLeaderboardRefresh}>
+          Load responses
+        </Button>
+      );
+    }
+  };
+
+  const renderLeaderboard = () => {
     return (
-      <React.Fragment>
-        <h4>Leaderboard</h4>
-        {leaderboard && <small>{`${leaderboard.length} responses`}</small>}
-        <Table bordered hover striped>
-          <tbody>
-            {leaderboard &&
-              leaderboard.map((l, index) => {
-                return (
-                  <tr key={index}>
-                    <td>{l.user}</td>
-                    <td style={{ width: "30%" }}>{l.score}</td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </Table>
-      </React.Fragment>
+      <Card className="mt-3">
+        <Card.Header>
+          <strong>Leaderboard</strong>
+          {renderRefresh()}
+        </Card.Header>
+        <Card.Body>
+          <p>
+            {leaderboard && (
+              <small className="mr-3 alert alert-primary">{`${leaderboard.length} response(s)`}</small>
+            )}
+            {poller && (
+              <small className="alert alert-info">
+                Refreshes every 10 seconds
+              </small>
+            )}
+          </p>
+          <Table bordered hover striped>
+            <tbody>
+              {leaderboard &&
+                leaderboard.map((l, index) => {
+                  return (
+                    <tr key={index}>
+                      <td style={{ textTransform: "capitalize" }}>{l.user}</td>
+                      <td style={{ width: "30%" }}>{l.score}</td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </Table>
+        </Card.Body>
+      </Card>
     );
   };
 
   const renderQuiz = () => {
     if (!quiz) return <p>Loading...</p>;
     return (
-      <Card>
-        <Card.Header>{quiz.name}</Card.Header>
-        <Card.Body>
-          {quiz.tags.map((t, index) => {
-            return (
-              <Badge key={index} variant="info" className="mr-1">
-                {t}
-              </Badge>
-            );
-          })}
-          <p>
-            <Badge variant="primary">{quiz.code}</Badge>
-          </p>
-          <p>{quiz.description}</p>
-
-          {showLeaderboard()}
-        </Card.Body>
-      </Card>
+      <React.Fragment>
+        <Card>
+          <Card.Header>
+            <strong style={{ textTransform: "capitalize" }}>{quiz.name}</strong>
+          </Card.Header>
+          <Card.Body>
+            <div>
+              <small className="text-muted">Tags</small>
+              <p>
+                {quiz.tags.map((t, index) => {
+                  return (
+                    <Badge key={index} variant="info" className="mr-1">
+                      {t}
+                    </Badge>
+                  );
+                })}
+              </p>
+            </div>
+            <div>
+              <small className="text-muted">Quiz code</small>
+              <p>{quiz.code}</p>
+            </div>
+            <div>
+              <small className="text-muted">Description</small>
+              <p>{quiz.description}</p>
+            </div>
+          </Card.Body>
+        </Card>
+        {renderLeaderboard()}
+      </React.Fragment>
     );
   };
 
