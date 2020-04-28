@@ -30,7 +30,7 @@ const ListQuestions = ({ history }) => {
     if (q.tags) {
       return q.tags.map((t, index) => {
         return (
-          <Badge key={index} variant="light" className="mr-1">
+          <Badge key={index} variant="light" className="mr-1 mb-1">
             {t}
           </Badge>
         );

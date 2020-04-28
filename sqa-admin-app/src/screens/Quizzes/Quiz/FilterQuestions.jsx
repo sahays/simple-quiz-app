@@ -34,7 +34,7 @@ export const FilterQuestions = ({
             variant="info"
             type="button"
             size="sm"
-            className="mr-1 clickable"
+            className="mr-1 mb-1 clickable"
             onClick={() => onTagClick(t)}>
             {t}
           </Button>
@@ -47,7 +47,7 @@ export const FilterQuestions = ({
         variant="dark"
         type="button"
         size="sm"
-        className="mr-1 clickable"
+        className="mr-1 mb-1 clickable"
         onClick={() => onReset()}>
         Reset
       </Button>

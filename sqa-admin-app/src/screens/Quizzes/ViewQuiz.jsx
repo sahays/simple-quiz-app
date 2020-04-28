@@ -60,6 +60,7 @@ const ViewQuiz = ({ match }) => {
         },
       } = await query(listUserResponsesByQuiz, {
         quizId: quizId,
+        limit: 300,
       });
       const data = processResponses(items);
       calculateScore(data);
