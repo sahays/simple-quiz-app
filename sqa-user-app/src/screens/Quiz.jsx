@@ -231,13 +231,17 @@ const Quiz = ({ match }) => {
           {quiz.description && quiz.description.length > 0 && (
             <React.Fragment>
               <Card.Title>About the quiz</Card.Title>
-              <Card.Text>{quiz.description}</Card.Text>
+              <Card.Text>
+                <MarkdownViewer source={quiz.description} />
+              </Card.Text>
             </React.Fragment>
           )}
           {quiz.instructions && quiz.instructions.length > 0 && (
             <React.Fragment>
               <Card.Title>Instructions</Card.Title>
-              <Card.Text>{quiz.instructions}</Card.Text>
+              <Card.Text>
+                <MarkdownViewer source={quiz.instructions} />
+              </Card.Text>
             </React.Fragment>
           )}
           <Card.Title>Total number of questions</Card.Title>

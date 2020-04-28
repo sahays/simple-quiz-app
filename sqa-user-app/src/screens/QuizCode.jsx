@@ -17,6 +17,7 @@ const QuizCode = () => {
   const [initialValue] = useState(initValue);
   const [busy, setBusy] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [warnMsg, setWarnMsg] = useState(null);
   const [infoMsg, setInfoMsg] = useState(null);
   const [quizId, setQuizId] = useState(null);
   const [canNavigate, setCanNavigate] = useState(false);
@@ -40,10 +41,12 @@ const QuizCode = () => {
       if (items && items.length > 0 && items[0].code === values.code) {
         setQuizId(items[0].id);
         setCanNavigate(true);
+      } else {
+        setWarnMsg("Quiz not found. Try again");
       }
     } catch (e) {
       console.log(e);
-      setErrorMsg("Invalid code");
+      setErrorMsg("Invalid quiz code");
     }
     setBusy(false);
   };
@@ -77,6 +80,7 @@ const QuizCode = () => {
                       busy={busy}
                       errorMsg={errorMsg}
                       infoMsg={infoMsg}
+                      warnMsg={warnMsg}
                     />
                   </Form>
                 )}
