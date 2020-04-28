@@ -7,7 +7,7 @@ import Amplify from "aws-amplify";
 import awsmobile from "./aws-exports";
 import { withAuthenticator } from "aws-amplify-react";
 
-import { AmazonAIPredictionsProvider } from "@aws-amplify/predictions";
+// import { AmazonAIPredictionsProvider } from "@aws-amplify/predictions";
 
 import { Route, Switch, BrowserRouter } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
@@ -27,7 +27,7 @@ awsmobile.clientMetadata = {
 };
 
 Amplify.configure(awsmobile);
-Amplify.addPluggable(new AmazonAIPredictionsProvider());
+// Amplify.addPluggable(new AmazonAIPredictionsProvider());
 
 const App = () => {
   return (

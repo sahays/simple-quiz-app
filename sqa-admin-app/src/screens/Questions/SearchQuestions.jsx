@@ -3,14 +3,13 @@ import { Container, Row, Col, Table, Card, Button } from "react-bootstrap";
 import SearchBar from "./SearchBar";
 import { MarkdownViewer } from "../../controls/MarkdownViewer";
 import { Logger } from "aws-amplify";
-import Emoji from "../../controls/Emoji";
 import { find, reject } from "underscore";
 import { Link } from "react-router-dom";
 const logger = new Logger("SearchQuestions");
 
 const SearchQuestions = () => {
   const charThreshold = 2;
-  const [items, setItems] = useState(null);
+  const [items, setItems] = useState([]);
   const [pickedQuestions, setPickedQuestions] = useState([]);
 
   const onSearchResults = (data) => {
@@ -22,65 +21,85 @@ const SearchQuestions = () => {
     setItems(items);
   };
 
-  const onAdd = (e) => {
-    const { value } = e.target;
+  const onAdd = (itemId) => {
     const pickedQuestion = find(items, (item) => {
-      return item.id === value;
+      return item.id === itemId;
     });
     let questions = [...pickedQuestions];
     questions.push(pickedQuestion);
     setPickedQuestions(questions);
   };
 
-  const onRemove = (e) => {
-    reject();
+  const onRemove = (itemId) => {
+    let qq = [...pickedQuestions];
+    qq = reject(qq, (q) => {
+      return q.id === itemId;
+    });
+    setPickedQuestions(qq);
+  };
+
+  const renderAddButton = (itemId) => {
+    if (pickedQuestions && pickedQuestions.length > 0) {
+      const picked = find(pickedQuestions, (p) => {
+        return p.id === itemId;
+      });
+      if (picked) {
+        return (
+          <Button variant="success" disabled size="sm">
+            +
+          </Button>
+        );
+      }
+    }
+    return (
+      <Button variant="success" size="sm" onClick={() => onAdd(itemId)}>
+        +
+      </Button>
+    );
   };
 
   const renderResults = () => {
-    if (items && items.length === 0) return <p>No results</p>;
-    else if (items && items.length > 0)
-      return (
-        <Table>
-          <tbody>
-            {items.map((item, index) => {
-              return (
-                <tr key={index}>
-                  <td>
-                    <Button variant="success" size="sm" onClick={onAdd}>
-                      +
-                    </Button>
-                  </td>
-                  <td>
-                    <MarkdownViewer source={item.question}></MarkdownViewer>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </Table>
-      );
-    else
-      return (
-        <small>
-          <Emoji icon="🤓" />
-          Type a minimum of {charThreshold} characters
-        </small>
-      );
+    if (items && items.length === 0)
+      return <p className="text-muted">No results</p>;
+
+    return (
+      <Card>
+        <Card.Body>
+          <Table responsive="sm" borderless>
+            <tbody>
+              {items.map((item, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{renderAddButton(item.id)}</td>
+                    <td>
+                      <MarkdownViewer source={item.question}></MarkdownViewer>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
+        </Card.Body>
+      </Card>
+    );
   };
 
   const renderPickedQuestions = () => {
-    logger.log(pickedQuestions);
-    if (pickedQuestions.length > 0) {
+    if (pickedQuestions && pickedQuestions.length > 0) {
+      logger.debug(pickedQuestions);
       return (
-        <React.Fragment>
+        <Card className="mt-3">
           <Card.Body>
-            <Table>
+            <Table responsive="sm" borderless>
               <tbody>
                 {pickedQuestions.map((qq, index) => {
                   return (
                     <tr key={index}>
                       <td>
-                        <Button variant="warning" size="sm" onClick={onRemove}>
+                        <Button
+                          variant="warning"
+                          size="sm"
+                          onClick={() => onRemove(qq.id)}>
                           -
                         </Button>
                       </td>
@@ -98,15 +117,7 @@ const SearchQuestions = () => {
               + New Quiz
             </Button>
           </Card.Footer>
-        </React.Fragment>
-      );
-    } else {
-      return (
-        <Card.Body>
-          <small>
-            <Emoji icon="🤓" /> Pick any question to start creating a new quiz
-          </small>
-        </Card.Body>
+        </Card>
       );
     }
   };
@@ -119,7 +130,7 @@ const SearchQuestions = () => {
             <Card.Header>
               <strong>Questions</strong>
               <Link to="/question/create" className="float-right">
-                +New Question
+                + New Question
               </Link>
             </Card.Header>
             <Card.Body>
@@ -128,10 +139,8 @@ const SearchQuestions = () => {
                 onSearch={onSearchResults}
                 charThreshold={charThreshold}
               />
-              <Card className="mb-3">
-                <Card.Body>{renderResults()}</Card.Body>
-              </Card>
-              <Card>{renderPickedQuestions()}</Card>
+              {renderResults()}
+              {renderPickedQuestions()}
             </Card.Body>
           </Card>
         </Col>

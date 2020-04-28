@@ -108,7 +108,7 @@
 				"Runtime": "nodejs10.x",
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-sqa-admin-app-test-164230-deployment",
+					"S3Bucket": "amplify-sqa-admin-app-xtwomain-95110-deployment",
 					"S3Key": "amplify-builds/sqaAuthPreSignup-64757a51504976473172-build.zip"
 				}
 			}

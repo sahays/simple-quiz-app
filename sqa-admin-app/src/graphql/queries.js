@@ -12,6 +12,7 @@ export const batchGetQuestions = /* GraphQL */ `
         text
       }
       answers
+      points
       explanation
       dateCreated
     }
@@ -50,41 +51,6 @@ export const batchGetQuizzes = /* GraphQL */ `
     }
   }
 `;
-export const getTags = /* GraphQL */ `
-  query GetTags($type: String!, $typeId: String!) {
-    getTags(type: $type, typeId: $typeId) {
-      type
-      typeId
-      text
-    }
-  }
-`;
-export const listTagss = /* GraphQL */ `
-  query ListTagss(
-    $type: String
-    $typeId: ModelStringKeyConditionInput
-    $filter: ModelTagsFilterInput
-    $limit: Int
-    $nextToken: String
-    $sortDirection: ModelSortDirection
-  ) {
-    listTagss(
-      type: $type
-      typeId: $typeId
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      sortDirection: $sortDirection
-    ) {
-      items {
-        type
-        typeId
-        text
-      }
-      nextToken
-    }
-  }
-`;
 export const getQuestion = /* GraphQL */ `
   query GetQuestion($id: ID!) {
     getQuestion(id: $id) {
@@ -96,6 +62,7 @@ export const getQuestion = /* GraphQL */ `
         text
       }
       answers
+      points
       explanation
       dateCreated
     }
@@ -113,6 +80,7 @@ export const listQuestions = /* GraphQL */ `
         question
         type
         answers
+        points
         explanation
         dateCreated
       }
