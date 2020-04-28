@@ -140,6 +140,43 @@ export const listResponses = /* GraphQL */ `
     }
   }
 `;
+export const getQuizByCode = /* GraphQL */ `
+  query GetQuizByCode(
+    $code: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelQuizFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    getQuizByCode(
+      code: $code
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        code
+        name
+        tags
+        questions {
+          id
+          question
+          type
+          answers
+          tags
+          explanation
+        }
+        description
+        instructions
+        timeLimit
+        owner
+      }
+      nextToken
+    }
+  }
+`;
 export const listUserResponsesByQuiz = /* GraphQL */ `
   query ListUserResponsesByQuiz(
     $quizId: String

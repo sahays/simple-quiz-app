@@ -37,7 +37,7 @@ type Question
 
 type Quiz
   @model
-  @key(name: "byCode", fields: ["code"])
+  @key(name: "byCode", fields: ["code"], queryField: "getQuizByCode")
   @auth(
     rules: [
       { allow: groups, groups: ["users"], operations: [read] }

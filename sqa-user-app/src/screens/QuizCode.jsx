@@ -4,13 +4,13 @@ import { Formik, Form } from "formik";
 import ButtonBar from "../controls/ButtonBar";
 import * as yup from "yup";
 import GraphQlUtil from "../utils/GraphQlUtil";
-import { listQuizs as getQuizByCode } from "../graphql/custom/queries";
+import { getQuizByCode } from "../graphql/queries";
 import FormikField from "../controls/FormikField";
 import { useHistory } from "react-router-dom";
 
 const QuizCode = () => {
   const history = useHistory();
-  const { filter } = GraphQlUtil();
+  const { query } = GraphQlUtil();
   const initValue = {
     code: "",
   };
@@ -32,10 +32,10 @@ const QuizCode = () => {
     try {
       const {
         data: {
-          listQuizs: { items },
+          getQuizByCode: { items },
         },
-      } = await filter(getQuizByCode, {
-        code: { eq: values.code },
+      } = await query(getQuizByCode, {
+        code: values.code,
       });
       if (items && items.length > 0 && items[0].code === values.code) {
         setQuizId(items[0].id);

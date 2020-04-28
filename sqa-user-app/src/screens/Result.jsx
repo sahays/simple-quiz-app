@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import GraphQlUtil from "../utils/GraphQlUtil";
 import { getQuizWithAnswers } from "../graphql/custom/queries";
-import { listResponses as lisResponsesByQuizId } from "../graphql/queries";
+import { listUserResponsesByQuiz } from "../graphql/queries";
 import { find as _find, pluck } from "underscore";
 import { Card } from "react-bootstrap";
 import { MarkdownViewer } from "../controls/MarkdownViewer";
@@ -30,7 +30,7 @@ export const Result = ({ match }) => {
   }, [quizId]);
 
   useEffect(() => {
-    const { filter } = GraphQlUtil();
+    const { query } = GraphQlUtil();
     const calculateScore = (responses, questions) => {
       let score = 0;
       if (questions && responses) {
@@ -52,16 +52,18 @@ export const Result = ({ match }) => {
     // load responses
     const loadResponses = async () => {
       const {
-        data: { listResponses },
-      } = await filter(lisResponsesByQuizId, {
-        quizId: { eq: quizId },
+        data: {
+          listUserResponsesByQuiz: { items },
+        },
+      } = await query(listUserResponsesByQuiz, {
+        quizId: quizId,
         username: { eq: username },
       });
-      const items = pluck(listResponses.items, "responses");
-      if (items && items.length > 0) {
-        setResponses(items[0]);
+      const r = pluck(items, "responses");
+      if (r && r.length > 0) {
+        setResponses(r[0]);
         if (quiz) {
-          setScore(calculateScore(items[0], quiz.questions));
+          setScore(calculateScore(r[0], quiz.questions));
         }
       }
     };
