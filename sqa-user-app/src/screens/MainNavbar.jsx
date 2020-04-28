@@ -36,7 +36,7 @@ const MainNavbar = () => {
             Welcome, {firstName}
           </Navbar.Text>
           <Nav>
-            <Link to="#" className="pr-3" onClick={() => Auth.signOut()}>
+            <Link to="/" className="pr-3" onClick={() => Auth.signOut()}>
               Sign out
             </Link>
           </Nav>
