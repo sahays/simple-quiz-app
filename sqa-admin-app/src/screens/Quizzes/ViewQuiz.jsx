@@ -4,7 +4,7 @@ import {
   getQuiz as getQuizById,
   listUserResponsesByQuiz,
 } from "../../graphql/queries";
-import { Card, Badge, Table, Button } from "react-bootstrap";
+import { Card, Badge, Table, Button, Row, Col } from "react-bootstrap";
 import { find as _find, sortBy as _sortBy } from "underscore";
 import { QuestionStore } from "../../cache-stores/QuestionStore";
 
@@ -14,6 +14,7 @@ const ViewQuiz = ({ match }) => {
   const [questions, setQuestions] = useState(null);
   const [leaderboard, setLeaderboard] = useState(null);
   const [poller, setPoller] = useState(null);
+  const [loading, setLoading] = useState(false);
   const { query } = GraphQlUtil();
 
   useEffect(() => {
@@ -54,6 +55,7 @@ const ViewQuiz = ({ match }) => {
 
   const refreshResponses = async () => {
     if (quiz && questions) {
+      setLoading(true);
       const {
         data: {
           listUserResponsesByQuiz: { items },
@@ -64,6 +66,7 @@ const ViewQuiz = ({ match }) => {
       });
       const data = processResponses(items);
       calculateScore(data);
+      setLoading(false);
     }
   };
 
@@ -108,6 +111,7 @@ const ViewQuiz = ({ match }) => {
   };
 
   const startLeaderboardRefresh = () => {
+    refreshResponses();
     const code = setInterval(refreshResponses, 10000);
     setPoller(code);
   };
@@ -150,16 +154,21 @@ const ViewQuiz = ({ match }) => {
           {renderRefresh()}
         </Card.Header>
         <Card.Body>
-          <p>
-            {leaderboard && (
-              <small className="mr-3 alert alert-primary">{`${leaderboard.length} response(s)`}</small>
-            )}
-            {poller && (
-              <small className="alert alert-info">
-                Refreshes every 10 seconds
-              </small>
-            )}
-          </p>
+          <Row>
+            <Col>
+              <p>
+                {loading && (
+                  <small className="mr-1 alert alert-info">Loading...</small>
+                )}
+                {leaderboard && questions && (
+                  <React.Fragment>
+                    <small className="mr-1 alert alert-primary">{`${questions.length} questions`}</small>{" "}
+                    <small className="mr-1 alert alert-primary">{`${leaderboard.length} response(s)`}</small>
+                  </React.Fragment>
+                )}
+              </p>
+            </Col>
+          </Row>
           <Table bordered hover striped>
             <tbody>
               {leaderboard &&
