@@ -6,7 +6,6 @@ import {
 } from "../../graphql/queries";
 import { Card, Badge, Table, Button, Row, Col } from "react-bootstrap";
 import { find as _find, sortBy as _sortBy } from "underscore";
-import { QuestionStore } from "../../cache-stores/QuestionStore";
 
 const ViewQuiz = ({ match }) => {
   const [quizId] = useState(match.params.id);
@@ -19,7 +18,6 @@ const ViewQuiz = ({ match }) => {
 
   useEffect(() => {
     const { query } = GraphQlUtil();
-    const { getAllQuestions } = QuestionStore();
     const loadQuiz = async () => {
       try {
         const {
@@ -32,10 +30,13 @@ const ViewQuiz = ({ match }) => {
         console.log(e);
       }
     };
+    loadQuiz();
+  }, [quizId]);
 
-    const loadQuestions = async () => {
+  useEffect(() => {
+    const loadQuestions = async (quiz) => {
       try {
-        const items = await getAllQuestions(true);
+        const items = quiz.questions;
         const data = [];
         items.map((item) => {
           return data.push({
@@ -48,10 +49,8 @@ const ViewQuiz = ({ match }) => {
         console.log(e);
       }
     };
-
-    loadQuestions();
-    loadQuiz();
-  }, [quizId]);
+    loadQuestions(quiz);
+  }, [quiz]);
 
   const refreshResponses = async () => {
     if (quiz && questions) {
