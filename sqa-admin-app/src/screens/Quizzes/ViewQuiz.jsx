@@ -35,18 +35,20 @@ const ViewQuiz = ({ match }) => {
 
   useEffect(() => {
     const loadQuestions = async (quiz) => {
-      try {
-        const items = quiz.questions;
-        const data = [];
-        items.map((item) => {
-          return data.push({
-            questionId: item.id,
-            answers: item.answers.sort(),
+      if (quiz) {
+        try {
+          const items = quiz.questions;
+          const data = [];
+          items.map((item) => {
+            return data.push({
+              questionId: item.id,
+              answers: item.answers.sort(),
+            });
           });
-        });
-        setQuestions(data);
-      } catch (e) {
-        console.log(e);
+          setQuestions(data);
+        } catch (e) {
+          console.log(e);
+        }
       }
     };
     loadQuestions(quiz);
@@ -174,7 +176,9 @@ const ViewQuiz = ({ match }) => {
                 leaderboard.map((l, index) => {
                   return (
                     <tr key={index}>
-                      <td style={{ textTransform: "capitalize" }}>{l.user}</td>
+                      <td style={{ textTransform: "capitalize" }}>
+                        {l.user.toLowerCase()}
+                      </td>
                       <td style={{ width: "30%" }}>{l.score}</td>
                     </tr>
                   );
