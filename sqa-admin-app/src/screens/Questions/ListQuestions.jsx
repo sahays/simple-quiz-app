@@ -8,7 +8,6 @@ const ListQuestions = ({ history }) => {
   const charLimit = 200;
   const [allQuestions, setAllQuestions] = useState(null);
   const [questions, setQuestions] = useState(null);
-  const { invalidate } = QuestionStore();
 
   useEffect(() => {
     const { getAllQuestions } = QuestionStore();
@@ -96,7 +95,6 @@ const ListQuestions = ({ history }) => {
                 questions={questions}
                 onFilter={onFilter}
                 onReset={onFilterReset}
-                onRefresh={() => invalidate()}
               />
               {renderQuestions()}
             </Card.Body>

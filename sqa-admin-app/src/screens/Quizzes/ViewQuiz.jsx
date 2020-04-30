@@ -35,7 +35,7 @@ const ViewQuiz = ({ match }) => {
 
     const loadQuestions = async () => {
       try {
-        const items = await getAllQuestions();
+        const items = await getAllQuestions(true);
         const data = [];
         items.map((item) => {
           return data.push({

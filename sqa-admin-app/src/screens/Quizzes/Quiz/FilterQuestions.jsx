@@ -2,12 +2,7 @@ import React, { useState, useEffect } from "react";
 import { pluck, flatten, uniq } from "underscore";
 import { Button } from "react-bootstrap";
 
-export const FilterQuestions = ({
-  questions,
-  onFilter,
-  onReset,
-  onRefresh,
-}) => {
+export const FilterQuestions = ({ questions, onFilter, onReset }) => {
   const [tags, setTags] = useState(null);
 
   useEffect(() => {
@@ -52,17 +47,7 @@ export const FilterQuestions = ({
         Reset
       </Button>
     );
-    result.push(
-      <Button
-        key={99}
-        variant="warning"
-        type="button"
-        size="sm"
-        className="mr-1 clickable"
-        onClick={() => onRefresh()}>
-        Refresh
-      </Button>
-    );
+
     return result;
   };
 

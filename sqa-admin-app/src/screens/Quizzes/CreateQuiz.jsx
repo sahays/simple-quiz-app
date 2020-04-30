@@ -15,7 +15,6 @@ import { QuestionStore } from "../../cache-stores/QuestionStore";
 
 const CreateQuiz = () => {
   const { getRandomNumbers } = RandomUtil();
-  const { invalidate } = QuestionStore();
   const { trimSplit } = StringUtil();
   const initValue = {
     name: "",
@@ -125,7 +124,6 @@ const CreateQuiz = () => {
                       questions={questions}
                       onFilter={(filtered) => setQuestions(filtered)}
                       onReset={() => setQuestions(allQuestions)}
-                      onRefresh={() => invalidate()}
                     />
                     <ButtonBar
                       busy={busy}
