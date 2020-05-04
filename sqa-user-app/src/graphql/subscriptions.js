@@ -142,6 +142,7 @@ export const onCreateResponse = /* GraphQL */ `
       quizId
       responses {
         questionId
+        timeTaken
         responses
       }
       owner
@@ -160,6 +161,7 @@ export const onUpdateResponse = /* GraphQL */ `
       quizId
       responses {
         questionId
+        timeTaken
         responses
       }
       owner
@@ -178,6 +180,7 @@ export const onDeleteResponse = /* GraphQL */ `
       quizId
       responses {
         questionId
+        timeTaken
         responses
       }
       owner

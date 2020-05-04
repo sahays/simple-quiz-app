@@ -54,6 +54,7 @@ const Quiz = ({ match }) => {
         data.questions.map((q) => {
           q.responses = [];
           q.isValid = false;
+          q.timeTaken = 0;
           return null;
         });
         setQuiz(data);
@@ -165,45 +166,47 @@ const Quiz = ({ match }) => {
     );
   };
 
+  const renderQuestion = (index, quiz) => {
+    return (
+      <Card key={index}>
+        <Card.Header>{quiz.name}</Card.Header>
+        <Card.Body>
+          {renderSteps()}
+          <MarkdownViewer source={q.question}></MarkdownViewer>
+          {q.choices.map((c, index) => {
+            return (
+              <Row key={index}>
+                <Col sm={1}>
+                  <Form.Check
+                    key={index}
+                    type={q.type}
+                    id={c.id}
+                    onChange={onChange}
+                    checked={q.responses.indexOf(c.id) > -1}
+                    name={q.id}></Form.Check>
+                </Col>
+                <Col>
+                  <MarkdownViewer source={c.text}></MarkdownViewer>
+                </Col>
+              </Row>
+            );
+          })}
+        </Card.Body>
+        <Card.Footer>
+          {nextOrSubmit(q)}
+          <Button size="sm" variant="secondary" onClick={onPrevios}>
+            Previous
+          </Button>
+        </Card.Footer>
+      </Card>
+    );
+  };
+
   const renderQuestions = () => {
     if (!quiz) return <p>Loading...</p>;
 
     return quiz.questions.map((q, index) => {
-      return (
-        visibleIndex === index && (
-          <Card key={index}>
-            <Card.Header>{quiz.name}</Card.Header>
-            <Card.Body>
-              {renderSteps()}
-              <MarkdownViewer source={q.question}></MarkdownViewer>
-              {q.choices.map((c, index) => {
-                return (
-                  <Row key={index}>
-                    <Col sm={1}>
-                      <Form.Check
-                        key={index}
-                        type={q.type}
-                        id={c.id}
-                        onChange={onChange}
-                        checked={q.responses.indexOf(c.id) > -1}
-                        name={q.id}></Form.Check>
-                    </Col>
-                    <Col>
-                      <MarkdownViewer source={c.text}></MarkdownViewer>
-                    </Col>
-                  </Row>
-                );
-              })}
-            </Card.Body>
-            <Card.Footer>
-              {nextOrSubmit(q)}
-              <Button size="sm" variant="secondary" onClick={onPrevios}>
-                Previous
-              </Button>
-            </Card.Footer>
-          </Card>
-        )
-      );
+      return visibleIndex === index && renderQuestion(index, q);
     });
   };
 

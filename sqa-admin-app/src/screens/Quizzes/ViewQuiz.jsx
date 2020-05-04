@@ -5,7 +5,8 @@ import {
   listUserResponsesByQuiz,
 } from "../../graphql/queries";
 import { Card, Badge, Table, Button, Row, Col } from "react-bootstrap";
-import { find as _find, sortBy as _sortBy } from "underscore";
+import { find as _find, sortBy as _sortBy, pluck } from "underscore";
+import { min, max, mode, mean } from "../../utils/MathUtil";
 
 const ViewQuiz = ({ match }) => {
   const [quizId] = useState(match.params.id);
@@ -53,6 +54,16 @@ const ViewQuiz = ({ match }) => {
     };
     loadQuestions(quiz);
   }, [quiz]);
+
+  useEffect(() => {
+    return () => {
+      if (poller) {
+        console.log("stop refresh");
+        clearInterval(poller);
+        setPoller(false);
+      }
+    };
+  }, [poller]);
 
   const refreshResponses = async () => {
     if (quiz && questions) {
@@ -130,6 +141,7 @@ const ViewQuiz = ({ match }) => {
       return (
         <Button
           size="sm"
+          variant="warning"
           className="float-right"
           onClick={stopLeaderboardRefresh}>
           Stop Auto Refresh
@@ -155,17 +167,12 @@ const ViewQuiz = ({ match }) => {
           {renderRefresh()}
         </Card.Header>
         <Card.Body>
+          {renderAggregation()}
           <Row>
             <Col>
               <p>
                 {loading && (
                   <small className="mr-1 alert alert-info">Loading...</small>
-                )}
-                {leaderboard && questions && (
-                  <React.Fragment>
-                    <small className="mr-1 alert alert-primary">{`${questions.length} questions`}</small>{" "}
-                    <small className="mr-1 alert alert-primary">{`${leaderboard.length} response(s)`}</small>
-                  </React.Fragment>
                 )}
               </p>
             </Col>
@@ -188,6 +195,69 @@ const ViewQuiz = ({ match }) => {
         </Card.Body>
       </Card>
     );
+  };
+
+  const renderAggregation = () => {
+    if (questions && leaderboard) {
+      const scores = pluck(leaderboard, "score");
+      const result = mode(scores);
+      return (
+        <React.Fragment>
+          <Row>
+            <Col>
+              <Card className="mb-3">
+                <Card.Body>
+                  <h2>{leaderboard.length}</h2>
+                  <Card.Subtitle>Total responses</Card.Subtitle>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col>
+              <Card className="mb-3">
+                <Card.Body>
+                  <h2>{questions.length}</h2>
+                  <Card.Subtitle>Total questions</Card.Subtitle>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Card className="mb-3">
+                <Card.Body>
+                  <h2>{min(scores)}</h2>
+                  <Card.Subtitle>Lowest score</Card.Subtitle>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col>
+              <Card className="mb-3">
+                <Card.Body>
+                  <h2>{max(scores)}</h2>
+                  <Card.Subtitle>Highest score</Card.Subtitle>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col>
+              <Card className="mb-3">
+                <Card.Body>
+                  <h2>{mean(scores)}</h2>
+                  <Card.Subtitle>Average score</Card.Subtitle>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col>
+              <Card className="mb-3">
+                <Card.Body>
+                  <h2>{result.score}</h2>
+                  <Card.Subtitle>{result.count} responses</Card.Subtitle>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </React.Fragment>
+      );
+    }
   };
 
   const renderQuiz = () => {

@@ -109,6 +109,7 @@ export const getResponse = /* GraphQL */ `
       quizId
       responses {
         questionId
+        timeTaken
         responses
       }
       owner
@@ -132,6 +133,7 @@ export const listResponses = /* GraphQL */ `
         quizId
         responses {
           questionId
+          timeTaken
           responses
         }
         owner
@@ -204,6 +206,7 @@ export const listUserResponsesByQuiz = /* GraphQL */ `
         quizId
         responses {
           questionId
+          timeTaken
           responses
         }
         owner

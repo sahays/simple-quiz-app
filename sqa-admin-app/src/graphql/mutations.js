@@ -163,6 +163,7 @@ export const createResponse = /* GraphQL */ `
       quizId
       responses {
         questionId
+        timeTaken
         responses
       }
       owner
@@ -184,6 +185,7 @@ export const updateResponse = /* GraphQL */ `
       quizId
       responses {
         questionId
+        timeTaken
         responses
       }
       owner
@@ -205,6 +207,7 @@ export const deleteResponse = /* GraphQL */ `
       quizId
       responses {
         questionId
+        timeTaken
         responses
       }
       owner

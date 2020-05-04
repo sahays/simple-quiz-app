@@ -57,6 +57,7 @@ type Quiz
 
 type ResponseType {
   questionId: String!
+  timeTaken: Int
   responses: [String]!
 }
 
