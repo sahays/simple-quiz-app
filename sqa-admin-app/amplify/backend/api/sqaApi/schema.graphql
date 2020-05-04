@@ -67,6 +67,8 @@ type UserAttrs {
 
 type Response
   @model
+  @aws_iam
+  @aws_cognito_user_pools
   @key(
     name: "byQuiz"
     fields: ["quizId", "username"]
@@ -83,4 +85,13 @@ type Response
   userAttrs: UserAttrs!
   quizId: String!
   responses: [ResponseType]!
+}
+
+type ProcessQuizResponseOutput {
+  message: String
+}
+
+type Query {
+  processQuizResponses(quizId: String!): ProcessQuizResponseOutput
+    @function(name: "processQuizResponses-${env}")
 }

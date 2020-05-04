@@ -3,6 +3,7 @@ import GraphQlUtil from "../../utils/GraphQlUtil";
 import {
   getQuiz as getQuizById,
   listUserResponsesByQuiz,
+  processQuizResponses,
 } from "../../graphql/queries";
 import { Card, Badge, Table, Button, Row, Col } from "react-bootstrap";
 import { find as _find, sortBy as _sortBy } from "underscore";
@@ -20,12 +21,17 @@ const ViewQuiz = ({ match }) => {
     const { query } = GraphQlUtil();
     const loadQuiz = async () => {
       try {
-        const {
-          data: { getQuiz },
-        } = await query(getQuizById, {
-          id: quizId,
-        });
-        setQuiz(getQuiz);
+        // const {
+        //   data: { getQuiz },
+        // } = await query(getQuizById, {
+        //   id: quizId,
+        // });
+        // setQuiz(getQuiz);
+        console.log(
+          await query(processQuizResponses, {
+            quizId: quizId,
+          })
+        );
       } catch (e) {
         console.log(e);
       }

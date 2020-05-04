@@ -1,6 +1,13 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const processQuizResponses = /* GraphQL */ `
+  query ProcessQuizResponses($quizId: String!) {
+    processQuizResponses(quizId: $quizId) {
+      message
+    }
+  }
+`;
 export const getQuestion = /* GraphQL */ `
   query GetQuestion($id: ID!) {
     getQuestion(id: $id) {
