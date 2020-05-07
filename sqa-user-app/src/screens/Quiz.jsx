@@ -166,24 +166,24 @@ const Quiz = ({ match }) => {
     );
   };
 
-  const renderQuestion = (index, quiz) => {
+  const renderQuestion = (index, quiz, name) => {
     return (
       <Card key={index}>
-        <Card.Header>{quiz.name}</Card.Header>
+        <Card.Header>{name}</Card.Header>
         <Card.Body>
           {renderSteps()}
-          <MarkdownViewer source={q.question}></MarkdownViewer>
-          {q.choices.map((c, index) => {
+          <MarkdownViewer source={quiz.question}></MarkdownViewer>
+          {quiz.choices.map((c, index) => {
             return (
               <Row key={index}>
                 <Col sm={1}>
                   <Form.Check
                     key={index}
-                    type={q.type}
+                    type={quiz.type}
                     id={c.id}
                     onChange={onChange}
-                    checked={q.responses.indexOf(c.id) > -1}
-                    name={q.id}></Form.Check>
+                    checked={quiz.responses.indexOf(c.id) > -1}
+                    name={quiz.id}></Form.Check>
                 </Col>
                 <Col>
                   <MarkdownViewer source={c.text}></MarkdownViewer>
@@ -193,7 +193,7 @@ const Quiz = ({ match }) => {
           })}
         </Card.Body>
         <Card.Footer>
-          {nextOrSubmit(q)}
+          {nextOrSubmit(quiz)}
           <Button size="sm" variant="secondary" onClick={onPrevios}>
             Previous
           </Button>
@@ -206,7 +206,7 @@ const Quiz = ({ match }) => {
     if (!quiz) return <p>Loading...</p>;
 
     return quiz.questions.map((q, index) => {
-      return visibleIndex === index && renderQuestion(index, q);
+      return visibleIndex === index && renderQuestion(index, q, quiz.name);
     });
   };
 

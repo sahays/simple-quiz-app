@@ -31,6 +31,7 @@ const App = () => {
             <Switch>
               <Route path="/quiz/:id" component={Quiz}></Route>
               <Route path="/result/:username/:id" component={Result}></Route>
+              <Route path="/code/:code" component={QuizCode}></Route>
               <Route path="/" component={QuizCode}></Route>
             </Switch>
           </Col>

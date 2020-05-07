@@ -8,11 +8,12 @@ import { getQuizByCode } from "../graphql/queries";
 import FormikField from "../controls/FormikField";
 import { useHistory } from "react-router-dom";
 
-const QuizCode = () => {
+const QuizCode = ({ match }) => {
+  const [code] = useState(match.params.code);
   const history = useHistory();
   const { query } = GraphQlUtil();
   const initValue = {
-    code: "",
+    code: code,
   };
   const [initialValue] = useState(initValue);
   const [busy, setBusy] = useState(false);
