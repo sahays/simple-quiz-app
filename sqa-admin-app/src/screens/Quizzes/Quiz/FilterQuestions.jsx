@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { pluck, flatten, uniq } from "underscore";
+import { pluck, flatten, uniq, sortBy } from "underscore";
 import { Button } from "react-bootstrap";
 
 export const FilterQuestions = ({ questions, onFilter, onReset }) => {
   const [tags, setTags] = useState(null);
 
   useEffect(() => {
-    setTags(uniq(flatten(pluck(questions, "tags"))));
+    setTags(sortBy(uniq(flatten(pluck(questions, "tags")))));
   }, [questions]);
 
   const onTagClick = (text) => {
