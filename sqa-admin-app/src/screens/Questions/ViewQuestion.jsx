@@ -16,13 +16,15 @@ import { find as _find } from "underscore";
 import ConfirmModal from "../../controls/ConfirmModal";
 import AlertError from "../../controls/AlertError";
 import { MarkdownViewer } from "../../controls/MarkdownViewer";
+import { useHistory } from "react-router-dom";
 
-const ViewQuestion = ({ match, history }) => {
+const ViewQuestion = ({ match }) => {
   const [questionId] = useState(match.params.id);
   const [question, setQuestion] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const { query } = GraphQlUtil();
   const { deleteQuestion } = QuestionStore();
+  const history = useHistory();
 
   useEffect(() => {
     const load = async () => {
@@ -64,7 +66,7 @@ const ViewQuestion = ({ match, history }) => {
     return (
       <React.Fragment>
         <small>Choices</small>
-        <Table responsive="sm" size="sm" bordered>
+        <Table responsive="sm" size="sm" bordered={false}>
           <tbody>
             {question.choices.map((c, index) => {
               return (
@@ -85,7 +87,7 @@ const ViewQuestion = ({ match, history }) => {
     return (
       <React.Fragment>
         <small>Answers</small>
-        <Table responsive="sm" size="sm" bordered>
+        <Table responsive="sm" size="sm" bordered={false}>
           <tbody>
             {question.answers.map((a, index) => {
               return (
@@ -102,7 +104,12 @@ const ViewQuestion = ({ match, history }) => {
 
   const renderExplanation = () => {
     if (question) {
-      return <MarkdownViewer source={question.explanation} />;
+      return (
+        <React.Fragment>
+          <small>Explanation</small>
+          <MarkdownViewer source={question.explanation} />
+        </React.Fragment>
+      );
     }
   };
 
@@ -131,6 +138,12 @@ const ViewQuestion = ({ match, history }) => {
         </Card.Body>
         <Card.Footer>
           <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => history.goBack()}>
+            &larr;&nbsp;Back
+          </Button>
+          <Button
             variant="danger"
             size="sm"
             onClick={onDelete}
@@ -145,11 +158,7 @@ const ViewQuestion = ({ match, history }) => {
   return (
     <Container>
       <Row>
-        <Col>
-          <Card>
-            <Card.Body>{renderQuestion()}</Card.Body>
-          </Card>
-        </Col>
+        <Col>{renderQuestion()}</Col>
       </Row>
     </Container>
   );
