@@ -35,6 +35,7 @@ const CreateQuestion = () => {
     try {
       if (answers.length > 0) {
         const { createNewQuestion } = QuestionStore();
+        const previousTags = values.tags.toLowerCase();
         await createNewQuestion({
           question: values.question,
           type: answers.length > 1 ? "checkbox" : "radio",
@@ -47,7 +48,13 @@ const CreateQuestion = () => {
         setInfoMsg("New question added");
         answers.length = 0;
         setAnswers(answers);
-        setInitialValue(initValue);
+        setInitialValue({
+          question: "",
+          type: "",
+          tags: previousTags,
+          explanation: "",
+          choices: [{ id: getRandomAlphabets(), text: "" }],
+        });
       } else {
         setWarnMsg("You must pick an answer");
       }

@@ -5,8 +5,9 @@ import {
   listUserResponsesByQuiz,
 } from "../../graphql/queries";
 import { Card, Badge, Table, Button, Row, Col } from "react-bootstrap";
-import { find as _find, sortBy as _sortBy, pluck } from "underscore";
+import { find as _find, sortBy as _sortBy, pluck, groupBy } from "underscore";
 import { min, max, mode, mean } from "../../utils/MathUtil";
+import { MarkdownViewer } from "../../controls/MarkdownViewer";
 
 const ViewQuiz = ({ match }) => {
   const [quizId] = useState(match.params.id);
@@ -96,6 +97,7 @@ const ViewQuiz = ({ match }) => {
 
   const calculateScore = (responses) => {
     const users = [];
+    const questionsWithCorrectResponses = [];
     responses.map((r) => {
       let score = 0;
       r.responses.map((rr) => {
@@ -105,13 +107,17 @@ const ViewQuiz = ({ match }) => {
         if (qq) {
           const correct =
             qq.answers.sort().join(",") === rr.responses.sort().join(",");
-          if (correct) score++;
+          if (correct) {
+            questionsWithCorrectResponses.push(qq.questionId);
+            score++;
+          }
         }
         return null;
       });
       users.push({
         user: r.name,
         score: score,
+        percentage: Math.floor((score / questions.length) * 100),
       });
       return null;
     });
@@ -120,6 +126,7 @@ const ViewQuiz = ({ match }) => {
         return -u.score;
       })
     );
+    console.log(groupBy(questionsWithCorrectResponses));
   };
 
   const startLeaderboardRefresh = () => {
@@ -159,6 +166,59 @@ const ViewQuiz = ({ match }) => {
     }
   };
 
+  const renderLoading = () => {
+    return (
+      <Row>
+        <Col>
+          <p>
+            {loading && (
+              <small className="mr-1 alert alert-info">Loading...</small>
+            )}
+          </p>
+        </Col>
+      </Row>
+    );
+  };
+
+  const renderScores = () => {
+    if (leaderboard && leaderboard.length > 0) {
+      return (
+        <Table bordered hover striped>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Percentage</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            {leaderboard.map((l, index) => {
+              return (
+                <tr key={index}>
+                  <td style={{ textTransform: "capitalize" }}>
+                    {l.user.toLowerCase()}
+                  </td>
+                  <td
+                    style={{
+                      width: "20%",
+                    }}>
+                    {`${l.percentage}%`}
+                  </td>
+                  <td
+                    style={{
+                      width: "20%",
+                    }}>
+                    {l.score}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      );
+    }
+  };
+
   const renderLeaderboard = () => {
     return (
       <Card className="mt-3">
@@ -168,37 +228,15 @@ const ViewQuiz = ({ match }) => {
         </Card.Header>
         <Card.Body>
           {renderAggregation()}
-          <Row>
-            <Col>
-              <p>
-                {loading && (
-                  <small className="mr-1 alert alert-info">Loading...</small>
-                )}
-              </p>
-            </Col>
-          </Row>
-          <Table bordered hover striped>
-            <tbody>
-              {leaderboard &&
-                leaderboard.map((l, index) => {
-                  return (
-                    <tr key={index}>
-                      <td style={{ textTransform: "capitalize" }}>
-                        {l.user.toLowerCase()}
-                      </td>
-                      <td style={{ width: "30%" }}>{l.score}</td>
-                    </tr>
-                  );
-                })}
-            </tbody>
-          </Table>
+          {/* {renderLoading()} */}
+          {renderScores()}
         </Card.Body>
       </Card>
     );
   };
 
   const renderAggregation = () => {
-    if (questions && leaderboard) {
+    if (questions && leaderboard && leaderboard.length > 0) {
       const scores = pluck(leaderboard, "score");
       const result = mode(scores);
       return (
@@ -250,7 +288,7 @@ const ViewQuiz = ({ match }) => {
               <Card className="mb-3">
                 <Card.Body>
                   <h2>{result.score}</h2>
-                  <Card.Subtitle>{result.count} responses</Card.Subtitle>
+                  <Card.Subtitle>{result.count} people scored</Card.Subtitle>
                 </Card.Body>
               </Card>
             </Col>
@@ -287,7 +325,7 @@ const ViewQuiz = ({ match }) => {
             </div>
             <div>
               <small className="text-muted">Description</small>
-              <p>{quiz.description}</p>
+              <MarkdownViewer source={quiz.description} />
             </div>
           </Card.Body>
         </Card>

@@ -10,6 +10,7 @@ import { createResponse } from "../graphql/mutations";
 import ConfirmModal from "../controls/ConfirmModal";
 import { Auth } from "aws-amplify";
 import { useHistory } from "react-router-dom";
+import Emoji from "../controls/Emoji";
 
 const Quiz = ({ match }) => {
   const { mutation } = GraphQlUtil();
@@ -122,7 +123,7 @@ const Quiz = ({ match }) => {
           disabled={!q.isValid}
           className="float-right"
           onClick={() => onSubmit()}>
-          Finish and Submit
+          <Emoji icon="🏁" /> Finish and Submit
         </Button>
       );
     }
@@ -131,7 +132,7 @@ const Quiz = ({ match }) => {
         disabled={!q.isValid}
         className="float-right"
         onClick={() => onNext()}>
-        Next
+        Next &rarr;
       </Button>
     );
   };
@@ -195,7 +196,7 @@ const Quiz = ({ match }) => {
         <Card.Footer>
           {nextOrSubmit(quiz)}
           <Button size="sm" variant="secondary" onClick={onPrevios}>
-            Previous
+            &larr; Previous
           </Button>
         </Card.Footer>
       </Card>
@@ -233,32 +234,28 @@ const Quiz = ({ match }) => {
         <Card.Body>
           {quiz.description && quiz.description.length > 0 && (
             <React.Fragment>
-              <Card.Title>About the quiz</Card.Title>
-              <Card.Text>
-                <MarkdownViewer source={quiz.description} />
-              </Card.Text>
+              <small>About the quiz</small>
+              <MarkdownViewer source={quiz.description} />
             </React.Fragment>
           )}
           {quiz.instructions && quiz.instructions.length > 0 && (
             <React.Fragment>
-              <Card.Title>Instructions</Card.Title>
-              <Card.Text>
-                <MarkdownViewer source={quiz.instructions} />
-              </Card.Text>
+              <small>Instructions</small>
+              <MarkdownViewer source={quiz.instructions} />
             </React.Fragment>
           )}
-          <Card.Title>Total number of questions</Card.Title>
+          <small>Total number of questions</small>
           <Card.Text>{quiz.questions.length}</Card.Text>
           {quiz.timeLimit && (
             <React.Fragment>
-              <Card.Title>Time limit</Card.Title>
+              <small>Time limit</small>
               <Card.Text>{quiz.timeLimit}</Card.Text>
             </React.Fragment>
           )}
         </Card.Body>
         <Card.Footer>
-          <Button variant="primary" size="sm" onClick={() => setSplash(false)}>
-            Start quiz
+          <Button className="float-right" onClick={() => setSplash(false)}>
+            <Emoji icon="🚀" /> Start quiz
           </Button>
         </Card.Footer>
       </Card>
