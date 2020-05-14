@@ -15,7 +15,7 @@ const ViewQuiz = ({ match }) => {
   const [questions, setQuestions] = useState(null);
   const [leaderboard, setLeaderboard] = useState(null);
   const [poller, setPoller] = useState(null);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const { query } = GraphQlUtil();
 
   useEffect(() => {
@@ -68,7 +68,7 @@ const ViewQuiz = ({ match }) => {
 
   const refreshResponses = async () => {
     if (quiz && questions) {
-      setLoading(true);
+      // setLoading(true);
       const {
         data: {
           listUserResponsesByQuiz: { items },
@@ -79,7 +79,7 @@ const ViewQuiz = ({ match }) => {
       });
       const data = processResponses(items);
       calculateScore(data);
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
@@ -167,23 +167,23 @@ const ViewQuiz = ({ match }) => {
   };
 
   const renderLoading = () => {
-    return (
-      <Row>
-        <Col>
-          <p>
-            {loading && (
-              <small className="mr-1 alert alert-info">Loading...</small>
-            )}
-          </p>
-        </Col>
-      </Row>
-    );
+    // return (
+    //   <Row>
+    //     <Col>
+    //       <p>
+    //         {loading && (
+    //           <small className="mr-1 alert alert-info">Loading...</small>
+    //         )}
+    //       </p>
+    //     </Col>
+    //   </Row>
+    // );
   };
 
   const renderScores = () => {
     if (leaderboard && leaderboard.length > 0) {
       return (
-        <Table bordered hover striped>
+        <Table bordered hover striped responsive="sm">
           <thead>
             <tr>
               <th>Name</th>
@@ -221,14 +221,14 @@ const ViewQuiz = ({ match }) => {
 
   const renderLeaderboard = () => {
     return (
-      <Card className="mt-3">
+      <Card className="mt-3 mb-5">
         <Card.Header>
           <strong>Leaderboard</strong>
           {renderRefresh()}
         </Card.Header>
         <Card.Body>
           {renderAggregation()}
-          {/* {renderLoading()} */}
+          {renderLoading()}
           {renderScores()}
         </Card.Body>
       </Card>
@@ -242,53 +242,53 @@ const ViewQuiz = ({ match }) => {
       return (
         <React.Fragment>
           <Row>
-            <Col>
+            <Col sm={6}>
               <Card className="mb-3">
                 <Card.Body>
                   <h2>{leaderboard.length}</h2>
-                  <Card.Subtitle>Total responses</Card.Subtitle>
+                  <small>Total responses</small>
                 </Card.Body>
               </Card>
             </Col>
-            <Col>
+            <Col sm={6}>
               <Card className="mb-3">
                 <Card.Body>
                   <h2>{questions.length}</h2>
-                  <Card.Subtitle>Total questions</Card.Subtitle>
+                  <small>Total questions</small>
                 </Card.Body>
               </Card>
             </Col>
           </Row>
           <Row>
-            <Col>
+            <Col sm={3}>
               <Card className="mb-3">
                 <Card.Body>
                   <h2>{min(scores)}</h2>
-                  <Card.Subtitle>Lowest score</Card.Subtitle>
+                  <small>Lowest score</small>
                 </Card.Body>
               </Card>
             </Col>
-            <Col>
+            <Col sm={3}>
               <Card className="mb-3">
                 <Card.Body>
                   <h2>{max(scores)}</h2>
-                  <Card.Subtitle>Highest score</Card.Subtitle>
+                  <small>Highest score</small>
                 </Card.Body>
               </Card>
             </Col>
-            <Col>
+            <Col sm={3}>
               <Card className="mb-3">
                 <Card.Body>
                   <h2>{mean(scores)}</h2>
-                  <Card.Subtitle>Average score</Card.Subtitle>
+                  <small>Average score</small>
                 </Card.Body>
               </Card>
             </Col>
-            <Col>
+            <Col sm={3}>
               <Card className="mb-3">
                 <Card.Body>
                   <h2>{result.score}</h2>
-                  <Card.Subtitle>{result.count} people scored</Card.Subtitle>
+                  <small>{result.count} people scored</small>
                 </Card.Body>
               </Card>
             </Col>
