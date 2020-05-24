@@ -1,0 +1,13 @@
+{
+    "resourceName": "sqaComprehend",
+    "interpretPolicyName": "interpretPolicy54a3000f",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "interpretType": "interpretText",
+    "type": "ALL",
+    "access": "auth"
+}

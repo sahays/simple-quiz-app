@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Card, Table } from "react-bootstrap";
+import { Container, Row, Col, Card, Table, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import GraphQlUtil from "../../utils/GraphQlUtil";
 import * as queries from "../../graphql/queries";
+import { find } from "underscore";
+import { MarkdownViewer } from "../../controls/MarkdownViewer";
 
 const ListQuizzes = ({ history }) => {
   const [quizzes, setQuizzes] = useState(null);
+  const [showQuiz, setShowQuiz] = useState(false);
 
   useEffect(() => {
     const { listAll } = GraphQlUtil();
@@ -23,6 +26,34 @@ const ListQuizzes = ({ history }) => {
     history.push("/quiz/view/" + id);
   };
 
+  const renderQuestions = (quizId, questions) => {
+    if (quizId === showQuiz && questions && questions.length > 0) {
+      return (
+        <tr>
+          <td colSpan="4">
+            <Card>
+              <Card.Body>
+                <ol>
+                  {questions.map((qq, index) => {
+                    return (
+                      <li key={index}>
+                        <MarkdownViewer source={qq.question} />
+                      </li>
+                    );
+                  })}
+                </ol>
+              </Card.Body>
+            </Card>
+          </td>
+        </tr>
+      );
+    }
+  };
+
+  const onQuestionClick = (quizId) => {
+    setShowQuiz(quizId);
+  };
+
   const renderQuizzes = () => {
     if (!quizzes) {
       return <p>Loading...</p>;
@@ -31,32 +62,41 @@ const ListQuizzes = ({ history }) => {
     }
 
     return (
-      <Table className="table-responsive-sm" bordered hover striped>
+      <Table responsive bordered hover>
         <caption>Showing {quizzes.length} quizzes</caption>
         <thead>
           <tr>
             <th>Name</th>
             <th>Code</th>
             <th>Questions</th>
-            {/* <th>Action</th> */}
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
           {quizzes.map((qq, index) => {
             return (
-              <tr key={index}>
-                <td
-                  onClick={() => onQuizClick(qq.id)}
-                  className="clickable"
-                  style={{ width: "50%" }}>
-                  {qq.name}
-                </td>
-                <td>{qq.code}</td>
-                <td>{qq.questions.length}</td>
-                {/* <td>
-                  <Button size="sm">Copy to new</Button>
-                </td> */}
-              </tr>
+              <React.Fragment key={index}>
+                <tr>
+                  <td
+                    onClick={() => onQuizClick(qq.id)}
+                    className="clickable"
+                    style={{ width: "50%" }}>
+                    {qq.name}
+                  </td>
+                  <td>{qq.code}</td>
+                  <td
+                    className="clickable"
+                    onClick={() => onQuestionClick(qq.id)}>
+                    {qq.questions.length}
+                  </td>
+                  <td>
+                    <Button variant="outline-primary" size="sm">
+                      Copy to new
+                    </Button>
+                  </td>
+                </tr>
+                {renderQuestions(qq.id, qq.questions)}
+              </React.Fragment>
             );
           })}
         </tbody>
