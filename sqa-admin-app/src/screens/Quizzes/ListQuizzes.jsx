@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Card, Table, Button } from "react-bootstrap";
+import { Container, Row, Col, Card, Table, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import GraphQlUtil from "../../utils/GraphQlUtil";
 import * as queries from "../../graphql/queries";
-import { find } from "underscore";
 import { MarkdownViewer } from "../../controls/MarkdownViewer";
 
 const ListQuizzes = ({ history }) => {
@@ -69,7 +68,7 @@ const ListQuizzes = ({ history }) => {
             <th>Name</th>
             <th>Code</th>
             <th>Questions</th>
-            <th>Action</th>
+            {/* <th>Action</th> */}
           </tr>
         </thead>
         <tbody>
@@ -82,6 +81,15 @@ const ListQuizzes = ({ history }) => {
                     className="clickable"
                     style={{ width: "50%" }}>
                     {qq.name}
+                    <div>
+                      {qq.tags.map((t, index) => {
+                        return (
+                          <Badge key={index} variant="light" className="mr-1">
+                            {t}
+                          </Badge>
+                        );
+                      })}
+                    </div>
                   </td>
                   <td>{qq.code}</td>
                   <td
@@ -89,11 +97,11 @@ const ListQuizzes = ({ history }) => {
                     onClick={() => onQuestionClick(qq.id)}>
                     {qq.questions.length}
                   </td>
-                  <td>
+                  {/* <td>
                     <Button variant="outline-primary" size="sm">
                       Copy to new
                     </Button>
-                  </td>
+                  </td> */}
                 </tr>
                 {renderQuestions(qq.id, qq.questions)}
               </React.Fragment>

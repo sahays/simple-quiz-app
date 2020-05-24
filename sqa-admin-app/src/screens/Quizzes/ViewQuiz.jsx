@@ -15,7 +15,6 @@ const ViewQuiz = ({ match }) => {
   const [questions, setQuestions] = useState(null);
   const [leaderboard, setLeaderboard] = useState(null);
   const [poller, setPoller] = useState(null);
-  // const [loading, setLoading] = useState(false);
   const { query } = GraphQlUtil();
 
   useEffect(() => {
@@ -68,7 +67,6 @@ const ViewQuiz = ({ match }) => {
 
   const refreshResponses = async () => {
     if (quiz && questions) {
-      // setLoading(true);
       const {
         data: {
           listUserResponsesByQuiz: { items },
@@ -79,7 +77,6 @@ const ViewQuiz = ({ match }) => {
       });
       const data = processResponses(items);
       calculateScore(data);
-      // setLoading(false);
     }
   };
 
@@ -166,20 +163,6 @@ const ViewQuiz = ({ match }) => {
     }
   };
 
-  const renderLoading = () => {
-    // return (
-    //   <Row>
-    //     <Col>
-    //       <p>
-    //         {loading && (
-    //           <small className="mr-1 alert alert-info">Loading...</small>
-    //         )}
-    //       </p>
-    //     </Col>
-    //   </Row>
-    // );
-  };
-
   const renderScores = () => {
     if (leaderboard && leaderboard.length > 0) {
       return (
@@ -228,7 +211,6 @@ const ViewQuiz = ({ match }) => {
         </Card.Header>
         <Card.Body>
           {renderAggregation()}
-          {renderLoading()}
           {renderScores()}
         </Card.Body>
       </Card>

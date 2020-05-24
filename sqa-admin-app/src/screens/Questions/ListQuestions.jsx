@@ -3,9 +3,9 @@ import { Container, Row, Col, Card, Table, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { QuestionStore } from "../../cache-stores/QuestionStore";
 import { FilterQuestions } from "../Quizzes/Quiz/FilterQuestions";
+import { MarkdownViewer } from "../../controls/MarkdownViewer";
 
 const ListQuestions = ({ history }) => {
-  const charLimit = 200;
   const [allQuestions, setAllQuestions] = useState(null);
   const [questions, setQuestions] = useState(null);
 
@@ -20,9 +20,7 @@ const ListQuestions = ({ history }) => {
   }, []);
 
   const renderQuestion = (q) => {
-    return q.length > charLimit
-      ? `${q.substr(0, charLimit)}...`
-      : `${q.substr(0, charLimit)}`;
+    return <MarkdownViewer source={q} />;
   };
 
   const renderTags = (q) => {
@@ -64,9 +62,6 @@ const ListQuestions = ({ history }) => {
             })}
           </tbody>
         </Table>
-        <small className="text-muted">
-          {`Showing first ${charLimit} characters only`}
-        </small>
       </React.Fragment>
     );
   };
