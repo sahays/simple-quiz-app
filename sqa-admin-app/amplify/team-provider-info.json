@@ -16,7 +16,8 @@
                 "sqaAuthPostConfirmation": {
                     "GROUP": "users"
                 },
-                "sqaAuthPreSignup": {}
+                "sqaAuthPreSignup": {},
+                "sqaAuthPreAuthentication": {}
             },
             "auth": {
                 "sqaAuth": {}

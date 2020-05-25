@@ -34,7 +34,7 @@
     "thirdPartyAuth": false,
     "userPoolGroups": true,
     "adminQueries": false,
-    "triggers": "{\"PostConfirmation\":[\"add-to-group\"],\"PreSignup\":[\"custom\"]}",
+    "triggers": "{\"PostConfirmation\":[\"add-to-group\"],\"PreAuthentication\":[\"custom\"],\"PreSignup\":[\"custom\"]}",
     "hostedUI": false,
     "userPoolGroupList": [
         "admins",
@@ -71,6 +71,15 @@
         {
             "category": "function",
             "resourceName": "sqaAuthPreSignup",
+            "triggerProvider": "Cognito",
+            "attributes": [
+                "Arn",
+                "Name"
+            ]
+        },
+        {
+            "category": "function",
+            "resourceName": "sqaAuthPreAuthentication",
             "triggerProvider": "Cognito",
             "attributes": [
                 "Arn",

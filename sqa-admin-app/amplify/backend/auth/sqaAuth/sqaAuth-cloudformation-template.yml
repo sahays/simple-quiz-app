@@ -31,6 +31,16 @@ Parameters:
   
   
   
+  functionsqaAuthPreAuthenticationArn: 
+    Type: String
+    Default: functionsqaAuthPreAuthenticationArn
+  
+  functionsqaAuthPreAuthenticationName: 
+    Type: String
+    Default: functionsqaAuthPreAuthenticationName
+  
+  
+  
 
     
   identityPoolName:
@@ -122,7 +132,7 @@ Parameters:
                     
   userPoolGroupList:
     Type: CommaDelimitedList
-                                                
+                                    
   parentStack:
     Type: String
                 
@@ -131,7 +141,7 @@ Parameters:
               
   dependsOn:
     Type: CommaDelimitedList
-    
+                
 Conditions:
   ShouldNotCreateEnvResources: !Equals [ !Ref env, NONE ]
 
@@ -186,6 +196,8 @@ Resources:
           PostConfirmation: !Ref functionsqaAuthPostConfirmationArn
         
         
+          PreAuthentication: !Ref functionsqaAuthPreAuthenticationArn
+        
         
           PreSignUp: !Ref functionsqaAuthPreSignupArn
         
@@ -230,6 +242,15 @@ Resources:
       FunctionName: !Ref functionsqaAuthPostConfirmationName
       SourceArn: !GetAtt UserPool.Arn
     
+  
+  UserPoolPreAuthenticationLambdaInvokePermission: 
+    Type: "AWS::Lambda::Permission"
+    DependsOn: UserPool
+    Properties: 
+      Action: "lambda:invokeFunction"
+      Principal: "cognito-idp.amazonaws.com"
+      FunctionName: !Ref functionsqaAuthPreAuthenticationName
+      SourceArn: !GetAtt UserPool.Arn
   
   
   UserPoolPreSignupLambdaInvokePermission: 

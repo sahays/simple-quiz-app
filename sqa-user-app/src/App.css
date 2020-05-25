@@ -45,3 +45,7 @@ small {
   margin-top: 0;
   font-size: 1.25em;
 }
+
+.card-title {
+  color: silver !important;
+}
